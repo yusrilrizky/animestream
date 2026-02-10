@@ -18,7 +18,10 @@
     "backup-db": "cp animestream.db animestream.db.backup",
     "restore-db": "cp animestream.db.backup animestream.db",
     "build": "npm install --legacy-peer-deps && npm rebuild better-sqlite3",
-    "check-db": "node check-database.js"
+    "check-db": "node check-database.js",
+    "test-railway": "node test-railway-local.js",
+    "test-health": "node test-health.js",
+    "railway-deploy": "bash railway-deploy.sh"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",

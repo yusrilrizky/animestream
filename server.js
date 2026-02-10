@@ -15,11 +15,14 @@ const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 console.log('🚀 Starting AnimeStream server...');
 console.log('📍 PORT:', PORT);
+console.log('📍 HOST:', HOST);
 console.log('🌍 NODE_ENV:', process.env.NODE_ENV || 'development');
 console.log('📂 __dirname:', __dirname);
+console.log('💾 Database path:', process.env.DATABASE_PATH || 'animestream.db');
 
 // Railway health check
 app.get('/health', (req, res) => {
@@ -1112,12 +1115,13 @@ app.use((req, res) => {
   `);
 });
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server berjalan di http://localhost:${PORT}`);
+const server = app.listen(PORT, HOST, () => {
+  console.log(`✅ Server berjalan di http://${HOST}:${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Ready to accept connections`);
   console.log(`🚀 Railway deployment ready!`);
-  console.log(`💾 Database: SQLite (${__dirname}/animestream.db)`);
+  console.log(`💾 Database: SQLite (${process.env.DATABASE_PATH || 'animestream.db'})`);
+  console.log(`🔗 Health check: http://${HOST}:${PORT}/health`);
 });
 
 // Handle server errors
