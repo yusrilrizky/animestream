@@ -16,13 +16,28 @@ const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log('🚀 Starting AnimeStream server...');
+console.log('📍 PORT:', PORT);
+console.log('🌍 NODE_ENV:', process.env.NODE_ENV || 'development');
+console.log('📂 __dirname:', __dirname);
+
 // Railway health check
 app.get('/health', (req, res) => {
-  res.status(200).send('OK');
+  res.status(200).json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
 });
 
 // Inisialisasi database
-initDatabase();
+try {
+  initDatabase();
+  console.log('✅ Database initialized');
+} catch (error) {
+  console.error('⚠️ Database init error:', error.message);
+  // Lanjut jalan meskipun database error
+}
 
 // Email transporter setup dengan error handling
 let emailTransporter;
@@ -1097,11 +1112,21 @@ app.use((req, res) => {
   `);
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server berjalan di http://localhost:${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Ready to accept connections`);
   console.log(`🚀 Railway deployment ready!`);
+  console.log(`💾 Database: SQLite (${__dirname}/animestream.db)`);
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('❌ Server error:', error);
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
+    process.exit(1);
+  }
 });
 
 // Graceful shutdown
