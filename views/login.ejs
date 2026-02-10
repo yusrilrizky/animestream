@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Login - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <div class="auth-box">
+      <div class="auth-header">
+        <h1 class="logo">🎬 AnimeStream</h1>
+        <p>Selamat datang kembali!</p>
+      </div>
+
+      <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-error">
+          ⚠️ <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/login" method="POST" class="auth-form">
+        <div class="form-group">
+          <label for="username">👤 Username atau Email</label>
+          <input type="text" id="username" name="username" required placeholder="Masukkan username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔒 Password</label>
+          <input type="password" id="password" name="password" required placeholder="Masukkan password">
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox">
+            <input type="checkbox" name="remember">
+            <span>Ingat saya</span>
+          </label>
+          <a href="/forgot-password" class="link">Lupa password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">🚀 Masuk</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Belum punya akun? <a href="/register" class="link">Daftar sekarang</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

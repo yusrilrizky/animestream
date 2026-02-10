@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Dashboard - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">🎬 AnimeStream</h1>
+      <div class="nav-right">
+        <span class="user-badge">👤 <%= user.username %></span>
+        <a href="/logout" class="btn-logout">Keluar</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <a href="/dashboard" class="menu-item active">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/dashboard/my-uploads" class="menu-item">
+          <span>📹</span>
+          <span>Upload Saya</span>
+        </a>
+        <a href="/dashboard/favorites" class="menu-item">
+          <span>❤️</span>
+          <span>Favorit</span>
+        </a>
+        <a href="/dashboard/history" class="menu-item">
+          <span>🕐</span>
+          <span>Riwayat</span>
+        </a>
+        <% if (user.role === 'admin') { %>
+        <a href="/dashboard/admin" class="menu-item">
+          <span>⚙️</span>
+          <span>Admin Panel</span>
+        </a>
+        <% } %>
+        <a href="/settings" class="menu-item">
+          <span>🔧</span>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="dashboard-content">
+      <div class="dashboard-header">
+        <h2>Selamat datang, <%= user.username %>! 👋</h2>
+        <p>Kelola konten anime kamu di sini</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📹</div>
+          <div class="stat-info">
+            <h3><%= stats.uploads %></h3>
+            <p>Total Upload</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-info">
+            <h3><%= stats.views %></h3>
+            <p>Total Views</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-info">
+            <h3><%= stats.favorites %></h3>
+            <p>Favorit</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <h3><%= stats.rating %></h3>
+            <p>Rating</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <h3>⚡ Aksi Cepat</h3>
+        <div class="action-buttons">
+          <a href="/upload" class="action-btn">
+            <span>⬆️</span>
+            <span>Upload Anime</span>
+          </a>
+          <a href="/" class="action-btn">
+            <span>🏠</span>
+            <span>Lihat Beranda</span>
+          </a>
+          <a href="/dashboard/my-uploads" class="action-btn">
+            <span>📝</span>
+            <span>Kelola Upload</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="recent-activity">
+        <h3>📊 Aktivitas Terbaru</h3>
+        <div class="activity-list">
+          <% if (recentUploads.length === 0) { %>
+            <div class="empty-state-small">
+              <p>Belum ada aktivitas</p>
+            </div>
+          <% } else { %>
+            <% recentUploads.forEach(anime => { %>
+              <div class="activity-item">
+                <div class="activity-icon">📹</div>
+                <div class="activity-info">
+                  <h4><%= anime.title %> - Episode <%= anime.episode %></h4>
+                  <p>Diupload <%= anime.uploadDate %></p>
+                </div>
+                <div class="activity-actions">
+                  <a href="/watch/<%= anime.id %>" class="btn btn-sm">Lihat</a>
+                  <button onclick="deleteAnime(<%= anime.id %>)" class="btn btn-sm btn-danger">Hapus</button>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="/">
+      <span>🏠</span>
+      <span>Beranda</span>
+    </a>
+    <a href="/dashboard" class="active">
+      <span>📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/upload">
+      <span>⬆️</span>
+      <span>Upload</span>
+    </a>
+    <a href="/settings">
+      <span>👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+  <!-- Background Music with Control -->
+  <audio id="bgMusic" loop>
+    <source src="/audio/dashboard-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music Control Button -->
+  <button id="musicToggle" style="position: fixed; bottom: 80px; right: 90px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(138, 43, 226, 0.5);">
+    🔊
+  </button>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+
+    // Background Music
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    
+    bgMusic.volume = 0.5;
+    
+    // Check saved state
+    const musicEnabled = localStorage.getItem('dashboardMusicEnabled') !== 'false';
+    
+    if (musicEnabled) {
+      bgMusic.play().catch(() => {
+        document.body.addEventListener('click', () => bgMusic.play(), { once: true });
+      });
+      musicToggle.textContent = '🔊';
+    } else {
+      musicToggle.textContent = '🔇';
+    }
+    
+    // Toggle music
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
+        localStorage.setItem('dashboardMusicEnabled', 'true');
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+        localStorage.setItem('dashboardMusicEnabled', 'false');
+      }
+    });
+  </script>
+</body>
+</html>

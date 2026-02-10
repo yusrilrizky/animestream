@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8a2be2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.json">
+  <title>Rilis Terbaru - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-left">
+        <a href="/" class="logo">🎬 AnimeStream</a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Beranda</a>
+          <a href="/trending" class="nav-link">Trending</a>
+          <a href="/new" class="nav-link active">Terbaru</a>
+          <a href="/categories" class="nav-link">Kategori</a>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari anime...">
+        </div>
+
+        <% if (user) { %>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+          <div class="user-menu">
+            <div class="user-avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+            <span class="user-name"><%= user.username %></span>
+          </div>
+          <a href="/logout" class="btn-logout" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #ff4757; color: white; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Keluar</a>
+        <% } else { %>
+          <a href="/login" class="btn-login">Masuk</a>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div style="margin: 2rem 0;">
+      <h1 style="color: #fff; font-size: 2rem; margin-bottom: 0.5rem;">🆕 Rilis Terbaru</h1>
+      <p style="color: #aaa; font-size: 1rem;">Anime terbaru yang baru saja diupload</p>
+    </div>
+
+    <% if (animeList.length === 0) { %>
+      <div class="empty-state">
+        <p>📺 Belum ada anime terbaru.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Jadilah yang pertama upload anime!</p>
+        <a href="/upload" class="btn btn-primary">+ Upload Anime</a>
+      </div>
+    <% } else { %>
+      <!-- Stats -->
+      <div style="background: rgba(30, 30, 50, 0.8); backdrop-filter: blur(10px); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; border: 2px solid rgba(168, 85, 247, 0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="color: #a855f7; margin: 0 0 0.5rem 0;">Total Anime</h3>
+            <p style="color: #fff; font-size: 2rem; margin: 0; font-weight: 700;"><%= animeList.length %></p>
+          </div>
+          <div style="text-align: right;">
+            <h3 style="color: #a855f7; margin: 0 0 0.5rem 0;">Diupload Hari Ini</h3>
+            <p style="color: #fff; font-size: 2rem; margin: 0; font-weight: 700;">
+              <%= animeList.filter(a => a.uploadDate === new Date().toLocaleDateString('id-ID')).length %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anime Grid -->
+      <div class="anime-grid">
+        <% animeList.forEach((anime, index) => { %>
+          <div class="anime-card" onclick="window.location.href='/watch/<%= anime.id %>'">
+            <div class="anime-thumbnail">
+              <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+              <% if (index < 5) { %>
+                <span class="anime-badge" style="background: linear-gradient(135deg, #00d2ff, #3a7bd5);">NEW</span>
+              <% } else { %>
+                <span class="anime-badge">HD</span>
+              <% } %>
+              <span class="anime-duration">24:00</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="anime-info">
+              <h3><%= anime.title %></h3>
+              <div class="anime-meta">
+                <span class="episode">Ep <%= anime.episode %></span>
+                <span>👁️ <%= anime.views || 0 %></span>
+              </div>
+              <% if (anime.description) { %>
+                <p class="description"><%= anime.description %></p>
+              <% } %>
+              <% if (anime.genre) { %>
+                <div class="genre-tags">
+                  <% anime.genre.split(',').forEach(g => { %>
+                    <span class="genre-tag"><%= g.trim() %></span>
+                  <% }); %>
+                </div>
+              <% } %>
+              <% if (anime.uploader) { %>
+                <div class="uploader">
+                  <span>👤</span>
+                  <span><%= anime.uploader %></span>
+                </div>
+              <% } %>
+              <% if (anime.uploadDate) { %>
+                <div class="date">📅 <%= anime.uploadDate %></div>
+              <% } %>
+              <div class="actions">
+                <a href="/watch/<%= anime.id %>" class="btn btn-primary" onclick="event.stopPropagation()">Tonton</a>
+                <% if (user && (user.id === anime.uploaderId || user.role === 'admin')) { %>
+                  <button onclick="event.stopPropagation(); deleteAnime(<%= anime.id %>)" class="btn btn-danger">Hapus</button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: rgba(30, 30, 50, 0.9); padding: 2rem; margin-top: 3rem; border-top: 2px solid rgba(168, 85, 247, 0.3); text-align: center; color: #999;">
+    <p>© 2026 AnimeStream. Platform streaming anime terbaik di Indonesia.</p>
+  </footer>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

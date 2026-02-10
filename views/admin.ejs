@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Admin Panel - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">🎬 AnimeStream Admin</h1>
+      <div class="nav-right">
+        <span class="user-badge">⚙️ <%= user.username %></span>
+        <a href="/dashboard" class="btn-logout">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <a href="/dashboard/admin" class="menu-item active">
+          <span>📊</span>
+          <span>Overview</span>
+        </a>
+        <a href="/dashboard/admin/users" class="menu-item">
+          <span>👥</span>
+          <span>Kelola User</span>
+        </a>
+        <a href="/dashboard/admin/content" class="menu-item">
+          <span>📹</span>
+          <span>Kelola Konten</span>
+        </a>
+        <a href="/dashboard/admin/reports" class="menu-item">
+          <span>🚨</span>
+          <span>Laporan</span>
+        </a>
+        <a href="/dashboard/admin/settings" class="menu-item">
+          <span>⚙️</span>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="dashboard-content">
+      <div class="dashboard-header">
+        <h2>⚙️ Admin Panel</h2>
+        <p>Kelola seluruh sistem AnimeStream</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-primary">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <h3><%= adminStats.totalUsers %></h3>
+            <p>Total User</p>
+          </div>
+        </div>
+        <div class="stat-card stat-success">
+          <div class="stat-icon">📹</div>
+          <div class="stat-info">
+            <h3><%= adminStats.totalAnime %></h3>
+            <p>Total Anime</p>
+          </div>
+        </div>
+        <div class="stat-card stat-warning">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-info">
+            <h3><%= adminStats.totalViews %></h3>
+            <p>Total Views</p>
+          </div>
+        </div>
+        <div class="stat-card stat-danger">
+          <div class="stat-icon">🚨</div>
+          <div class="stat-info">
+            <h3><%= adminStats.reports %></h3>
+            <p>Laporan</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>👥 User Terbaru</h3>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Bergabung</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(u => { %>
+                <tr>
+                  <td><strong><%= u.username %></strong></td>
+                  <td><%= u.email %></td>
+                  <td><span class="badge badge-<%= u.role %>"><%= u.role %></span></td>
+                  <td><%= u.joinDate %></td>
+                  <td>
+                    <button class="btn btn-sm" onclick="editUser('<%= u.id %>')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser('<%= u.id %>')">Hapus</button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>📹 Konten Terbaru</h3>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Judul</th>
+                <th>Episode</th>
+                <th>Uploader</th>
+                <th>Views</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% animeList.forEach(anime => { %>
+                <tr>
+                  <td><strong><%= anime.title %></strong></td>
+                  <td>Ep <%= anime.episode %></td>
+                  <td><%= anime.uploader || 'Admin' %></td>
+                  <td><%= anime.views || 0 %></td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <a href="/watch/<%= anime.id %>" class="btn btn-sm">Lihat</a>
+                    <button class="btn btn-sm btn-danger" onclick="deleteAnime(<%= anime.id %>)">Hapus</button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function editUser(id) {
+      alert('Edit user: ' + id);
+    }
+
+    function deleteUser(id) {
+      if (confirm('Yakin ingin menghapus user ini?')) {
+        alert('User deleted: ' + id);
+      }
+    }
+
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+  </script>
+</body>
+</html>

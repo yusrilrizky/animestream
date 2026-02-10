@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8a2be2">
+  <title>Pengaturan Akun - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .settings-page {
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .settings-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .settings-header {
+      background: rgba(30, 30, 50, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .settings-header h1 {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-header p {
+      color: #aaa;
+    }
+
+    .settings-section {
+      background: rgba(30, 30, 50, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .settings-section h2 {
+      color: #a855f7;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #e0e0e0;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #a855f7;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+    }
+
+    .form-group input:disabled {
+      background: rgba(255, 255, 255, 0.02);
+      cursor: not-allowed;
+      color: #666;
+    }
+
+    .btn-save {
+      padding: 0.8rem 2rem;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-save:hover {
+      background: linear-gradient(135deg, #9333ea, #a855f7);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(138, 43, 226, 0.5);
+    }
+
+    .btn-back {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s;
+      margin-right: 1rem;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .alert-success {
+      background: rgba(46, 204, 113, 0.2);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      color: #2ecc71;
+    }
+
+    .alert-error {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid rgba(255, 107, 107, 0.4);
+      color: #ff6b6b;
+    }
+
+    .info-text {
+      color: #999;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    .quality-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .quality-option {
+      position: relative;
+    }
+
+    .quality-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .quality-label {
+      display: block;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #aaa;
+    }
+
+    .quality-option input[type="radio"]:checked + .quality-label {
+      background: rgba(168, 85, 247, 0.3);
+      border-color: #a855f7;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+    }
+
+    .quality-label:hover {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.1);
+    }
+
+    .quality-label .quality-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .quality-label .quality-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .checkbox-setting {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .checkbox-setting:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .checkbox-setting input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      accent-color: #a855f7;
+    }
+
+    .checkbox-setting-info {
+      flex: 1;
+    }
+
+    .checkbox-setting-info strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .checkbox-setting-info p {
+      color: #999;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    .account-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .info-card {
+      background: rgba(168, 85, 247, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .info-card strong {
+      color: #a855f7;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .info-card span {
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+      .settings-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .settings-section {
+        padding: 1.5rem;
+      }
+
+      .quality-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .account-info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="settings-page">
+    <div class="settings-container">
+      <!-- Header -->
+      <div class="settings-header">
+        <h1>⚙️ Pengaturan Akun</h1>
+        <p>Kelola informasi akun, keamanan, dan preferensi Anda</p>
+      </div>
+
+      <!-- Video Quality Settings -->
+      <div class="settings-section">
+        <h2>🎬 Kualitas Video</h2>
+        <p style="color: #aaa; margin-bottom: 1rem;">Pilih kualitas video default untuk streaming</p>
+
+        <% if (typeof successQuality !== 'undefined' && successQuality) { %>
+          <div class="alert alert-success">
+            ✅ Kualitas video berhasil diperbarui!
+          </div>
+        <% } %>
+
+        <form action="/settings/video-quality" method="POST">
+          <div class="quality-options">
+            <div class="quality-option">
+              <input type="radio" id="quality-auto" name="videoQuality" value="auto" <%= (typeof user.videoQuality === 'undefined' || user.videoQuality === 'auto') ? 'checked' : '' %>>
+              <label for="quality-auto" class="quality-label">
+                <span class="quality-name">Auto</span>
+                <span class="quality-desc">Otomatis</span>
+              </label>
+            </div>
+            <div class="quality-option">
+              <input type="radio" id="quality-1080p" name="videoQuality" value="1080p" <%= user.videoQuality === '1080p' ? 'checked' : '' %>>
+              <label for="quality-1080p" class="quality-label">
+                <span class="quality-name">1080p</span>
+                <span class="quality-desc">Full HD</span>
+              </label>
+            </div>
+            <div class="quality-option">
+              <input type="radio" id="quality-720p" name="videoQuality" value="720p" <%= user.videoQuality === '720p' ? 'checked' : '' %>>
+              <label for="quality-720p" class="quality-label">
+                <span class="quality-name">720p</span>
+                <span class="quality-desc">HD</span>
+              </label>
+            </div>
+            <div class="quality-option">
+              <input type="radio" id="quality-480p" name="videoQuality" value="480p" <%= user.videoQuality === '480p' ? 'checked' : '' %>>
+              <label for="quality-480p" class="quality-label">
+                <span class="quality-name">480p</span>
+                <span class="quality-desc">SD</span>
+              </label>
+            </div>
+            <div class="quality-option">
+              <input type="radio" id="quality-360p" name="videoQuality" value="360p" <%= user.videoQuality === '360p' ? 'checked' : '' %>>
+              <label for="quality-360p" class="quality-label">
+                <span class="quality-name">360p</span>
+                <span class="quality-desc">Low</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" class="btn-save">💾 Simpan Kualitas Video</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Profile Settings -->
+      <div class="settings-section">
+        <h2>👤 Informasi Profil</h2>
+
+        <% if (typeof successProfile !== 'undefined' && successProfile) { %>
+          <div class="alert alert-success">
+            ✅ Profil berhasil diperbarui!
+          </div>
+        <% } %>
+
+        <% if (typeof errorProfile !== 'undefined' && errorProfile) { %>
+          <div class="alert alert-error">
+            ⚠️ <%= errorProfile %>
+          </div>
+        <% } %>
+
+        <form action="/settings/profile" method="POST">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" value="<%= user.username %>" disabled>
+            <p class="info-text">Username tidak dapat diubah</p>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" value="<%= user.email %>" disabled>
+            <p class="info-text">Email tidak dapat diubah</p>
+          </div>
+
+          <div class="form-group">
+            <label for="displayName">Nama Tampilan</label>
+            <input type="text" id="displayName" name="displayName" value="<%= user.displayName || user.username %>" required placeholder="Nama yang ditampilkan">
+            <p class="info-text">Nama ini akan ditampilkan di profil dan upload Anda</p>
+          </div>
+
+          <button type="submit" class="btn-save">💾 Simpan Perubahan</button>
+        </form>
+      </div>
+
+      <!-- Password Settings -->
+      <div class="settings-section">
+        <h2>🔒 Ubah Password</h2>
+
+        <% if (typeof successPassword !== 'undefined' && successPassword) { %>
+          <div class="alert alert-success">
+            ✅ Password berhasil diubah!
+          </div>
+        <% } %>
+
+        <% if (typeof errorPassword !== 'undefined' && errorPassword) { %>
+          <div class="alert alert-error">
+            ⚠️ <%= errorPassword %>
+          </div>
+        <% } %>
+
+        <form action="/settings/password" method="POST">
+          <div class="form-group">
+            <label for="currentPassword">Password Saat Ini</label>
+            <input type="password" id="currentPassword" name="currentPassword" required placeholder="Masukkan password lama">
+          </div>
+
+          <div class="form-group">
+            <label for="newPassword">Password Baru</label>
+            <input type="password" id="newPassword" name="newPassword" required placeholder="Minimal 6 karakter" minlength="6">
+            <p class="info-text">Password minimal 6 karakter</p>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Konfirmasi Password Baru</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Ulangi password baru">
+          </div>
+
+          <button type="submit" class="btn-save">🔐 Ubah Password</button>
+        </form>
+      </div>
+
+      <!-- Music Settings -->
+      <div class="settings-section">
+        <h2>🎵 Pengaturan Musik</h2>
+        <p style="color: #aaa; margin-bottom: 1rem;">Atur musik latar belakang untuk halaman login dan dashboard</p>
+        
+        <div class="checkbox-setting">
+          <input type="checkbox" id="loginMusicToggle">
+          <div class="checkbox-setting-info">
+            <strong>Musik Halaman Login</strong>
+            <p>Putar musik saat di halaman login</p>
+          </div>
+        </div>
+
+        <div class="checkbox-setting">
+          <input type="checkbox" id="dashboardMusicToggle">
+          <div class="checkbox-setting-info">
+            <strong>Musik Halaman Dashboard</strong>
+            <p>Putar musik saat di halaman dashboard</p>
+          </div>
+        </div>
+
+        <div class="alert" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc;">
+          ℹ️ Pengaturan musik akan tersimpan dan diterapkan saat Anda membuka halaman login atau dashboard.
+        </div>
+      </div>
+
+      <!-- Account Info -->
+      <div class="settings-section">
+        <h2>📊 Informasi Akun</h2>
+        <div class="account-info-grid">
+          <div class="info-card">
+            <strong>Role</strong>
+            <span><%= user.role === 'admin' ? '👑 Administrator' : '👤 User' %></span>
+          </div>
+          <div class="info-card">
+            <strong>Bergabung</strong>
+            <span><%= user.joinDate %></span>
+          </div>
+          <div class="info-card">
+            <strong>User ID</strong>
+            <span>#<%= user.id %></span>
+          </div>
+          <div class="info-card">
+            <strong>Kualitas Video</strong>
+            <span><%= user.videoQuality || 'Auto' %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/dashboard" class="btn-back">← Kembali ke Dashboard</a>
+        <a href="/" class="btn-save" style="text-decoration: none; display: inline-block;">🏠 Ke Beranda</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Music Settings
+    const loginMusicToggle = document.getElementById('loginMusicToggle');
+    const dashboardMusicToggle = document.getElementById('dashboardMusicToggle');
+
+    // Load saved settings
+    loginMusicToggle.checked = localStorage.getItem('loginMusicEnabled') !== 'false';
+    dashboardMusicToggle.checked = localStorage.getItem('dashboardMusicEnabled') !== 'false';
+
+    // Save settings on change
+    loginMusicToggle.addEventListener('change', () => {
+      localStorage.setItem('loginMusicEnabled', loginMusicToggle.checked ? 'true' : 'false');
+    });
+
+    dashboardMusicToggle.addEventListener('change', () => {
+      localStorage.setItem('dashboardMusicEnabled', dashboardMusicToggle.checked ? 'true' : 'false');
+    });
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

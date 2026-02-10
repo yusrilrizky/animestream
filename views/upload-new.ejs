@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8a2be2">
+  <title>Upload Anime - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="upload-page">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-left">
+        <a href="/" class="logo">🎬 AnimeStream</a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Beranda</a>
+          <a href="/upload" class="nav-link active">Upload</a>
+          <% if (user) { %>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <% if (user) { %>
+          <div class="user-menu">
+            <div class="user-avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+            <span class="user-name"><%= user.username %></span>
+          </div>
+          <a href="/logout" class="btn-logout" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #ff4757; color: white; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Keluar</a>
+        <% } else { %>
+          <a href="/login" class="btn-login">Masuk</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Upload Container -->
+  <div class="container">
+    <div class="upload-container">
+      <!-- Header -->
+      <div class="upload-header">
+        <h2>📤 Upload Anime Baru</h2>
+        <p>Bagikan anime favorit kamu dengan komunitas</p>
+      </div>
+
+      <!-- Steps -->
+      <div class="upload-body">
+        <div class="upload-steps">
+          <div class="upload-step active">
+            <div class="step-number">1</div>
+            <div class="step-info">
+              <h4>Upload Video</h4>
+              <p>Pilih file video</p>
+            </div>
+          </div>
+          <div class="upload-step">
+            <div class="step-number">2</div>
+            <div class="step-info">
+              <h4>Info Anime</h4>
+              <p>Isi detail anime</p>
+            </div>
+          </div>
+          <div class="upload-step">
+            <div class="step-number">3</div>
+            <div class="step-info">
+              <h4>Selesai</h4>
+              <p>Publish anime</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+          <!-- File Upload Area -->
+          <div class="form-group">
+            <label>🎥 File Video</label>
+            <div class="file-upload-area" id="fileUploadArea">
+              <div class="upload-icon">📁</div>
+              <h3>Klik atau drag & drop file video</h3>
+              <p>Format: MP4, MKV, AVI, WebM (Max 500MB)</p>
+              <input type="file" id="video" name="video" accept="video/*" required>
+              <button type="button" class="btn btn-primary" onclick="document.getElementById('video').click()">
+                Pilih File
+              </button>
+            </div>
+            <div id="fileInfo" class="file-info"></div>
+          </div>
+
+          <!-- Anime Info -->
+          <div class="form-group">
+            <label for="title">🎬 Judul Anime</label>
+            <input type="text" id="title" name="title" required placeholder="Contoh: Naruto Shippuden">
+          </div>
+
+          <div class="form-group">
+            <label for="episode">📺 Episode</label>
+            <input type="text" id="episode" name="episode" required placeholder="Contoh: Episode 1">
+          </div>
+
+          <div class="form-group">
+            <label for="category">📂 Kategori</label>
+            <select id="category" name="category">
+              <option value="action">Action</option>
+              <option value="adventure">Adventure</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="romance">Romance</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="slice-of-life">Slice of Life</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="genre">🏷️ Genre (pisahkan dengan koma)</label>
+            <input type="text" id="genre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
+            <p style="color: #aaa; font-size: 0.85rem; margin-top: 0.3rem;">Pisahkan genre dengan koma (,)</p>
+          </div>
+
+          <div class="form-group">
+            <label for="description">📝 Deskripsi</label>
+            <textarea id="description" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+            <span id="progressText">0%</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+            🚀 Upload Sekarang
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Music - Auto Play -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="/audio/background-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const fileInput = document.getElementById('video');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const form = document.getElementById('uploadForm');
+    const progressContainer = document.getElementById('progressContainer');
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        fileInfo.innerHTML = `✅ File dipilih: <strong>${file.name}</strong> (${sizeMB} MB)`;
+        fileInfo.classList.add('show');
+      }
+    });
+
+    fileUploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.add('dragover');
+    });
+
+    fileUploadArea.addEventListener('dragleave', () => {
+      fileUploadArea.classList.remove('dragover');
+    });
+
+    fileUploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('dragover');
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      progressContainer.style.display = 'block';
+      document.querySelector('button[type="submit"]').disabled = true;
+      document.querySelector('button[type="submit"]').textContent = '⏳ Mengupload...';
+    });
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8a2be2">
+  <title>Login - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .login-page {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Music Control Button */
+    .music-control {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(192, 132, 252, 0.9));
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(138, 43, 226, 0.5);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .music-control:hover {
+      background: linear-gradient(135deg, rgba(147, 51, 234, 0.9), rgba(168, 85, 247, 0.9));
+      transform: scale(1.1);
+    }
+
+    .music-control.playing {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 12px rgba(0,161,214,0.3); }
+      50% { box-shadow: 0 4px 20px rgba(0,161,214,0.6); }
+    }
+
+    .login-left {
+      flex: 1;
+      background: linear-gradient(135deg, #8a2be2, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-left::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -200px;
+      right: -200px;
+    }
+
+    .login-left::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      bottom: -100px;
+      left: -100px;
+    }
+
+    .login-left-content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .login-left-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .login-left-content p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .login-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      padding-bottom: 100px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .login-box h2 {
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-box .subtitle {
+      color: #999;
+      margin-bottom: 2rem;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-btn {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .social-btn:hover {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(138, 43, 226, 0.2);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(168, 85, 247, 0.2);
+    }
+
+    .divider span {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0 1rem;
+      position: relative;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.05);
+      color: #333;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #a855f7;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #666;
+    }
+
+    .link {
+      color: #a855f7;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #9333ea, #a855f7);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #666;
+    }
+
+    .alert {
+      padding: 1rem;
+      background: #fff5f5;
+      border: 1px solid #ffe5e5;
+      border-radius: 8px;
+      color: #ff6b6b;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .login-page {
+        flex-direction: column;
+      }
+
+      .login-left {
+        min-height: 150px;
+        padding: 1.5rem 1rem;
+      }
+
+      .login-left-content h1 {
+        font-size: 1.8rem;
+      }
+
+      .login-left-content p {
+        font-size: 0.9rem;
+      }
+
+      .login-right {
+        padding: 1.5rem 1rem;
+        padding-bottom: 100px;
+      }
+
+      .login-box {
+        padding: 0;
+      }
+
+      .login-box h2 {
+        font-size: 1.5rem;
+      }
+
+      .form-group input {
+        padding: 0.8rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+      }
+
+      .btn-submit {
+        padding: 0.9rem;
+        font-size: 16px;
+      }
+
+      #musicToggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 15px;
+        right: 15px;
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 480px) {
+      .login-left {
+        min-height: 120px;
+        padding: 1rem;
+      }
+
+      .login-left-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .login-left-content p {
+        font-size: 0.85rem;
+      }
+
+      .login-box h2 {
+        font-size: 1.3rem;
+      }
+
+      .social-btn {
+        font-size: 0.85rem;
+        padding: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-page">
+    <!-- Left Side -->
+    <div class="login-left">
+      <div class="login-left-content">
+        <h1>🎬 AnimeStream</h1>
+        <p>Platform streaming anime terbaik dengan ribuan koleksi anime subtitle Indonesia. Tonton kapan saja, dimana saja!</p>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="login-right">
+      <div class="login-box">
+        <h2>Selamat Datang! 👋</h2>
+        <p class="subtitle">Masuk ke akun kamu untuk melanjutkan</p>
+
+        <% if (typeof success !== 'undefined' && success === 'registered') { %>
+          <div class="alert" style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;">
+            ✅ Registrasi berhasil! Silakan login dengan akun yang baru dibuat.
+          </div>
+        <% } %>
+
+        <% if (typeof success !== 'undefined' && success === 'password-reset') { %>
+          <div class="alert" style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;">
+            ✅ Password berhasil direset! Silakan login dengan password baru.
+          </div>
+        <% } %>
+
+        <% if (error) { %>
+          <div class="alert">⚠️ <%= error %></div>
+        <% } %>
+
+        <!-- Login Form -->
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <label for="username">Email atau Username</label>
+            <input type="text" id="username" name="username" required placeholder="Masukkan email atau username">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Masukkan password">
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox">
+              <input type="checkbox" name="remember">
+              <span>Ingat saya</span>
+            </label>
+            <a href="/forgot-password" class="link">Lupa password?</a>
+          </div>
+
+          <button type="submit" class="btn-submit">Masuk</button>
+        </form>
+
+        <div class="login-footer">
+          <p>Belum punya akun? <a href="/register" class="link">Daftar sekarang</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Music with Control -->
+  <audio id="bgMusic" loop>
+    <source src="/audio/login-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music Control Button -->
+  <button id="musicToggle" style="position: fixed; bottom: 20px; right: 90px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(138, 43, 226, 0.5);">
+    🔊
+  </button>
+
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    
+    bgMusic.volume = 0.5;
+    
+    // Check saved state
+    const musicEnabled = localStorage.getItem('loginMusicEnabled') !== 'false';
+    
+    if (musicEnabled) {
+      bgMusic.play().catch(() => {
+        document.body.addEventListener('click', () => bgMusic.play(), { once: true });
+      });
+      musicToggle.textContent = '🔊';
+    } else {
+      musicToggle.textContent = '🔇';
+    }
+    
+    // Toggle music
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
+        localStorage.setItem('loginMusicEnabled', 'true');
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+        localStorage.setItem('loginMusicEnabled', 'false');
+      }
+    });
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

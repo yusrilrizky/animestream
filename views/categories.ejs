@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8a2be2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.json">
+  <title>Kategori - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .category-section {
+      background: rgba(30, 30, 50, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .category-title {
+      color: #a855f7;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .category-count {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .category-card {
+      background: rgba(168, 85, 247, 0.1);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .category-card:hover {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    }
+
+    .category-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-name {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      text-transform: capitalize;
+    }
+
+    .category-anime-count {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-left">
+        <a href="/" class="logo">🎬 AnimeStream</a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Beranda</a>
+          <a href="/trending" class="nav-link">Trending</a>
+          <a href="/new" class="nav-link">Terbaru</a>
+          <a href="/categories" class="nav-link active">Kategori</a>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari anime...">
+        </div>
+
+        <% if (user) { %>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+          <div class="user-menu">
+            <div class="user-avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+            <span class="user-name"><%= user.username %></span>
+          </div>
+          <a href="/logout" class="btn-logout" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #ff4757; color: white; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Keluar</a>
+        <% } else { %>
+          <a href="/login" class="btn-login">Masuk</a>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div style="margin: 2rem 0;">
+      <h1 style="color: #fff; font-size: 2rem; margin-bottom: 0.5rem;">📂 Kategori Anime</h1>
+      <p style="color: #aaa; font-size: 1rem;">Jelajahi anime berdasarkan kategori favorit kamu</p>
+    </div>
+
+    <% 
+    const categoryIcons = {
+      'action': '⚔️',
+      'adventure': '🗺️',
+      'comedy': '😂',
+      'drama': '🎭',
+      'fantasy': '🔮',
+      'romance': '💕',
+      'sci-fi': '🚀',
+      'slice-of-life': '🌸'
+    };
+
+    const categoryNames = {
+      'action': 'Action',
+      'adventure': 'Adventure',
+      'comedy': 'Comedy',
+      'drama': 'Drama',
+      'fantasy': 'Fantasy',
+      'romance': 'Romance',
+      'sci-fi': 'Sci-Fi',
+      'slice-of-life': 'Slice of Life'
+    };
+    %>
+
+    <% if (Object.keys(categories).length === 0) { %>
+      <div class="empty-state">
+        <p>📂 Belum ada kategori anime.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Upload anime untuk melihat kategori!</p>
+        <a href="/upload" class="btn btn-primary">+ Upload Anime</a>
+      </div>
+    <% } else { %>
+      <!-- Category Overview Cards -->
+      <div class="category-grid" style="margin-bottom: 3rem;">
+        <% Object.keys(categories).forEach(cat => { %>
+          <div class="category-card" onclick="scrollToCategory('<%= cat %>')">
+            <div class="category-icon"><%= categoryIcons[cat] || '📺' %></div>
+            <div class="category-name"><%= categoryNames[cat] || cat %></div>
+            <div class="category-anime-count"><%= categories[cat].length %> Anime</div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Category Sections -->
+      <% Object.keys(categories).forEach(cat => { %>
+        <div class="category-section" id="category-<%= cat %>">
+          <div class="category-header">
+            <h2 class="category-title">
+              <span><%= categoryIcons[cat] || '📺' %></span>
+              <span><%= categoryNames[cat] || cat %></span>
+            </h2>
+            <span class="category-count"><%= categories[cat].length %> Anime</span>
+          </div>
+
+          <div class="anime-grid">
+            <% categories[cat].forEach(anime => { %>
+              <div class="anime-card" onclick="window.location.href='/watch/<%= anime.id %>'">
+                <div class="anime-thumbnail">
+                  <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+                  <span class="anime-badge"><%= categoryNames[cat] || cat %></span>
+                  <span class="anime-duration">24:00</span>
+                  <div class="play-overlay">▶</div>
+                </div>
+                <div class="anime-info">
+                  <h3><%= anime.title %></h3>
+                  <div class="anime-meta">
+                    <span class="episode">Ep <%= anime.episode %></span>
+                    <span>👁️ <%= anime.views || 0 %></span>
+                  </div>
+                  <% if (anime.description) { %>
+                    <p class="description"><%= anime.description %></p>
+                  <% } %>
+                  <% if (anime.genre) { %>
+                    <div class="genre-tags">
+                      <% anime.genre.split(',').forEach(g => { %>
+                        <span class="genre-tag"><%= g.trim() %></span>
+                      <% }); %>
+                    </div>
+                  <% } %>
+                  <% if (anime.uploader) { %>
+                    <div class="uploader">
+                      <span>👤</span>
+                      <span><%= anime.uploader %></span>
+                    </div>
+                  <% } %>
+                  <div class="actions">
+                    <a href="/watch/<%= anime.id %>" class="btn btn-primary" onclick="event.stopPropagation()">Tonton</a>
+                    <% if (user && (user.id === anime.uploaderId || user.role === 'admin')) { %>
+                      <button onclick="event.stopPropagation(); deleteAnime(<%= anime.id %>)" class="btn btn-danger">Hapus</button>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: rgba(30, 30, 50, 0.9); padding: 2rem; margin-top: 3rem; border-top: 2px solid rgba(168, 85, 247, 0.3); text-align: center; color: #999;">
+    <p>© 2026 AnimeStream. Platform streaming anime terbaik di Indonesia.</p>
+  </footer>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+
+    function scrollToCategory(cat) {
+      const element = document.getElementById('category-' + cat);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px; 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

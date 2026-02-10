@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <title>AnimeStream - Nonton Anime Gratis</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">🎬 AnimeStream</h1>
+      <div class="nav-right">
+        <% if (user) { %>
+          <a href="/dashboard" class="user-badge">👤 <%= user.username %></a>
+        <% } else { %>
+          <a href="/login" class="btn-upload">Masuk</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2 class="section-title">🔥 Trending Sekarang</h2>
+    
+    <% if (animeList.length === 0) { %>
+      <div class="empty-state">
+        <p>📺 Belum ada anime yang diupload.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Jadilah yang pertama upload anime favorit kamu!</p>
+        <a href="/upload" class="btn">+ Upload Anime Pertama</a>
+      </div>
+    <% } else { %>
+      <div class="anime-grid">
+        <% animeList.forEach(anime => { %>
+          <div class="anime-card">
+            <div class="anime-thumbnail">
+              <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="anime-info">
+              <h3><%= anime.title %></h3>
+              <p class="episode">Episode <%= anime.episode %></p>
+              <p class="description"><%= anime.description %></p>
+              <p class="date">📅 <%= anime.uploadDate %></p>
+              <div class="actions">
+                <a href="/watch/<%= anime.id %>" class="btn btn-primary">Tonton</a>
+                <button onclick="deleteAnime(<%= anime.id %>)" class="btn btn-danger">Hapus</button>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="/" class="active">
+      <span>🏠</span>
+      <span>Beranda</span>
+    </a>
+    <a href="/upload">
+      <span>⬆️</span>
+      <span>Upload</span>
+    </a>
+  </div>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+
+    // Prevent pull-to-refresh on mobile
+    document.body.addEventListener('touchmove', function(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+</body>
+</html>

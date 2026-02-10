@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title><%= anime.title %> - Episode <%= anime.episode %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">🎬 AnimeStream</h1>
+      <div class="nav-right">
+        <% if (user) { %>
+          <a href="/dashboard" class="user-badge">👤 <%= user.username %></a>
+          <a href="/logout" class="btn-logout" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #ff4757; color: white; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Keluar</a>
+        <% } else { %>
+          <a href="/login" class="btn-upload">Masuk</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="watch-container">
+      <h2><%= anime.title %> - Episode <%= anime.episode %></h2>
+      
+      <div class="video-player">
+        <video controls autoplay>
+          <source src="/uploads/<%= anime.videoPath %>" type="video/mp4">
+          Browser Anda tidak mendukung video player.
+        </video>
+      </div>
+
+      <div class="anime-details">
+        <h3>📖 Deskripsi</h3>
+        <p><%= anime.description %></p>
+        <p class="date">📅 Diupload: <%= anime.uploadDate %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="/" class="active">
+      <span>🏠</span>
+      <span>Beranda</span>
+    </a>
+    <a href="/upload">
+      <span>⬆️</span>
+      <span>Upload</span>
+    </a>
+  </div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

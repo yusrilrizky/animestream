@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8a2be2">
+  <title>Upload Saya - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">🎬 AnimeStream</h1>
+      <div class="nav-right">
+        <span class="user-badge">👤 <%= user.username %></span>
+        <a href="/logout" class="btn-logout">Keluar</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <a href="/dashboard" class="menu-item">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/dashboard/my-uploads" class="menu-item active">
+          <span>📹</span>
+          <span>Upload Saya</span>
+        </a>
+        <a href="/dashboard/favorites" class="menu-item">
+          <span>❤️</span>
+          <span>Favorit</span>
+        </a>
+        <a href="/dashboard/history" class="menu-item">
+          <span>🕐</span>
+          <span>Riwayat</span>
+        </a>
+        <% if (user.role === 'admin') { %>
+        <a href="/dashboard/admin" class="menu-item">
+          <span>⚙️</span>
+          <span>Admin Panel</span>
+        </a>
+        <% } %>
+        <a href="/settings" class="menu-item">
+          <span>🔧</span>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="dashboard-content">
+      <div class="dashboard-header">
+        <h2>📹 Upload Saya</h2>
+        <p>Kelola semua anime yang telah kamu upload</p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <a href="/upload" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 1.5rem; text-decoration: none;">
+          ⬆️ Upload Anime Baru
+        </a>
+      </div>
+
+      <% if (uploads.length === 0) { %>
+        <div class="empty-state">
+          <p style="font-size: 3rem; margin-bottom: 1rem;">📹</p>
+          <p style="font-size: 1.2rem; color: #aaa;">Belum ada anime yang diupload</p>
+          <p style="font-size: 0.9rem; color: #777; margin-bottom: 2rem;">Mulai upload anime favorit kamu sekarang!</p>
+          <a href="/upload" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 2rem; text-decoration: none;">
+            + Upload Anime Pertama
+          </a>
+        </div>
+      <% } else { %>
+        <div style="background: rgba(30, 30, 50, 0.8); backdrop-filter: blur(10px); border-radius: 12px; padding: 1.5rem; border: 2px solid rgba(168, 85, 247, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="color: #a855f7; margin: 0;">Total Upload: <%= uploads.length %> Anime</h3>
+            <span style="color: #aaa;">Total Views: <%= uploads.reduce((sum, a) => sum + (a.views || 0), 0) %></span>
+          </div>
+
+          <div class="anime-grid">
+            <% uploads.forEach(anime => { %>
+              <div class="anime-card" onclick="window.location.href='/watch/<%= anime.id %>'">
+                <div class="anime-thumbnail">
+                  <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+                  <span class="anime-badge">MY</span>
+                  <span class="anime-duration">24:00</span>
+                  <div class="play-overlay">▶</div>
+                </div>
+                <div class="anime-info">
+                  <h3><%= anime.title %></h3>
+                  <div class="anime-meta">
+                    <span class="episode">Ep <%= anime.episode %></span>
+                    <span>👁️ <%= anime.views || 0 %></span>
+                  </div>
+                  <% if (anime.description) { %>
+                    <p class="description"><%= anime.description %></p>
+                  <% } %>
+                  <% if (anime.genre) { %>
+                    <div class="genre-tags">
+                      <% anime.genre.split(',').forEach(g => { %>
+                        <span class="genre-tag"><%= g.trim() %></span>
+                      <% }); %>
+                    </div>
+                  <% } %>
+                  <% if (anime.uploadDate) { %>
+                    <div class="date">📅 <%= anime.uploadDate %></div>
+                  <% } %>
+                  <div class="actions" style="margin-top: 0.8rem;">
+                    <a href="/watch/<%= anime.id %>" class="btn btn-primary" onclick="event.stopPropagation()">Tonton</a>
+                    <button onclick="event.stopPropagation(); deleteAnime(<%= anime.id %>)" class="btn btn-danger">Hapus</button>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+    </main>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="/">
+      <span>🏠</span>
+      <span>Beranda</span>
+    </a>
+    <a href="/dashboard" class="active">
+      <span>📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/upload">
+      <span>⬆️</span>
+      <span>Upload</span>
+    </a>
+    <a href="/settings">
+      <span>👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            } else {
+              alert('Gagal menghapus anime');
+            }
+          })
+          .catch(err => {
+            alert('Terjadi kesalahan');
+          });
+      }
+    }
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

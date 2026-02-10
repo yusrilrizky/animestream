@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Daftar - AnimeStream</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <div class="auth-box">
+      <div class="auth-header">
+        <h1 class="logo">🎬 AnimeStream</h1>
+        <p>Buat akun baru dan mulai streaming!</p>
+      </div>
+
+      <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-error">
+          ⚠️ <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/register" method="POST" class="auth-form">
+        <div class="form-group">
+          <label for="username">👤 Username</label>
+          <input type="text" id="username" name="username" required placeholder="Pilih username unik">
+        </div>
+
+        <div class="form-group">
+          <label for="email">📧 Email</label>
+          <input type="email" id="email" name="email" required placeholder="email@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔒 Password</label>
+          <input type="password" id="password" name="password" required placeholder="Min. 6 karakter">
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">🔒 Konfirmasi Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Ulangi password">
+        </div>
+
+        <div class="form-options" style="margin-bottom: 1.5rem;">
+          <label class="checkbox">
+            <input type="checkbox" name="terms" required>
+            <span>Saya setuju dengan <a href="/terms" target="_blank" class="link">Syarat & Ketentuan</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">✨ Daftar Sekarang</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Sudah punya akun? <a href="/login" class="link">Masuk di sini</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+</body>
+</html>

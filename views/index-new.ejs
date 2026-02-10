@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8a2be2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.json">
+  <title>AnimeStream - Nonton Anime Gratis</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Navbar Bstation Style -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-left">
+        <a href="/" class="logo">🎬 AnimeStream</a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link active">Beranda</a>
+          <a href="/trending" class="nav-link">Trending</a>
+          <a href="/new" class="nav-link">Terbaru</a>
+          <a href="/categories" class="nav-link">Kategori</a>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari anime...">
+        </div>
+
+        <% if (user) { %>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+          <div class="user-menu">
+            <div class="user-avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+            <span class="user-name"><%= user.username %></span>
+          </div>
+          <a href="/logout" class="btn-logout" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #ff4757; color: white; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Keluar</a>
+        <% } else { %>
+          <a href="/login" class="btn-login">Masuk</a>
+          <a href="/upload" class="btn-upload-nav">
+            <span>⬆️</span>
+            <span>Upload</span>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner Section -->
+  <div class="container">
+    <div class="banner-section">
+      <div class="banner-content">
+        <h2>🎉 Selamat Datang di AnimeStream</h2>
+        <p>Platform streaming anime terbaik dengan ribuan koleksi anime subtitle Indonesia</p>
+      </div>
+    </div>
+
+    <!-- Trending Section -->
+    <div class="section-header">
+      <h2 class="section-title">🔥 Trending Sekarang</h2>
+      <a href="/trending" class="view-more">Lihat Semua →</a>
+    </div>
+
+    <% if (animeList.length === 0) { %>
+      <div class="empty-state">
+        <p>📺 Belum ada anime yang diupload.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Jadilah yang pertama upload anime favorit kamu!</p>
+        <a href="/upload" class="btn btn-primary">+ Upload Anime Pertama</a>
+      </div>
+    <% } else { %>
+      <div class="anime-grid">
+        <% animeList.forEach(anime => { %>
+          <div class="anime-card" onclick="window.location.href='/watch/<%= anime.id %>'">
+            <div class="anime-thumbnail">
+              <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+              <span class="anime-badge">HD</span>
+              <span class="anime-duration">24:00</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="anime-info">
+              <h3><%= anime.title %></h3>
+              <div class="anime-meta">
+                <span class="episode">Ep <%= anime.episode %></span>
+                <span>👁️ <%= anime.views || 0 %></span>
+              </div>
+              <% if (anime.uploader) { %>
+                <div class="uploader">
+                  <span>👤</span>
+                  <span><%= anime.uploader %></span>
+                </div>
+              <% } %>
+              <div class="actions">
+                <a href="/watch/<%= anime.id %>" class="btn btn-primary" onclick="event.stopPropagation()">Tonton</a>
+                <% if (user && (user.id === anime.uploaderId || user.role === 'admin')) { %>
+                  <button onclick="event.stopPropagation(); deleteAnime(<%= anime.id %>)" class="btn btn-danger">Hapus</button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <!-- New Release Section -->
+    <div class="section-header" style="margin-top: 3rem;">
+      <h2 class="section-title">🆕 Rilis Terbaru</h2>
+      <a href="/new" class="view-more">Lihat Semua →</a>
+    </div>
+
+    <% if (animeList.length === 0) { %>
+      <!-- Coming Soon State -->
+      <div class="coming-soon-container">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🎬</div>
+          <h3>Coming Soon</h3>
+          <p>Anime terbaru akan segera hadir!</p>
+          <p class="coming-soon-subtitle">Upload anime pertama untuk memulai</p>
+          <% if (user) { %>
+            <a href="/upload" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">+ Upload Anime</a>
+          <% } %>
+        </div>
+      </div>
+    <% } else { %>
+      <!-- Show Latest Anime with Full Details -->
+      <div class="anime-grid">
+        <% 
+        // Sort by newest first and take first 6
+        const latestAnime = animeList.slice().sort((a, b) => b.id - a.id).slice(0, 6);
+        latestAnime.forEach(anime => { 
+        %>
+          <div class="anime-card" onclick="window.location.href='/watch/<%= anime.id %>'">
+            <div class="anime-thumbnail">
+              <video src="/uploads/<%= anime.videoPath %>" preload="metadata"></video>
+              <span class="anime-badge">NEW</span>
+              <span class="anime-duration">24:00</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="anime-info">
+              <h3><%= anime.title %></h3>
+              <div class="anime-meta">
+                <span class="episode">Ep <%= anime.episode %></span>
+                <span>👁️ <%= anime.views || 0 %></span>
+              </div>
+              <% if (anime.description) { %>
+                <p class="description"><%= anime.description %></p>
+              <% } %>
+              <% if (anime.genre) { %>
+                <div class="genre-tags">
+                  <% anime.genre.split(',').forEach(g => { %>
+                    <span class="genre-tag"><%= g.trim() %></span>
+                  <% }); %>
+                </div>
+              <% } %>
+              <% if (anime.uploader) { %>
+                <div class="uploader">
+                  <span>👤</span>
+                  <span><%= anime.uploader %></span>
+                </div>
+              <% } %>
+              <% if (anime.uploadDate) { %>
+                <div class="date">📅 <%= anime.uploadDate %></div>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: rgba(30, 30, 50, 0.9); padding: 2rem; margin-top: 3rem; border-top: 2px solid rgba(168, 85, 247, 0.5); text-align: center; color: #aaa; backdrop-filter: blur(10px);">
+    <div style="margin-bottom: 1rem;">
+      <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #25D366, #128C7E); color: white; padding: 0.8rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);">
+        <span style="font-size: 1.5rem;">💬</span>
+        <span>Hubungi Admin</span>
+      </a>
+    </div>
+    <p style="margin-top: 1rem;">© 2026 AnimeStream. Platform streaming anime terbaik di Indonesia.</p>
+  </footer>
+
+  <!-- Background Music with Control -->
+  <audio id="bgMusic" loop>
+    <source src="/audio/dashboard-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music Control Button -->
+  <button id="musicToggle" style="position: fixed; bottom: 20px; right: 90px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(138, 43, 226, 0.5);">
+    🔊
+  </button>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    💬
+  </a>
+
+  <script>
+    function deleteAnime(id) {
+      if (confirm('Yakin ingin menghapus anime ini?')) {
+        fetch(`/delete/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      }
+    }
+
+    // Background Music
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    
+    bgMusic.volume = 0.5;
+    
+    // Check saved state
+    const musicEnabled = localStorage.getItem('dashboardMusicEnabled') !== 'false';
+    
+    if (musicEnabled) {
+      bgMusic.play().catch(() => {
+        document.body.addEventListener('click', () => bgMusic.play(), { once: true });
+      });
+      musicToggle.textContent = '🔊';
+    } else {
+      musicToggle.textContent = '🔇';
+    }
+    
+    // Toggle music
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
+        localStorage.setItem('dashboardMusicEnabled', 'true');
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+        localStorage.setItem('dashboardMusicEnabled', 'false');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: animestream
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: npm install --legacy-peer-deps && npm rebuild better-sqlite3
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
