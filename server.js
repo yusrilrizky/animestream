@@ -16,6 +16,11 @@ const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Railway health check
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Inisialisasi database
 initDatabase();
 
@@ -1096,6 +1101,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server berjalan di http://localhost:${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Ready to accept connections`);
+  console.log(`🚀 Railway deployment ready!`);
 });
 
 // Graceful shutdown

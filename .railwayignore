@@ -1,0 +1,9 @@
+node_modules/
+*.md
+.git/
+.env
+animestream.db
+uploads/*.mp4
+uploads/*.mkv
+uploads/*.avi
+*.log
