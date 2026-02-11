@@ -241,18 +241,75 @@
           </form>
         </div>
 
-        <!-- File Upload Section (Original) -->
+        <!-- File Upload Section -->
         <div id="fileSection" class="upload-section">
           <div class="info-box">
-            <h4>⚠️ Upload File (Terbatas)</h4>
-            <p>Upload langsung ke server. Video akan hilang saat server restart.</p>
-            <p><strong>Recommended:</strong> Pakai "Upload dengan Link" untuk storage unlimited!</p>
+            <h4>📁 Upload File Langsung</h4>
+            <p>Upload video dari galeri HP atau file PC kamu.</p>
+            <p><strong>⚠️ Catatan:</strong> Max 500MB. Video disimpan di server lokal.</p>
           </div>
-          
-          <p style="text-align: center; color: #999; padding: 2rem;">
-            Fitur upload file masih menggunakan ephemeral storage.<br>
-            <strong>Gunakan "Upload dengan Link" untuk hasil terbaik!</strong>
-          </p>
+
+          <form action="/upload" method="POST" enctype="multipart/form-data" id="fileUploadForm">
+            <!-- File Input -->
+            <div class="form-group">
+              <label>🎥 Pilih Video</label>
+              <div class="file-input-area" style="background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer;" onclick="document.getElementById('videoFile').click()">
+                <div class="icon" style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                <h3>Pilih Video dari Galeri/PC</h3>
+                <p style="color: #999; margin-top: 0.5rem;">Klik untuk pilih video (MP4, MKV, AVI, WebM)</p>
+                <p id="fileName" style="color: #a855f7; margin-top: 1rem; font-weight: 600;"></p>
+                <input type="file" id="videoFile" name="video" accept="video/*" style="display: none;" onchange="updateFileName(this)" required>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div id="uploadProgress" style="display: none; margin-bottom: 1.5rem;">
+              <div style="background: rgba(168, 85, 247, 0.1); border-radius: 8px; overflow: hidden; height: 30px;">
+                <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.9rem;"></div>
+              </div>
+              <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: #666;"></p>
+            </div>
+
+            <!-- Anime Info -->
+            <div class="form-group">
+              <label for="fileTitle">🎬 Judul Anime</label>
+              <input type="text" id="fileTitle" name="title" required placeholder="Contoh: Naruto Shippuden">
+            </div>
+
+            <div class="form-group">
+              <label for="fileEpisode">📺 Episode</label>
+              <input type="text" id="fileEpisode" name="episode" required placeholder="Contoh: Episode 1">
+            </div>
+
+            <div class="form-group">
+              <label for="fileCategory">📂 Kategori</label>
+              <select id="fileCategory" name="category">
+                <option value="action">Action</option>
+                <option value="adventure">Adventure</option>
+                <option value="comedy">Comedy</option>
+                <option value="drama">Drama</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="romance">Romance</option>
+                <option value="sci-fi">Sci-Fi</option>
+                <option value="slice-of-life">Slice of Life</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fileGenre">🏷️ Genre (pisahkan dengan koma)</label>
+              <input type="text" id="fileGenre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
+            </div>
+
+            <div class="form-group">
+              <label for="fileDescription">📝 Deskripsi</label>
+              <textarea id="fileDescription" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" id="uploadBtn" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+              🚀 Upload Video
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -278,7 +335,17 @@
       }
     }
     
-    // Form validation
+    // Update file name display
+    function updateFileName(input) {
+      const fileName = input.files[0]?.name;
+      const fileSize = (input.files[0]?.size / (1024 * 1024)).toFixed(2);
+      
+      if (fileName) {
+        document.getElementById('fileName').textContent = `📁 ${fileName} (${fileSize} MB)`;
+      }
+    }
+    
+    // Form validation for link upload
     document.getElementById('linkUploadForm').addEventListener('submit', function(e) {
       const link = document.getElementById('videoLink').value;
       
@@ -297,11 +364,171 @@
         return;
       }
     });
+    
+    // File upload with progress
+    document.getElementById('fileUploadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const fileInput = document.getElementById('videoFile');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        alert('❌ Pilih video terlebih dahulu!');
+        return;
+      }
+      
+      // Check file size (max 500MB)
+      const maxSize = 500 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert('❌ File terlalu besar! Maksimal 500MB');
+        return;
+      }
+      
+      // Show progress
+      document.getElementById('uploadProgress').style.display = 'block';
+      document.getElementById('uploadBtn').disabled = true;
+      document.getElementById('uploadBtn').textContent = '⏳ Uploading...';
+      
+      // Create FormData
+      const formData = new FormData(this);
+      
+      // Upload with XMLHttpRequest for progress tracking
+      const xhr = new XMLHttpRequest();
+      
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          document.getElementById('progressBar').style.width = percentComplete + '%';
+          document.getElementById('progressBar').textContent = Math.round(percentComplete) + '%';
+          document.getElementById('progressText').textContent = `Uploading... ${(e.loaded / (1024 * 1024)).toFixed(2)} MB / ${(e.total / (1024 * 1024)).toFixed(2)} MB`;
+        }
+      });
+      
+      xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          if (response.success) {
+            alert('✅ Upload berhasil!');
+            window.location.href = '/';
+          } else {
+            alert('❌ Upload gagal: ' + response.error);
+            document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+            document.getElementById('uploadProgress').style.display = 'none';
+          }
+        } else {
+          alert('❌ Upload gagal! Status: ' + xhr.status);
+          document.getElementById('uploadBtn').disabled = false;
+          document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+          document.getElementById('uploadProgress').style.display = 'none';
+        }
+      });
+      
+      xhr.addEventListener('error', function() {
+        alert('❌ Upload error! Cek koneksi internet.');
+        document.getElementById('uploadBtn').disabled = false;
+        document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+        document.getElementById('uploadProgress').style.display = 'none';
+      });
+      
+      xhr.open('POST', '/upload');
+      xhr.send(formData);
+    });
   </script>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <!-- WhatsApp Floating Button (Fixed for Mobile) -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" class="wa-float" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 26px; text-decoration: none; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.6); transition: all 0.3s; will-change: transform;">
     💬
   </a>
+
+  <style>
+    /* Mobile Performance Optimization */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    
+    body {
+      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;
+    }
+    
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* WhatsApp button always on top */
+    .wa-float {
+      pointer-events: auto !important;
+    }
+    
+    .wa-float:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.8) !important;
+    }
+    
+    .wa-float:active {
+      transform: scale(0.95) !important;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .wa-float {
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 22px !important;
+      }
+      
+      /* Optimize mobile performance */
+      .upload-container {
+        padding: 1rem;
+      }
+      
+      .upload-method-selector {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .method-btn {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+      
+      .supported-platforms {
+        gap: 0.5rem;
+      }
+      
+      .platform-badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+      
+      /* Reduce animations on mobile for better performance */
+      * {
+        transition-duration: 0.2s !important;
+      }
+      
+      /* Optimize images and media */
+      img, video {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+    
+    /* Prevent layout shift */
+    .container {
+      contain: layout style paint;
+    }
+    
+    /* GPU acceleration for smooth scroll */
+    .navbar, .wa-float {
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+  </style>
 </body>
 </html>

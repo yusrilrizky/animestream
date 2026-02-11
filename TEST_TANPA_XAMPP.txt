@@ -1,0 +1,41 @@
+═══════════════════════════════════════════════════════════════
+   ⚠️ TEST TANPA XAMPP (SEMENTARA)
+═══════════════════════════════════════════════════════════════
+
+Jika belum install XAMPP, server akan error karena MySQL tidak ada.
+
+SOLUSI SEMENTARA:
+Pakai SQLite dulu untuk test, nanti ganti ke MySQL.
+
+═══════════════════════════════════════════════════════════════
+   🔄 CARA PAKAI SQLITE SEMENTARA
+═══════════════════════════════════════════════════════════════
+
+1. Rename file database:
+   database.js → database-mysql.js.temp
+   database-sqlite.js.backup → database.js
+
+2. Jalankan server:
+   node server.js
+
+3. Test login:
+   http://localhost:3000/login
+   Username: admin
+   Password: admin123
+
+4. Setelah install XAMPP, ganti lagi:
+   database.js → database-sqlite.js.backup
+   database-mysql.js.temp → database.js
+
+═══════════════════════════════════════════════════════════════
+   ✅ CARA PAKAI MYSQL (RECOMMENDED)
+═══════════════════════════════════════════════════════════════
+
+1. Install XAMPP
+2. Start MySQL
+3. Import setup_mysql.sql
+4. Jalankan server
+
+Baca: START_HERE_MYSQL.txt untuk panduan lengkap.
+
+═══════════════════════════════════════════════════════════════

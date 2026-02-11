@@ -1397,3 +1397,153 @@ input, textarea, select {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+
+/* ========================================
+   MOBILE PERFORMANCE OPTIMIZATION
+======================================== */
+
+/* Smooth scrolling with GPU acceleration */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce animations on mobile */
+@media (max-width: 768px) {
+  * {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Disable hover effects on touch devices */
+  @media (hover: none) {
+    *:hover {
+      transform: none !important;
+    }
+  }
+}
+
+/* GPU acceleration for fixed elements */
+.navbar,
+.wa-float,
+[style*="position: fixed"],
+[style*="position: sticky"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Optimize images */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift */
+.container {
+  contain: layout style paint;
+}
+
+/* Touch optimization */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea, button, a {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* WhatsApp button always on top */
+.wa-float {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+@media (max-width: 768px) {
+  .wa-float {
+    bottom: 15px !important;
+    right: 15px !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 22px !important;
+  }
+}
+
+/* Optimize scroll performance */
+.anime-grid,
+.upload-container,
+.dashboard-container {
+  will-change: scroll-position;
+  contain: layout style paint;
+}
+
+/* Reduce repaints */
+.anime-card,
+.upload-card {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+/* Mobile navbar optimization */
+@media (max-width: 768px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateZ(0);
+  }
+  
+  body {
+    padding-top: 64px;
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .navbar .container {
+    padding: 0 1rem;
+  }
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   END MOBILE OPTIMIZATION
+======================================== */

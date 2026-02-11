@@ -1,0 +1,197 @@
+═══════════════════════════════════════════════════════════════
+   ✅ FITUR UPLOAD FILE DARI GALERI/PC
+═══════════════════════════════════════════════════════════════
+
+🎉 FITUR BARU SUDAH DITAMBAHKAN!
+
+Sekarang bisa upload video langsung dari:
+   ✅ Galeri HP (Android/iOS)
+   ✅ File PC (Windows/Mac/Linux)
+   ✅ Progress bar real-time
+   ✅ Validasi file size (max 500MB)
+
+═══════════════════════════════════════════════════════════════
+   📱 CARA UPLOAD DARI HP
+═══════════════════════════════════════════════════════════════
+
+1. BUKA WEBSITE
+   http://localhost:3000/upload
+   Atau: https://animestream-production-95b2.up.railway.app/upload
+
+2. PILIH "UPLOAD FILE"
+   Klik tab "📁 Upload File"
+
+3. PILIH VIDEO
+   Klik area "Pilih Video dari Galeri/PC"
+   Pilih video dari galeri HP
+
+4. ISI FORM
+   - Judul Anime
+   - Episode
+   - Kategori
+   - Genre
+   - Deskripsi
+
+5. UPLOAD
+   Klik "🚀 Upload Video"
+   Tunggu progress bar selesai
+
+6. SELESAI! ✅
+   Video akan muncul di beranda
+
+═══════════════════════════════════════════════════════════════
+   💻 CARA UPLOAD DARI PC
+═══════════════════════════════════════════════════════════════
+
+1. BUKA WEBSITE
+   http://localhost:3000/upload
+
+2. PILIH "UPLOAD FILE"
+   Klik tab "📁 Upload File"
+
+3. PILIH VIDEO
+   Klik area "Pilih Video dari Galeri/PC"
+   Browse file video dari PC
+
+4. ISI FORM
+   - Judul Anime
+   - Episode
+   - Kategori
+   - Genre
+   - Deskripsi
+
+5. UPLOAD
+   Klik "🚀 Upload Video"
+   Lihat progress bar
+
+6. SELESAI! ✅
+   Video tersimpan di server
+
+═══════════════════════════════════════════════════════════════
+   📊 SPESIFIKASI
+═══════════════════════════════════════════════════════════════
+
+Format Video Support:
+   ✅ MP4
+   ✅ MKV
+   ✅ AVI
+   ✅ WebM
+   ✅ MOV
+
+Max File Size:
+   ⚠️ 500 MB
+
+Storage:
+   📁 Server lokal (uploads folder)
+   ⚠️ Ephemeral di Railway (hilang saat restart)
+   ✅ Permanen di localhost
+
+Progress Bar:
+   ✅ Real-time upload progress
+   ✅ File size display
+   ✅ Percentage display
+
+═══════════════════════════════════════════════════════════════
+   🎯 2 METODE UPLOAD
+═══════════════════════════════════════════════════════════════
+
+METODE 1: UPLOAD DENGAN LINK (Recommended!)
+   ✅ Unlimited storage
+   ✅ Tidak ada batasan size
+   ✅ Video tidak hilang
+   ✅ Streaming langsung
+   ✅ Support 10+ platform
+   
+   Platform:
+   - Streamable (AD-FREE)
+   - Cloudinary (AD-FREE)
+   - Vimeo (AD-FREE)
+   - Streamtape, Doodstream, Mixdrop
+   - Vidoza, VOE, Filemoon
+
+METODE 2: UPLOAD FILE LANGSUNG
+   ✅ Upload dari galeri HP
+   ✅ Upload dari file PC
+   ✅ Progress bar real-time
+   ⚠️ Max 500MB
+   ⚠️ Ephemeral di Railway
+   ✅ Permanen di localhost
+
+═══════════════════════════════════════════════════════════════
+   ⚠️ CATATAN PENTING
+═══════════════════════════════════════════════════════════════
+
+LOCALHOST (PC):
+   ✅ Video tersimpan permanen di folder uploads
+   ✅ Bisa diakses kapan saja
+   ✅ Tidak hilang saat restart
+
+RAILWAY (Cloud):
+   ⚠️ Video hilang saat restart server
+   ⚠️ Ephemeral storage
+   💡 Pakai "Upload dengan Link" untuk Railway
+
+RECOMMENDED:
+   🎯 Pakai "Upload dengan Link" untuk hasil terbaik
+   🎯 Upload ke Streamable/Cloudinary/Vimeo
+   🎯 Gratis unlimited storage
+   🎯 Video tidak hilang
+
+═══════════════════════════════════════════════════════════════
+   🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Problem: File terlalu besar
+Solution:
+   - Compress video dengan HandBrake
+   - Atau pakai "Upload dengan Link"
+   - Upload ke Streamable/Cloudinary
+
+Problem: Upload gagal
+Solution:
+   - Cek koneksi internet
+   - Cek format video (MP4/MKV/AVI/WebM)
+   - Cek file size (max 500MB)
+   - Restart server
+
+Problem: Progress bar stuck
+Solution:
+   - Refresh browser
+   - Cek koneksi internet
+   - Coba lagi
+
+Problem: Video tidak muncul
+Solution:
+   - Refresh beranda
+   - Cek folder uploads
+   - Cek database (phpMyAdmin)
+
+═══════════════════════════════════════════════════════════════
+   📱 MOBILE OPTIMIZATION
+═══════════════════════════════════════════════════════════════
+
+✅ Smooth scroll
+✅ GPU acceleration
+✅ Reduced animations
+✅ Touch optimization
+✅ WhatsApp button always on top
+✅ No layout shift
+✅ Fast loading
+
+Performa mobile sudah dioptimasi:
+   - Scroll smooth tanpa lag
+   - WhatsApp button tidak tertutup
+   - Loading cepat
+   - Responsive design
+
+═══════════════════════════════════════════════════════════════
+
+🎉 SELESAI!
+
+Fitur upload file dari galeri/PC sudah aktif!
+Mobile performance sudah dioptimasi!
+WhatsApp button sudah fixed!
+
+Coba upload video sekarang! 🚀
+
+═══════════════════════════════════════════════════════════════

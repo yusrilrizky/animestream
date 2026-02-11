@@ -1,0 +1,105 @@
+═══════════════════════════════════════════════════════════════
+   MYSQL XAMPP - QUICK START GUIDE
+═══════════════════════════════════════════════════════════════
+
+✅ STATUS: MySQL sudah terintegrasi dengan server!
+
+📋 LANGKAH CEPAT:
+
+1. JALANKAN XAMPP
+   - Buka XAMPP Control Panel
+   - Start MySQL (klik Start)
+   - Tunggu sampai hijau
+
+2. IMPORT DATABASE
+   - Buka browser: http://localhost/phpmyadmin
+   - Klik tab "SQL"
+   - Copy isi file "setup_mysql.sql"
+   - Paste dan klik "Go"
+
+3. JALANKAN SERVER
+   - Double-click "start-server.bat"
+   - Atau ketik: node server.js
+
+4. LOGIN
+   - Buka: http://localhost:3000/login
+   - Username: admin
+   - Password: admin123
+
+═══════════════════════════════════════════════════════════════
+   FITUR UTAMA
+═══════════════════════════════════════════════════════════════
+
+✅ Data Permanen
+   - Semua data tersimpan di MySQL
+   - Tidak hilang saat restart server
+   - Bisa dilihat di phpMyAdmin
+
+✅ Upload Video
+   - Support 10+ platform hosting
+   - Streamable, Cloudinary, Vimeo (NO ADS!)
+   - Streamtape, Doodstream, Mixdrop (with ads)
+   - Google Drive (button download)
+
+✅ Lihat Data
+   - Buka: http://localhost/phpmyadmin
+   - Klik database "animestream"
+   - Klik tabel "anime" untuk lihat video
+   - Klik tabel "users" untuk lihat user
+
+✅ APK Flutter
+   - Video langsung bisa diputar di APK
+   - Tidak perlu buka browser
+   - WebView support embed video
+
+═══════════════════════════════════════════════════════════════
+   TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ Error: MySQL connection error
+   → Pastikan XAMPP MySQL running (hijau)
+   → Restart XAMPP MySQL
+   → Restart server
+
+❌ Error: Table doesn't exist
+   → Import ulang setup_mysql.sql di phpMyAdmin
+
+❌ Error: Cannot login
+   → Cek di phpMyAdmin → animestream → users
+   → Pastikan ada user "admin"
+   → Import ulang setup_mysql.sql
+
+═══════════════════════════════════════════════════════════════
+   FILE PENTING
+═══════════════════════════════════════════════════════════════
+
+📄 setup_mysql.sql          - SQL untuk import database
+📄 database.js              - MySQL adapter (sudah aktif)
+📄 database-sqlite.js.backup - SQLite backup (tidak dipakai)
+📄 SETUP_MYSQL_XAMPP.md     - Panduan lengkap
+
+═══════════════════════════════════════════════════════════════
+   PLATFORM VIDEO HOSTING
+═══════════════════════════════════════════════════════════════
+
+🎬 NO ADS (Recommended):
+   - Streamable.com
+   - Cloudinary.com
+   - Vimeo.com
+
+🎬 WITH ADS:
+   - Streamtape.com
+   - Doodstream.com
+   - Mixdrop.co
+   - Vidoza.net
+   - VOE.sx
+   - Filemoon.sx
+   - Upstream.to
+
+🎬 SPECIAL:
+   - Google Drive (button download, tidak bisa embed)
+   - Terabox (button download)
+
+═══════════════════════════════════════════════════════════════
+
+Panduan lengkap: Baca file SETUP_MYSQL_XAMPP.md

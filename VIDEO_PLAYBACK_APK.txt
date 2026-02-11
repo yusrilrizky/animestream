@@ -1,0 +1,250 @@
+═══════════════════════════════════════════════════════════════
+   📱 VIDEO PLAYBACK DI APK FLUTTER
+═══════════════════════════════════════════════════════════════
+
+✅ CARA KERJA APK
+
+APK AnimeStream menggunakan WebView untuk load website.
+WebView support embed video dari platform hosting.
+Video langsung bisa diputar di APK tanpa buka browser.
+
+═══════════════════════════════════════════════════════════════
+   ✅ PLATFORM YANG BISA DIPUTAR DI APK
+═══════════════════════════════════════════════════════════════
+
+TANPA IKLAN (Recommended):
+
+1. Streamable.com
+   ✅ Embed langsung di APK
+   ✅ Tidak ada iklan
+   ✅ Tidak ada popup
+   ✅ Kualitas HD
+   Format: https://streamable.com/xxxxx
+
+2. Cloudinary.com
+   ✅ Embed langsung di APK
+   ✅ Tidak ada iklan
+   ✅ Tidak ada popup
+   ✅ Kualitas HD
+   Format: https://res.cloudinary.com/xxxxx
+
+3. Vimeo.com
+   ✅ Embed langsung di APK
+   ✅ Tidak ada iklan
+   ✅ Tidak ada popup
+   ✅ Kualitas HD
+   Format: https://vimeo.com/xxxxx
+
+DENGAN IKLAN:
+
+4. Streamtape.com
+   ⚠️ Embed dengan iklan
+   ⚠️ Ada popup saat play
+   ✅ Bisa diputar di APK
+   Format: https://streamtape.com/v/xxxxx
+
+5. Doodstream.com
+   ⚠️ Embed dengan iklan
+   ⚠️ Ada popup saat play
+   ✅ Bisa diputar di APK
+   Format: https://doodstream.com/e/xxxxx
+
+6. Mixdrop.co
+   ⚠️ Embed dengan iklan
+   ⚠️ Ada popup saat play
+   ✅ Bisa diputar di APK
+   Format: https://mixdrop.co/e/xxxxx
+
+7. Vidoza.net
+   ⚠️ Embed dengan iklan
+   ✅ Bisa diputar di APK
+   Format: https://vidoza.net/embed-xxxxx.html
+
+8. VOE.sx
+   ⚠️ Embed dengan iklan
+   ✅ Bisa diputar di APK
+   Format: https://voe.sx/e/xxxxx
+
+9. Filemoon.sx
+   ⚠️ Embed dengan iklan
+   ✅ Bisa diputar di APK
+   Format: https://filemoon.sx/e/xxxxx
+
+10. Upstream.to
+    ⚠️ Embed dengan iklan
+    ✅ Bisa diputar di APK
+    Format: https://upstream.to/embed-xxxxx.html
+
+═══════════════════════════════════════════════════════════════
+   ❌ PLATFORM YANG TIDAK BISA DIPUTAR DI APK
+═══════════════════════════════════════════════════════════════
+
+1. Google Drive
+   ❌ Tidak bisa embed
+   📥 Hanya button download
+   ⚠️ Perlu buka browser eksternal
+   Format: https://drive.google.com/file/d/xxxxx
+
+2. Terabox
+   ❌ Tidak bisa embed
+   📥 Hanya button download
+   ⚠️ Perlu buka browser eksternal
+   Format: https://terabox.com/s/xxxxx
+
+═══════════════════════════════════════════════════════════════
+   🎯 REKOMENDASI
+═══════════════════════════════════════════════════════════════
+
+UNTUK APK (Best Experience):
+
+1. Streamable.com ⭐⭐⭐⭐⭐
+   - Embed langsung
+   - Tidak ada iklan
+   - Tidak ada popup
+   - Kualitas HD
+   - Gratis
+
+2. Cloudinary.com ⭐⭐⭐⭐⭐
+   - Embed langsung
+   - Tidak ada iklan
+   - Tidak ada popup
+   - Kualitas HD
+   - Gratis (limited)
+
+3. Vimeo.com ⭐⭐⭐⭐
+   - Embed langsung
+   - Tidak ada iklan
+   - Tidak ada popup
+   - Kualitas HD
+   - Gratis (limited)
+
+HINDARI UNTUK APK:
+
+❌ Google Drive
+   - Tidak bisa embed
+   - Harus download dulu
+   - User experience buruk di APK
+
+❌ Terabox
+   - Tidak bisa embed
+   - Harus download dulu
+   - User experience buruk di APK
+
+═══════════════════════════════════════════════════════════════
+   📋 CARA UPLOAD VIDEO
+═══════════════════════════════════════════════════════════════
+
+LANGKAH 1: UPLOAD VIDEO KE PLATFORM
+
+Pilih salah satu:
+   - Streamable.com (recommended)
+   - Cloudinary.com (recommended)
+   - Vimeo.com (recommended)
+
+LANGKAH 2: COPY LINK VIDEO
+
+Contoh:
+   - Streamable: https://streamable.com/abc123
+   - Cloudinary: https://res.cloudinary.com/demo/video/upload/v1234567890/sample.mp4
+   - Vimeo: https://vimeo.com/123456789
+
+LANGKAH 3: PASTE DI FORM UPLOAD
+
+1. Login ke website
+2. Klik "Upload" di menu
+3. Paste link video
+4. Isi form (judul, episode, deskripsi)
+5. Klik "Upload"
+
+LANGKAH 4: TEST DI APK
+
+1. Buka APK di HP
+2. Login
+3. Cari video yang baru diupload
+4. Klik video
+5. Video langsung bisa diputar!
+
+═══════════════════════════════════════════════════════════════
+   🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Problem: Video tidak bisa diputar di APK
+Solution:
+   1. Pastikan pakai platform yang support embed
+   2. Streamable, Cloudinary, Vimeo recommended
+   3. Jangan pakai Google Drive atau Terabox
+
+Problem: Video ada iklan/popup
+Solution:
+   1. Pakai platform tanpa iklan
+   2. Streamable, Cloudinary, Vimeo recommended
+   3. Hindari Streamtape, Doodstream, Mixdrop
+
+Problem: Video loading lama
+Solution:
+   1. Cek koneksi internet
+   2. Pakai platform dengan server cepat
+   3. Streamable biasanya paling cepat
+
+Problem: Video tidak muncul
+Solution:
+   1. Cek link video valid
+   2. Cek video masih ada di platform
+   3. Refresh halaman
+
+═══════════════════════════════════════════════════════════════
+   📊 PERBANDINGAN PLATFORM
+═══════════════════════════════════════════════════════════════
+
+| Platform    | Embed | Iklan | Popup | Kualitas | Speed |
+|-------------|-------|-------|-------|----------|-------|
+| Streamable  | ✅    | ❌    | ❌    | HD       | ⚡⚡⚡  |
+| Cloudinary  | ✅    | ❌    | ❌    | HD       | ⚡⚡⚡  |
+| Vimeo       | ✅    | ❌    | ❌    | HD       | ⚡⚡    |
+| Streamtape  | ✅    | ⚠️    | ⚠️    | HD       | ⚡⚡    |
+| Doodstream  | ✅    | ⚠️    | ⚠️    | HD       | ⚡     |
+| Mixdrop     | ✅    | ⚠️    | ⚠️    | HD       | ⚡     |
+| Google Drive| ❌    | ❌    | ❌    | HD       | ⚡⚡    |
+| Terabox     | ❌    | ⚠️    | ⚠️    | HD       | ⚡     |
+
+═══════════════════════════════════════════════════════════════
+   💡 TIPS
+═══════════════════════════════════════════════════════════════
+
+1. Pakai Streamable untuk best experience
+   - Gratis
+   - Tidak ada iklan
+   - Embed langsung
+   - Loading cepat
+
+2. Pakai Cloudinary untuk video banyak
+   - Gratis (limited)
+   - Tidak ada iklan
+   - Embed langsung
+   - CDN global
+
+3. Pakai Vimeo untuk kualitas terbaik
+   - Gratis (limited)
+   - Tidak ada iklan
+   - Embed langsung
+   - Kualitas HD+
+
+4. Hindari Google Drive & Terabox
+   - Tidak bisa embed
+   - User experience buruk
+   - Harus download dulu
+
+═══════════════════════════════════════════════════════════════
+
+🎉 KESIMPULAN:
+
+Untuk APK Flutter, pakai platform yang support embed:
+   ✅ Streamable (recommended)
+   ✅ Cloudinary (recommended)
+   ✅ Vimeo (recommended)
+
+Hindari platform yang tidak support embed:
+   ❌ Google Drive
+   ❌ Terabox
+
+Video akan langsung bisa diputar di APK tanpa buka browser!

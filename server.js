@@ -175,9 +175,13 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  const user = userDB.getById(id);
-  done(null, user);
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await userDB.getById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
 });
 
 // Google OAuth Strategy - Only if credentials provided
@@ -188,35 +192,39 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET &&
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback'
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Cek apakah user sudah ada
-      let user = userDB.getByGoogleId(profile.id);
-      
-      if (!user) {
-        // Cek apakah email sudah terdaftar
-        user = userDB.getByEmail(profile.emails[0].value);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Cek apakah user sudah ada
+        let user = await userDB.getByGoogleId(profile.id);
         
-        if (user) {
-          // Update user dengan Google ID
-          userDB.update(user.id, { googleId: profile.id });
-          user = userDB.getById(user.id);
-        } else {
-          // Buat user baru
-          const userId = userDB.create({
-            googleId: profile.id,
-            username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
-            email: profile.emails[0].value,
-            displayName: profile.displayName,
-            avatar: profile.photos[0].value,
-            password: null,
-            role: 'user',
-            joinDate: new Date().toLocaleDateString('id-ID')
-          });
-          user = userDB.getById(userId);
+        if (!user) {
+          // Cek apakah email sudah terdaftar
+          user = await userDB.getByEmail(profile.emails[0].value);
+          
+          if (user) {
+            // Update user dengan Google ID
+            await userDB.update(user.id, { googleId: profile.id });
+            user = await userDB.getById(user.id);
+          } else {
+            // Buat user baru
+            const userId = await userDB.create({
+              googleId: profile.id,
+              username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
+              email: profile.emails[0].value,
+              displayName: profile.displayName,
+              avatar: profile.photos[0].value,
+              password: null,
+              role: 'user',
+              joinDate: new Date().toLocaleDateString('id-ID')
+            });
+            user = await userDB.getById(userId);
+          }
         }
+        
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
       }
-      
-      return done(null, user);
     }
   ));
   console.log('✅ Google OAuth configured');
@@ -233,37 +241,41 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET &&
       callbackURL: process.env.FACEBOOK_CALLBACK_URL || 'http://localhost:3000/auth/facebook/callback',
       profileFields: ['id', 'displayName', 'emails', 'photos']
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Cek apakah user sudah ada
-      let user = userDB.getByFacebookId(profile.id);
-      
-      if (!user) {
-        // Cek apakah email sudah terdaftar
-        const email = profile.emails ? profile.emails[0].value : `${profile.id}@facebook.com`;
-        user = userDB.getByEmail(email);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Cek apakah user sudah ada
+        let user = await userDB.getByFacebookId(profile.id);
         
-        if (user) {
-          // Update user dengan Facebook ID
-        userDB.update(user.id, { facebookId: profile.id });
-        user = userDB.getById(user.id);
-      } else {
-        // Buat user baru
-        const userId = userDB.create({
-          facebookId: profile.id,
-          username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
-          email: email,
-          displayName: profile.displayName,
-          avatar: profile.photos ? profile.photos[0].value : null,
-          password: null,
-          role: 'user',
-          joinDate: new Date().toLocaleDateString('id-ID')
-        });
-        user = userDB.getById(userId);
+        if (!user) {
+          // Cek apakah email sudah terdaftar
+          const email = profile.emails ? profile.emails[0].value : `${profile.id}@facebook.com`;
+          user = await userDB.getByEmail(email);
+          
+          if (user) {
+            // Update user dengan Facebook ID
+            await userDB.update(user.id, { facebookId: profile.id });
+            user = await userDB.getById(user.id);
+          } else {
+            // Buat user baru
+            const userId = await userDB.create({
+              facebookId: profile.id,
+              username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
+              email: email,
+              displayName: profile.displayName,
+              avatar: profile.photos ? profile.photos[0].value : null,
+              password: null,
+              role: 'user',
+              joinDate: new Date().toLocaleDateString('id-ID')
+            });
+            user = await userDB.getById(userId);
+          }
+        }
+        
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
       }
     }
-    
-    return done(null, user);
-  }
   ));
   console.log('✅ Facebook OAuth configured');
 } else {
@@ -327,16 +339,16 @@ function isAdmin(req, res, next) {
 }
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', asyncHandler(async (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.user;
-    const animeList = animeDB.getAll();
+    const animeList = await animeDB.getAll();
     res.render('index-new', { animeList, user });
   } else {
     // Redirect ke login jika belum login
     res.redirect('/login');
   }
-});
+}));
 
 // Auth Routes
 app.get('/login', (req, res) => {
@@ -387,14 +399,14 @@ app.post('/login', asyncHandler(async (req, res, next) => {
 }));
 
 // Google OAuth Routes - Mock untuk development
-app.get('/auth/google', (req, res) => {
+app.get('/auth/google', asyncHandler(async (req, res) => {
   // Cek apakah credentials sudah disetup
   if (!process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID === 'your-google-client-id-here') {
     // Mock login - langsung buat user dan login
-    let user = userDB.getByEmail('google.user@test.com');
+    let user = await userDB.getByEmail('google.user@test.com');
     
     if (!user) {
-      const userId = userDB.create({
+      const userId = await userDB.create({
         googleId: 'mock-google-' + Date.now(),
         username: 'googleuser' + Math.floor(Math.random() * 1000),
         email: 'google.user@test.com',
@@ -404,7 +416,7 @@ app.get('/auth/google', (req, res) => {
         role: 'user',
         joinDate: new Date().toLocaleDateString('id-ID')
       });
-      user = userDB.getById(userId);
+      user = await userDB.getById(userId);
     }
     
     req.login(user, (err) => {
@@ -419,7 +431,7 @@ app.get('/auth/google', (req, res) => {
     // Real OAuth
     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res);
   }
-});
+}));
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
@@ -429,14 +441,14 @@ app.get('/auth/google/callback',
 );
 
 // Facebook OAuth Routes - Mock untuk development
-app.get('/auth/facebook', (req, res) => {
+app.get('/auth/facebook', asyncHandler(async (req, res) => {
   // Cek apakah credentials sudah disetup
   if (!process.env.FACEBOOK_APP_ID || process.env.FACEBOOK_APP_ID === 'your-facebook-app-id-here') {
     // Mock login - langsung buat user dan login
-    let user = userDB.getByEmail('facebook.user@test.com');
+    let user = await userDB.getByEmail('facebook.user@test.com');
     
     if (!user) {
-      const userId = userDB.create({
+      const userId = await userDB.create({
         facebookId: 'mock-facebook-' + Date.now(),
         username: 'fbuser' + Math.floor(Math.random() * 1000),
         email: 'facebook.user@test.com',
@@ -446,7 +458,7 @@ app.get('/auth/facebook', (req, res) => {
         role: 'user',
         joinDate: new Date().toLocaleDateString('id-ID')
       });
-      user = userDB.getById(userId);
+      user = await userDB.getById(userId);
     }
     
     req.login(user, (err) => {
@@ -461,7 +473,7 @@ app.get('/auth/facebook', (req, res) => {
     // Real OAuth
     passport.authenticate('facebook', { scope: ['email'] })(req, res);
   }
-});
+}));
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
