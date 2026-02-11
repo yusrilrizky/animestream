@@ -526,3 +526,84 @@
     padding: 2rem 1.5rem;
   }
 }
+
+
+/* Mobile Full Screen Fix */
+@media (max-width: 768px) {
+  .auth-page {
+    padding: 0.5rem;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  .auth-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .auth-box {
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .auth-header .logo {
+    font-size: 2rem;
+  }
+  
+  .auth-header p {
+    font-size: 0.9rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: 0.9rem;
+  }
+  
+  .btn-large {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .checkbox {
+    font-size: 0.85rem;
+  }
+  
+  .auth-footer {
+    font-size: 0.9rem;
+  }
+  
+  /* Fix viewport height on mobile */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 1.2rem;
+  }
+  
+  .auth-header .logo {
+    font-size: 1.8rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}

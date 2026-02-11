@@ -2,6 +2,16 @@
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 
+// Detect environment
+const isRailway = process.env.RAILWAY_ENVIRONMENT === 'production' || process.env.NODE_ENV === 'production';
+
+// If Railway, use SQLite fallback
+if (isRailway && (!process.env.DB_HOST || process.env.DB_HOST === 'localhost')) {
+  console.log('⚠️ Railway detected without MySQL config, using SQLite fallback');
+  module.exports = require('./database-sqlite.js.backup');
+  return;
+}
+
 // MySQL Connection Pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
