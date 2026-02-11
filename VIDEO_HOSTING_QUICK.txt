@@ -1,0 +1,125 @@
+🎬 7 PLATFORM VIDEO HOSTING - QUICK REFERENCE
+=============================================
+
+✨ SEMUA BISA EMBED LANGSUNG DI WEBSITE!
+
+📦 TIER 1 - PALING BAGUS:
+1. Streamtape - https://streamtape.com ⭐⭐⭐⭐⭐
+2. Doodstream - https://doodstream.com ⭐⭐⭐⭐⭐
+3. Mixdrop - https://mixdrop.co ⭐⭐⭐⭐
+
+📦 TIER 2 - ALTERNATIF:
+4. Vidoza - https://vidoza.net ⭐⭐⭐⭐
+5. VOE - https://voe.sx ⭐⭐⭐
+6. Filemoon - https://filemoon.sx ⭐⭐⭐
+7. Upstream - https://upstream.to ⭐⭐⭐
+
+📦 TIER 3 - STORAGE ONLY (TIDAK EMBED):
+8. Terabox - https://terabox.com (1TB, buka tab baru)
+9. Google Drive - https://drive.google.com (15GB, buka tab baru)
+
+🚀 CARA PAKAI (SUPER SIMPLE):
+
+1. DAFTAR AKUN
+   - Buka website platform (contoh: streamtape.com)
+   - Klik "Sign Up"
+   - Isi email & password
+   - Verifikasi email
+
+2. UPLOAD VIDEO
+   - Login ke akun
+   - Klik "Upload"
+   - Pilih file video
+   - Tunggu upload selesai
+
+3. COPY LINK
+   - Copy link video yang muncul
+   - Contoh: https://streamtape.com/v/xxxxxxx
+
+4. PASTE DI ANIMESTREAM
+   - Buka AnimeStream
+   - Klik "Upload" → "Upload dengan Link"
+   - Paste link
+   - Isi detail anime
+   - Upload!
+
+5. SELESAI! 🎉
+   - Video otomatis embed
+   - Bisa ditonton langsung di website!
+
+📋 FORMAT LINK YANG DIDUKUNG:
+
+Streamtape:
+✅ https://streamtape.com/v/xxxxxxx
+✅ https://streamtape.com/e/xxxxxxx
+
+Doodstream:
+✅ https://doodstream.com/d/xxxxxxx
+✅ https://doodstream.com/e/xxxxxxx
+
+Mixdrop:
+✅ https://mixdrop.co/f/xxxxxxx
+✅ https://mixdrop.co/e/xxxxxxx
+
+Vidoza:
+✅ https://vidoza.net/xxxxxxx.html
+✅ https://vidoza.net/embed-xxxxxxx.html
+
+VOE:
+✅ https://voe.sx/xxxxxxx
+✅ https://voe.sx/e/xxxxxxx
+
+Filemoon:
+✅ https://filemoon.sx/d/xxxxxxx
+✅ https://filemoon.sx/e/xxxxxxx
+
+Upstream:
+✅ https://upstream.to/xxxxxxx.html
+✅ https://upstream.to/embed-xxxxxxx.html
+
+💡 REKOMENDASI:
+
+TERBAIK:
+- Streamtape (paling stabil)
+- Doodstream (alternatif bagus)
+
+BACKUP:
+- Vidoza (HTML5 player)
+- Mixdrop (reliable)
+
+JANGAN PAKAI:
+- Google Drive (tidak bisa embed, harus buka tab baru)
+- Terabox (tidak bisa embed, harus buka tab baru)
+
+🎯 TIPS:
+
+1. Upload ke 2-3 platform sebagai backup
+2. Compress video sebelum upload (lebih cepat)
+3. Upload saat malam (internet lebih cepat)
+4. Pakai WiFi, bukan data seluler
+5. Jangan tutup browser saat upload
+
+⚠️ TROUBLESHOOTING:
+
+Video tidak muncul?
+→ Tunggu 5-10 menit, platform butuh waktu process video
+
+Video tidak bisa play?
+→ Refresh halaman (F5) atau clear cache
+
+Upload gagal?
+→ Compress video atau coba platform lain
+
+🎉 KEUNTUNGAN:
+
+✅ Gratis unlimited storage
+✅ Video embed langsung (seperti YouTube)
+✅ Tidak perlu buka tab baru
+✅ Tidak perlu setup API
+✅ Link permanen (tidak hilang)
+✅ Streaming cepat dengan CDN
+
+📞 BUTUH BANTUAN?
+WhatsApp: https://wa.me/6282297706541
+
+© 2026 AnimeStream
