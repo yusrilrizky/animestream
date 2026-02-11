@@ -12,7 +12,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
-const googleDrive = require('./google-drive');
+const cloudflareR2 = require('./cloudflare-r2');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -70,8 +70,8 @@ try {
   // Lanjut jalan meskipun database error
 }
 
-// Initialize Google Drive
-const googleDriveEnabled = googleDrive.initGoogleDrive();
+// Initialize Cloudflare R2
+const r2Enabled = cloudflareR2.initCloudflareR2();
 
 // Email transporter setup dengan error handling
 let emailTransporter;
@@ -1138,33 +1138,33 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
     }
     
     let videoPath = req.file.filename;
-    let googleDriveFileId = null;
-    let googleDriveLink = null;
+    let r2Key = null;
+    let r2Url = null;
     
-    // Upload to Google Drive if configured
-    if (googleDriveEnabled) {
+    // Upload to Cloudflare R2 if configured
+    if (r2Enabled) {
       try {
-        console.log('📤 Uploading to Google Drive...');
-        const driveResult = await googleDrive.uploadToGoogleDrive(
+        console.log('📤 Uploading to Cloudflare R2...');
+        const r2Result = await cloudflareR2.uploadToR2(
           req.file.path,
           req.file.filename,
           req.file.mimetype
         );
         
-        googleDriveFileId = driveResult.fileId;
-        googleDriveLink = driveResult.streamLink;
-        videoPath = driveResult.streamLink; // Use Google Drive link
+        r2Key = r2Result.key;
+        r2Url = r2Result.url;
+        videoPath = r2Result.url; // Use R2 URL
         
-        console.log('✅ Uploaded to Google Drive:', googleDriveFileId);
+        console.log('✅ Uploaded to Cloudflare R2:', r2Key);
         
-        // Delete local file after successful upload to Google Drive
+        // Delete local file after successful upload to R2
         if (fs.existsSync(req.file.path)) {
           fs.unlinkSync(req.file.path);
           console.log('🗑️ Deleted local file:', req.file.filename);
         }
-      } catch (driveError) {
-        console.error('⚠️ Google Drive upload failed, using local storage:', driveError.message);
-        // Continue with local storage if Google Drive fails
+      } catch (r2Error) {
+        console.error('⚠️ Cloudflare R2 upload failed, using local storage:', r2Error.message);
+        // Continue with local storage if R2 fails
       }
     }
     
@@ -1179,7 +1179,7 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
       uploader: user.displayName || user.username,
       views: 0,
       category: req.body.category || 'action',
-      googleDriveFileId: googleDriveFileId
+      googleDriveFileId: r2Key // Reuse this field for R2 key
     });
 
     console.log('✅ Upload successful, anime ID:', animeId);
@@ -1187,8 +1187,8 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
     res.json({ 
       success: true, 
       animeId: animeId,
-      message: 'Video berhasil diupload!' + (googleDriveFileId ? ' (Google Drive)' : ''),
-      storage: googleDriveFileId ? 'google-drive' : 'local'
+      message: 'Video berhasil diupload!' + (r2Key ? ' (Cloudflare R2)' : ''),
+      storage: r2Key ? 'cloudflare-r2' : 'local'
     });
   } catch (error) {
     console.error('❌ Upload error:', error);

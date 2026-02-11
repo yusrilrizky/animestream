@@ -12,6 +12,7 @@
     "reset-admin": "node reset-admin.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.987.0",
     "@sendgrid/mail": "^8.1.6",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.6.2",

@@ -1,0 +1,86 @@
+========================================
+✅ CLOUDFLARE R2 - PALING MURAH!
+========================================
+
+BIAYA:
+- 10GB gratis
+- $0.015/GB untuk tambahan
+- Bandwidth UNLIMITED gratis ⭐
+
+Contoh:
+- 50GB = $0.60/bulan (Rp 9,000)
+- 100GB = $1.35/bulan (Rp 20,000)
+- 500GB = $7.35/bulan (Rp 110,000)
+
+========================================
+SETUP (10 MENIT):
+========================================
+
+1. DAFTAR CLOUDFLARE
+   → https://dash.cloudflare.com/sign-up
+   → Daftar & verify email
+
+2. BUAT R2 BUCKET
+   → Dashboard → R2 → Create bucket
+   → Name: animestream-videos
+   → Create
+
+3. BUAT API TOKEN
+   → R2 → Manage API Tokens
+   → Create API Token
+   → Permissions: Object Read & Write
+   → Copy: Access Key ID & Secret Access Key
+
+4. GET ACCOUNT ID
+   → Dashboard → R2
+   → Copy Account ID di kanan atas
+
+5. SET DI RAILWAY
+   → Railway → Project → Variables
+   → Tambahkan:
+     R2_ACCOUNT_ID=xxxxx
+     R2_ACCESS_KEY_ID=xxxxx
+     R2_SECRET_ACCESS_KEY=xxxxx
+     R2_BUCKET_NAME=animestream-videos
+
+6. PUSH KE GITHUB
+   git add .
+   git commit -m "Add Cloudflare R2"
+   git push
+
+7. TEST UPLOAD!
+   Video akan otomatis upload ke R2
+
+========================================
+LIHAT PANDUAN LENGKAP:
+========================================
+
+File: CLOUDFLARE_R2_SETUP.md
+(Step-by-step detail dengan screenshot guide)
+
+========================================
+KENAPA R2?
+========================================
+
+✅ Paling murah ($0.015/GB)
+✅ Bandwidth unlimited gratis
+✅ Setup simple (10 menit)
+✅ Reliable (Cloudflare)
+✅ 10GB gratis
+
+Bandingkan:
+- Google One 100GB: Rp 26,900/bulan
+- R2 100GB: Rp 20,000/bulan
+- HEMAT Rp 6,900/bulan!
+
+========================================
+CODE SUDAH SIAP!
+========================================
+
+Tinggal:
+1. Setup R2 di Cloudflare
+2. Set environment variables
+3. Push ke GitHub
+4. Done!
+
+========================================
