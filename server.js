@@ -1081,8 +1081,66 @@ app.get('/categories', isAuthenticated, async (req, res) => {
 
 app.get('/upload', isAuthenticated, (req, res) => {
   const user = req.user;
-  res.render('upload-new', { user });
+  res.render('upload-link', { user });
 });
+
+// Upload with link (Terabox, Google Drive, etc)
+app.post('/upload-link', isAuthenticated, asyncHandler(async (req, res) => {
+  try {
+    const { videoLink, title, episode, description, genre, category } = req.body;
+    
+    // Validate required fields
+    if (!videoLink || !title || !episode || !description) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Semua field harus diisi!' 
+      });
+    }
+    
+    // Validate URL
+    try {
+      new URL(videoLink);
+    } catch (error) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Link video tidak valid!' 
+      });
+    }
+    
+    console.log('📤 Upload link received:', {
+      link: videoLink,
+      title: title
+    });
+
+    const user = req.user;
+    
+    const animeId = await animeDB.create({
+      title: title,
+      description: description,
+      episode: episode,
+      genre: genre || '',
+      videoPath: videoLink, // Store the link directly
+      uploadDate: new Date().toLocaleDateString('id-ID'),
+      uploaderId: user.id,
+      uploader: user.displayName || user.username,
+      views: 0,
+      category: category || 'action',
+      googleDriveFileId: 'external-link' // Mark as external link
+    });
+
+    console.log('✅ Upload link successful, anime ID:', animeId);
+    
+    res.redirect('/?success=upload');
+  } catch (error) {
+    console.error('❌ Upload link error:', error);
+    console.error('Stack:', error.stack);
+    
+    res.status(500).json({ 
+      success: false, 
+      error: 'Gagal menyimpan anime: ' + error.message 
+    });
+  }
+}));
 
 app.post('/upload', isAuthenticated, (req, res, next) => {
   upload.single('video')(req, res, (err) => {

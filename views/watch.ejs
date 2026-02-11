@@ -28,10 +28,23 @@
       <h2><%= anime.title %> - Episode <%= anime.episode %></h2>
       
       <div class="video-player">
-        <video controls autoplay>
-          <source src="/uploads/<%= anime.videoPath %>" type="video/mp4">
-          Browser Anda tidak mendukung video player.
-        </video>
+        <% if (anime.videoPath.startsWith('http://') || anime.videoPath.startsWith('https://')) { %>
+          <!-- External Link (Terabox, Google Drive, etc) -->
+          <div style="background: #1a1a2e; padding: 2rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #a855f7; margin-bottom: 1rem;">🎬 Tonton Video</h3>
+            <p style="color: #aaa; margin-bottom: 1.5rem;">Video di-host di platform eksternal</p>
+            <a href="<%= anime.videoPath %>" target="_blank" class="btn btn-primary" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem;">
+              ▶️ Buka Video
+            </a>
+            <p style="color: #666; margin-top: 1rem; font-size: 0.85rem;">Video akan dibuka di tab baru</p>
+          </div>
+        <% } else { %>
+          <!-- Local Video -->
+          <video controls autoplay>
+            <source src="/uploads/<%= anime.videoPath %>" type="video/mp4">
+            Browser Anda tidak mendukung video player.
+          </video>
+        <% } %>
       </div>
 
       <div class="anime-details">
