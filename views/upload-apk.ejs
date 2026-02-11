@@ -147,8 +147,8 @@
         <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: #666;"></p>
       </div>
 
-      <button type="submit" id="uploadBtn" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
-        🚀 Upload Video
+      <button type="submit" id="uploadBtn" disabled style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; opacity: 0.5;">
+        🚀 Upload Video (Pilih video dulu)
       </button>
     </form>
     </div>
@@ -196,19 +196,32 @@
     // Handle file selected from Flutter
     window.handleFileSelected = function(fileInfo) {
       selectedFile = fileInfo;
+      console.log('File selected:', fileInfo);
       
       // Show file info
       document.getElementById('fileInfo').style.display = 'block';
       document.getElementById('fileName').textContent = '📁 ' + fileInfo.name;
       const sizeMB = (fileInfo.size / (1024 * 1024)).toFixed(2);
       document.getElementById('fileSize').textContent = 'Size: ' + sizeMB + ' MB';
+      
+      // Enable upload button
+      const uploadBtn = document.getElementById('uploadBtn');
+      uploadBtn.disabled = false;
+      uploadBtn.style.opacity = '1';
+      uploadBtn.textContent = '🚀 Upload Video';
     };
 
     document.getElementById('uploadForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
       if (!selectedFile) {
-        alert('❌ Pilih video terlebih dahulu!');
+        alert('❌ Pilih video dari galeri terlebih dahulu!');
+        return;
+      }
+
+      // Validate form
+      if (!document.getElementById('title').value || !document.getElementById('episode').value || !document.getElementById('description').value) {
+        alert('❌ Isi semua field yang required!');
         return;
       }
 
@@ -249,6 +262,7 @@
             alert('❌ Upload gagal: ' + xhr.status);
             document.getElementById('uploadBtn').disabled = false;
             document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+            document.getElementById('uploadProgress').style.display = 'none';
           }
         });
 
@@ -256,6 +270,7 @@
           alert('❌ Upload error!');
           document.getElementById('uploadBtn').disabled = false;
           document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+          document.getElementById('uploadProgress').style.display = 'none';
         });
 
         xhr.open('POST', '/upload');
@@ -264,6 +279,7 @@
         alert('❌ Error: ' + error.message);
         document.getElementById('uploadBtn').disabled = false;
         document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+        document.getElementById('uploadProgress').style.display = 'none';
       }
     });
   </script>
