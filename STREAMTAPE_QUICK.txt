@@ -1,0 +1,71 @@
+🎬 STREAMTAPE/DOODSTREAM - QUICK GUIDE
+=====================================
+
+✨ KENAPA PAKAI INI?
+- Video streaming LANGSUNG di website (tidak perlu buka tab baru!)
+- Gratis unlimited storage
+- Link permanen (tidak hilang)
+- Tidak perlu setup API
+
+📦 PLATFORM YANG DIDUKUNG:
+1. Streamtape - https://streamtape.com
+2. Doodstream - https://doodstream.com
+3. Mixdrop - https://mixdrop.co
+
+🚀 CARA PAKAI (SUPER SIMPLE):
+
+1. DAFTAR AKUN (GRATIS)
+   - Buka streamtape.com atau doodstream.com
+   - Klik "Sign Up" / "Register"
+   - Isi email & password
+   - Verifikasi email
+
+2. UPLOAD VIDEO
+   - Login ke akun
+   - Klik "Upload"
+   - Pilih file video anime
+   - Tunggu upload selesai
+
+3. COPY LINK
+   - Setelah upload selesai
+   - Copy link video (contoh: https://streamtape.com/v/xxxxxxx)
+
+4. PASTE DI ANIMESTREAM
+   - Buka AnimeStream
+   - Klik "Upload" → "Upload dengan Link"
+   - Paste link di kolom "Link Video"
+   - Isi judul, episode, deskripsi
+   - Klik "Upload Sekarang"
+
+5. SELESAI! 🎉
+   - Video otomatis embed di website
+   - User bisa nonton langsung tanpa buka tab baru!
+
+📋 FORMAT LINK YANG DIDUKUNG:
+✅ https://streamtape.com/v/xxxxxxx
+✅ https://streamtape.com/e/xxxxxxx
+✅ https://doodstream.com/d/xxxxxxx
+✅ https://doodstream.com/e/xxxxxxx
+✅ https://mixdrop.co/f/xxxxxxx
+✅ https://mixdrop.co/e/xxxxxxx
+
+⚠️ GOOGLE DRIVE:
+- Bisa dipakai tapi video TIDAK bisa embed
+- User harus klik tombol "Tonton di Google Drive"
+- Video buka di tab baru
+
+💡 REKOMENDASI:
+Pakai Streamtape/Doodstream/Mixdrop untuk streaming langsung!
+Pakai Google Drive/Terabox hanya jika tidak ada pilihan lain.
+
+🎯 KEUNTUNGAN:
+✅ Video embed langsung (seperti YouTube)
+✅ Gratis unlimited
+✅ Tidak perlu API
+✅ Link permanen
+✅ Streaming cepat dengan CDN
+
+📞 BUTUH BANTUAN?
+WhatsApp: https://wa.me/6282297706541
+
+© 2026 AnimeStream
