@@ -7,86 +7,6 @@
   <title>Upload Anime - AnimeStream</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    .upload-method-selector {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      background: rgba(168, 85, 247, 0.1);
-      padding: 0.5rem;
-      border-radius: 12px;
-    }
-    
-    .method-btn {
-      flex: 1;
-      padding: 1rem;
-      border: 2px solid transparent;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #666;
-    }
-    
-    .method-btn.active {
-      background: linear-gradient(135deg, #a855f7, #c084fc);
-      color: white;
-      border-color: #a855f7;
-    }
-    
-    .method-btn:hover {
-      transform: translateY(-2px);
-    }
-    
-    .upload-section {
-      display: none;
-    }
-    
-    .upload-section.active {
-      display: block;
-    }
-    
-    .link-input-area {
-      background: rgba(168, 85, 247, 0.05);
-      border: 2px dashed #a855f7;
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .link-input-area .icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    
-    .link-input-area input {
-      width: 100%;
-      padding: 1rem;
-      border: 2px solid #a855f7;
-      border-radius: 8px;
-      font-size: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .supported-platforms {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-    
-    .platform-badge {
-      padding: 0.5rem 1rem;
-      background: rgba(168, 85, 247, 0.1);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      color: #a855f7;
-      font-weight: 600;
-    }
-    
     .info-box {
       background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(192, 132, 252, 0.1));
       border-left: 4px solid #a855f7;
@@ -148,205 +68,94 @@
     <div class="upload-container">
       <!-- Header -->
       <div class="upload-header">
-        <h2>📤 Upload Anime Baru</h2>
-        <p>Bagikan anime favorit kamu dengan komunitas</p>
-      </div>
-
-      <!-- Upload Method Selector -->
-      <div class="upload-method-selector">
-        <button type="button" class="method-btn active" onclick="switchMethod('link')">
-          🔗 Upload dengan Link
-        </button>
-        <button type="button" class="method-btn" onclick="switchMethod('file')">
-          📁 Upload File
-        </button>
+        <h2>📤 Upload Video Anime</h2>
+        <p>Upload video langsung dari galeri HP atau file PC kamu</p>
       </div>
 
       <div class="upload-body">
-        <!-- Link Upload Section -->
-        <div id="linkSection" class="upload-section active">
-          <div class="info-box">
-            <h4>📦 Upload dengan Link (Recommended!)</h4>
-            <p><strong>Gratis Unlimited!</strong> Upload video kamu ke platform streaming, lalu paste link di sini.</p>
-            <ul>
-              <li><strong>✅ Cloudinary/Streamable/Vimeo:</strong> AD-FREE! Tidak ada iklan sama sekali!</li>
-              <li><strong>🎬 Streamtape/Doodstream/Mixdrop:</strong> Streaming langsung (ada iklan sedikit)</li>
-              <li><strong>🎥 Vidoza/VOE/Filemoon:</strong> Alternatif streaming gratis</li>
-              <li><strong>📦 Terabox/Google Drive:</strong> Storage gratis (buka di tab baru)</li>
-            </ul>
-          </div>
-
-          <form action="/upload-link" method="POST" id="linkUploadForm">
-            <!-- Link Input -->
-            <div class="form-group">
-              <label>🔗 Link Video</label>
-              <div class="link-input-area">
-                <div class="icon">🎬</div>
-                <h3>Paste Link Video Kamu</h3>
-                <p style="color: #999; margin-top: 0.5rem;">Upload video ke platform streaming, lalu paste link share di sini</p>
-                <input type="url" id="videoLink" name="videoLink" required placeholder="https://cloudinary.com/... atau https://streamtape.com/v/xxxxx">
-                <div class="supported-platforms">
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(139, 195, 74, 0.3)); border: 2px solid #4caf50;">✅ Cloudinary (AD-FREE)</span>
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(139, 195, 74, 0.3)); border: 2px solid #4caf50;">✅ Streamable (AD-FREE)</span>
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(139, 195, 74, 0.3)); border: 2px solid #4caf50;">✅ Vimeo (AD-FREE)</span>
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(192, 132, 252, 0.3)); border: 2px solid #a855f7;">🎬 Streamtape</span>
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(192, 132, 252, 0.3)); border: 2px solid #a855f7;">🎬 Doodstream</span>
-                  <span class="platform-badge" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(192, 132, 252, 0.3)); border: 2px solid #a855f7;">🎬 Mixdrop</span>
-                  <span class="platform-badge">🎥 Vidoza</span>
-                  <span class="platform-badge">🎥 VOE</span>
-                  <span class="platform-badge">🎥 Filemoon</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Anime Info -->
-            <div class="form-group">
-              <label for="title">🎬 Judul Anime</label>
-              <input type="text" id="title" name="title" required placeholder="Contoh: Naruto Shippuden">
-            </div>
-
-            <div class="form-group">
-              <label for="episode">📺 Episode</label>
-              <input type="text" id="episode" name="episode" required placeholder="Contoh: Episode 1">
-            </div>
-
-            <div class="form-group">
-              <label for="category">📂 Kategori</label>
-              <select id="category" name="category">
-                <option value="action">Action</option>
-                <option value="adventure">Adventure</option>
-                <option value="comedy">Comedy</option>
-                <option value="drama">Drama</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-                <option value="slice-of-life">Slice of Life</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="genre">🏷️ Genre (pisahkan dengan koma)</label>
-              <input type="text" id="genre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
-            </div>
-
-            <div class="form-group">
-              <label for="description">📝 Deskripsi</label>
-              <textarea id="description" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
-              🚀 Upload Sekarang
-            </button>
-          </form>
+        <!-- Info Box -->
+        <div class="info-box">
+          <h4>📁 Upload File Video</h4>
+          <p>Pilih video dari galeri HP atau file PC kamu, lalu isi informasi anime.</p>
+          <p><strong>📌 Catatan:</strong></p>
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #666; font-size: 0.9rem;">
+            <li><strong>Max 500MB</strong> - File lebih besar akan gagal</li>
+            <li><strong>Progress bar</strong> akan tampil saat upload (MB naik 0-100%)</li>
+            <li><strong>Koneksi stabil</strong> diperlukan untuk file besar</li>
+            <li><strong>Format:</strong> MP4, MKV, AVI, WebM, MOV</li>
+          </ul>
         </div>
 
-        <!-- File Upload Section -->
-        <div id="fileSection" class="upload-section">
-          <div class="info-box">
-            <h4>📁 Upload File Langsung</h4>
-            <p>Upload video dari galeri HP atau file PC kamu.</p>
-            <p><strong>📌 Catatan:</strong></p>
-            <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #666; font-size: 0.9rem;">
-              <li><strong>Max 500MB</strong> - File lebih besar akan gagal</li>
-              <li><strong>Progress bar</strong> akan tampil saat upload</li>
-              <li><strong>Koneksi stabil</strong> diperlukan untuk file besar</li>
-            </ul>
-            <p style="margin-top: 1rem; padding: 0.8rem; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 4px solid #ffc107; color: #666;">
-              <strong>⚠️ Untuk Railway:</strong> Upload file butuh setup Cloudflare R2 untuk persistent storage. Tanpa R2, file akan hilang saat restart.<br>
-              <strong>💡 Alternatif:</strong> Pakai tab <strong>"Upload dengan Link"</strong> (instant, unlimited, gratis!)
-            </p>
+        <!-- File Upload Form -->
+        <form action="/upload" method="POST" enctype="multipart/form-data" id="fileUploadForm">
+          <!-- File Input -->
+          <div class="form-group">
+            <label>🎥 Pilih Video</label>
+            <div class="file-input-area" style="background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 12px; padding: 2rem; text-align: center; -webkit-tap-highlight-color: transparent;">
+              <div class="icon" style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+              <h3 style="margin-bottom: 0.5rem;">Pilih Video dari Galeri/PC</h3>
+              <p style="color: #999; margin-top: 0.5rem;">Klik tombol di bawah untuk pilih video</p>
+              <p id="fileName" style="color: #a855f7; margin-top: 1rem; font-weight: 600;"></p>
+              <input type="file" id="videoFile" name="video" accept="video/*" style="display: none;" onchange="updateFileName(this)" required>
+              <button type="button" onclick="document.getElementById('videoFile').click(); return false;" style="margin-top: 1rem; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                📂 Buka Galeri
+              </button>
+            </div>
           </div>
 
-          <form action="/upload" method="POST" enctype="multipart/form-data" id="fileUploadForm">
-            <!-- File Input -->
-            <div class="form-group">
-              <label>🎥 Pilih Video</label>
-              <div class="file-input-area" style="background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 12px; padding: 2rem; text-align: center; -webkit-tap-highlight-color: transparent;">
-                <div class="icon" style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
-                <h3 style="margin-bottom: 0.5rem;">Pilih Video dari Galeri/PC</h3>
-                <p style="color: #999; margin-top: 0.5rem;">Klik tombol di bawah untuk pilih video</p>
-                <p id="fileName" style="color: #a855f7; margin-top: 1rem; font-weight: 600;"></p>
-                <input type="file" id="videoFile" name="video" accept="video/*" style="display: none;" onchange="updateFileName(this)" required>
-                <button type="button" onclick="document.getElementById('videoFile').click(); return false;" style="margin-top: 1rem; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent;">
-                  📂 Buka Galeri
-                </button>
-              </div>
+          <!-- Progress Bar -->
+          <div id="uploadProgress" style="display: none; margin-bottom: 1.5rem;">
+            <div style="background: rgba(168, 85, 247, 0.1); border-radius: 8px; overflow: hidden; height: 30px;">
+              <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.9rem;"></div>
             </div>
+            <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: #666;"></p>
+          </div>
 
-            <!-- Progress Bar -->
-            <div id="uploadProgress" style="display: none; margin-bottom: 1.5rem;">
-              <div style="background: rgba(168, 85, 247, 0.1); border-radius: 8px; overflow: hidden; height: 30px;">
-                <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.9rem;"></div>
-              </div>
-              <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: #666;"></p>
-            </div>
+          <!-- Anime Info -->
+          <div class="form-group">
+            <label for="fileTitle">🎬 Judul Anime</label>
+            <input type="text" id="fileTitle" name="title" required placeholder="Contoh: Naruto Shippuden">
+          </div>
 
-            <!-- Anime Info -->
-            <div class="form-group">
-              <label for="fileTitle">🎬 Judul Anime</label>
-              <input type="text" id="fileTitle" name="title" required placeholder="Contoh: Naruto Shippuden">
-            </div>
+          <div class="form-group">
+            <label for="fileEpisode">📺 Episode</label>
+            <input type="text" id="fileEpisode" name="episode" required placeholder="Contoh: Episode 1">
+          </div>
 
-            <div class="form-group">
-              <label for="fileEpisode">📺 Episode</label>
-              <input type="text" id="fileEpisode" name="episode" required placeholder="Contoh: Episode 1">
-            </div>
+          <div class="form-group">
+            <label for="fileCategory">📂 Kategori</label>
+            <select id="fileCategory" name="category">
+              <option value="action">Action</option>
+              <option value="adventure">Adventure</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="romance">Romance</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="slice-of-life">Slice of Life</option>
+            </select>
+          </div>
 
-            <div class="form-group">
-              <label for="fileCategory">📂 Kategori</label>
-              <select id="fileCategory" name="category">
-                <option value="action">Action</option>
-                <option value="adventure">Adventure</option>
-                <option value="comedy">Comedy</option>
-                <option value="drama">Drama</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-                <option value="slice-of-life">Slice of Life</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="fileGenre">🏷️ Genre (pisahkan dengan koma)</label>
+            <input type="text" id="fileGenre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
+          </div>
 
-            <div class="form-group">
-              <label for="fileGenre">🏷️ Genre (pisahkan dengan koma)</label>
-              <input type="text" id="fileGenre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
-            </div>
+          <div class="form-group">
+            <label for="fileDescription">📝 Deskripsi</label>
+            <textarea id="fileDescription" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
+          </div>
 
-            <div class="form-group">
-              <label for="fileDescription">📝 Deskripsi</label>
-              <textarea id="fileDescription" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" id="uploadBtn" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
-              🚀 Upload Video
-            </button>
-          </form>
-        </div>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" id="uploadBtn" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+            🚀 Upload Video
+          </button>
+        </form>
       </div>
     </div>
   </div>
 
   <script>
-    function switchMethod(method) {
-      // Update buttons
-      document.querySelectorAll('.method-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-      
-      // Update sections
-      document.querySelectorAll('.upload-section').forEach(section => {
-        section.classList.remove('active');
-      });
-      
-      if (method === 'link') {
-        document.getElementById('linkSection').classList.add('active');
-      } else {
-        document.getElementById('fileSection').classList.add('active');
-      }
-    }
-    
     // Update file name display
     function updateFileName(input) {
       const fileName = input.files[0]?.name;
@@ -356,26 +165,6 @@
         document.getElementById('fileName').textContent = `📁 ${fileName} (${fileSize} MB)`;
       }
     }
-    
-    // Form validation for link upload
-    document.getElementById('linkUploadForm').addEventListener('submit', function(e) {
-      const link = document.getElementById('videoLink').value;
-      
-      if (!link) {
-        e.preventDefault();
-        alert('❌ Link video harus diisi!');
-        return;
-      }
-      
-      // Basic URL validation
-      try {
-        new URL(link);
-      } catch (error) {
-        e.preventDefault();
-        alert('❌ Link tidak valid! Pastikan link dimulai dengan http:// atau https://');
-        return;
-      }
-    });
     
     // File upload with progress
     document.getElementById('fileUploadForm').addEventListener('submit', function(e) {
