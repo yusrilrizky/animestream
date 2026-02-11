@@ -1,0 +1,93 @@
+========================================
+📤 CARA UPLOAD KE GITHUB
+========================================
+
+STEP 1: BUAT REPOSITORY DI GITHUB
+========================================
+
+1. Buka browser, login ke GitHub
+2. Buka: https://github.com/new
+3. Isi form:
+   - Repository name: animestream (atau nama lain)
+   - Description: Website streaming anime
+   - Pilih: Public atau Private (terserah)
+   - JANGAN centang "Initialize with README"
+4. Klik "Create repository"
+
+STEP 2: COPY URL REPOSITORY
+========================================
+
+Setelah repository dibuat, GitHub akan tampilkan URL seperti:
+https://github.com/USERNAME_KAMU/animestream.git
+
+Copy URL tersebut!
+
+STEP 3: SET REMOTE URL
+========================================
+
+Buka terminal/command prompt di folder project, lalu jalankan:
+
+git remote set-url origin https://github.com/USERNAME_KAMU/animestream.git
+
+(Ganti USERNAME_KAMU dengan username GitHub kamu)
+
+STEP 4: PUSH KE GITHUB
+========================================
+
+git push -u origin main
+
+Kalau diminta login:
+- Username: username GitHub kamu
+- Password: JANGAN pakai password biasa!
+  Pakai Personal Access Token (PAT)
+  
+  Cara buat PAT:
+  1. GitHub → Settings → Developer settings
+  2. Personal access tokens → Tokens (classic)
+  3. Generate new token (classic)
+  4. Centang: repo
+  5. Generate token
+  6. Copy token (simpan baik-baik!)
+  7. Pakai token ini sebagai password
+
+STEP 5: VERIFIKASI
+========================================
+
+Buka repository di GitHub, refresh halaman.
+Semua file seharusnya sudah terupload!
+
+========================================
+SETELAH UPLOAD KE GITHUB
+========================================
+
+Railway akan otomatis detect perubahan dan redeploy!
+
+Tunggu 1-2 menit, lalu cek website kamu.
+Error views seharusnya sudah hilang! 🎉
+
+========================================
+TROUBLESHOOTING
+========================================
+
+Error: "remote: Repository not found"
+→ Repository belum dibuat atau URL salah
+
+Error: "Authentication failed"
+→ Pakai Personal Access Token, bukan password
+
+Error: "Permission denied"
+→ Pastikan kamu owner/collaborator repository
+
+========================================
+ALTERNATIF: PAKAI GITHUB DESKTOP
+========================================
+
+Kalau ribet pakai command line, bisa pakai GitHub Desktop:
+1. Download: https://desktop.github.com/
+2. Install dan login
+3. File → Add Local Repository
+4. Pilih folder project ini
+5. Publish repository
+6. Done!
+
+========================================

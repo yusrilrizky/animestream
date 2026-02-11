@@ -150,11 +150,22 @@
     const fileUploadArea = document.getElementById('fileUploadArea');
     const form = document.getElementById('uploadForm');
     const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const submitBtn = document.querySelector('button[type="submit"]');
 
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
         const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        
+        // Check file size
+        if (file.size > 500 * 1024 * 1024) {
+          alert('❌ File terlalu besar! Maksimal 500MB');
+          fileInput.value = '';
+          return;
+        }
+        
         fileInfo.innerHTML = `✅ File dipilih: <strong>${file.name}</strong> (${sizeMB} MB)`;
         fileInfo.classList.add('show');
       }
@@ -180,11 +191,94 @@
       }
     });
 
-    form.addEventListener('submit', (e) => {
+    // Handle form submit with AJAX and progress
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Validate
+      if (!fileInput.files[0]) {
+        alert('❌ Pilih file video terlebih dahulu!');
+        return;
+      }
+      
+      // Show progress
       progressContainer.style.display = 'block';
-      document.querySelector('button[type="submit"]').disabled = true;
-      document.querySelector('button[type="submit"]').textContent = '⏳ Mengupload...';
+      submitBtn.disabled = true;
+      submitBtn.textContent = '⏳ Mengupload...';
+      
+      // Create FormData
+      const formData = new FormData(form);
+      
+      try {
+        // Upload with progress tracking
+        const xhr = new XMLHttpRequest();
+        
+        // Progress handler
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            progressBar.style.width = percentComplete + '%';
+            progressText.textContent = percentComplete + '%';
+            
+            if (percentComplete === 100) {
+              progressText.textContent = '⏳ Memproses...';
+            }
+          }
+        });
+        
+        // Load handler
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              if (response.success) {
+                progressText.textContent = '✅ Upload berhasil!';
+                alert('✅ Video berhasil diupload!');
+                window.location.href = '/';
+              } else {
+                throw new Error(response.error || 'Upload gagal');
+              }
+            } catch (error) {
+              console.error('Parse error:', error);
+              alert('❌ ' + error.message);
+              resetForm();
+            }
+          } else {
+            alert('❌ Upload gagal! Status: ' + xhr.status);
+            resetForm();
+          }
+        });
+        
+        // Error handler
+        xhr.addEventListener('error', () => {
+          alert('❌ Terjadi kesalahan saat upload. Coba lagi!');
+          resetForm();
+        });
+        
+        // Timeout handler (10 minutes)
+        xhr.addEventListener('timeout', () => {
+          alert('❌ Upload timeout! File terlalu besar atau koneksi lambat.');
+          resetForm();
+        });
+        
+        xhr.timeout = 600000; // 10 minutes
+        xhr.open('POST', '/upload', true);
+        xhr.send(formData);
+        
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert('❌ Terjadi kesalahan: ' + error.message);
+        resetForm();
+      }
     });
+    
+    function resetForm() {
+      progressContainer.style.display = 'none';
+      progressBar.style.width = '0%';
+      progressText.textContent = '0%';
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 Upload Sekarang';
+    }
   </script>
 
   <!-- WhatsApp Floating Button -->

@@ -1,0 +1,106 @@
+========================================
+✅ UPLOAD VIDEO SUDAH DIPERBAIKI!
+========================================
+
+MASALAH SEBELUMNYA:
+❌ Upload stuck di 0%
+❌ Video tidak tersimpan
+❌ Timeout saat upload
+
+PERBAIKAN YANG SUDAH DILAKUKAN:
+========================================
+
+1. ✅ Increase timeout jadi 10 menit
+2. ✅ Increase body size limit jadi 500MB
+3. ✅ Tambah progress bar yang real-time
+4. ✅ Upload pakai AJAX dengan error handling
+5. ✅ Support Railway Volume untuk persistent storage
+6. ✅ Better error messages
+
+========================================
+CARA DEPLOY:
+========================================
+
+1. PUSH KE GITHUB:
+   
+   git add .
+   git commit -m "Fix upload video stuck at 0%"
+   git push
+
+2. SETUP RAILWAY VOLUME (PENTING!):
+   
+   Buka Railway dashboard:
+   - Klik project kamu
+   - Klik tab "Variables" atau "Settings"
+   - Scroll ke "Volumes"
+   - Klik "+ New Volume"
+   - Mount Path: /data
+   - Klik "Add"
+   
+   Railway akan auto-redeploy!
+
+3. TUNGGU 1-2 MENIT
+   Deployment selesai
+
+========================================
+CARA TEST UPLOAD:
+========================================
+
+1. Buka website kamu
+2. Login
+3. Klik "Upload"
+4. Pilih video (max 500MB)
+5. Isi form
+6. Klik "Upload Sekarang"
+7. Lihat progress bar naik dari 0% → 100%
+8. Tunggu "Memproses..."
+9. Seharusnya muncul "Upload berhasil!"
+
+========================================
+TROUBLESHOOTING:
+========================================
+
+Upload Masih Stuck 0%:
+→ Pastikan Railway Volume sudah di-setup
+→ Mount path harus: /data
+→ Cek Railway logs untuk error
+
+Upload Timeout:
+→ File terlalu besar (> 500MB)
+→ Compress video dulu
+→ Atau increase timeout di server.js
+
+Video Hilang Setelah Redeploy:
+→ Railway Volume belum di-setup
+→ Lihat file: RAILWAY_VOLUME_SETUP.md
+
+========================================
+TIPS:
+========================================
+
+✅ Compress video sebelum upload
+✅ Format terbaik: MP4 H.264
+✅ Resolusi: 720p (balance size & quality)
+✅ Target size: 50-100MB per episode
+✅ Gunakan HandBrake untuk compress
+
+========================================
+FILE YANG DIUBAH:
+========================================
+
+✅ server.js - Timeout, body limit, upload handler
+✅ Dockerfile - Volume support
+✅ views/upload-new.ejs - AJAX upload + progress
+✅ RAILWAY_VOLUME_SETUP.md - Panduan lengkap
+
+========================================
+NEXT STEPS:
+========================================
+
+1. Push ke GitHub (command di atas)
+2. Setup Railway Volume (WAJIB!)
+3. Test upload video
+4. Done! 🎉
+
+Lihat RAILWAY_VOLUME_SETUP.md untuk detail lengkap!
+========================================

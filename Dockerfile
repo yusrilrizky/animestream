@@ -28,6 +28,10 @@ RUN mkdir -p /data && chmod 777 /data
 # Set environment
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV UPLOADS_DIR=/data/uploads
+
+# Create uploads directory in volume mount point
+RUN mkdir -p /data/uploads && chmod 777 /data/uploads
 
 # Expose port
 EXPOSE 3000

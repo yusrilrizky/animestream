@@ -134,8 +134,21 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+// Increase body size limit for large video uploads
+app.use(bodyParser.urlencoded({ 
+  extended: true,
+  limit: '500mb',
+  parameterLimit: 50000
+}));
+app.use(bodyParser.json({ limit: '500mb' }));
+
+// Increase timeout for upload requests
+app.use((req, res, next) => {
+  req.setTimeout(600000); // 10 minutes
+  res.setTimeout(600000); // 10 minutes
+  next();
+});
 
 // Session - Harus login setiap kali buka web (tidak persistent)
 app.use(session({
@@ -253,27 +266,33 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET &&
   console.log('⚠️ Facebook OAuth not configured (credentials missing)');
 }
 // Buat folder uploads jika belum ada
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
+const uploadsDir = process.env.UPLOADS_DIR || 'uploads';
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log(`✅ Created uploads directory: ${uploadsDir}`);
 }
 
 // Konfigurasi multer untuk upload video
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
+    cb(null, uniqueName);
   }
 });
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 500 * 1024 * 1024 }, // 500MB max
+  limits: { 
+    fileSize: 500 * 1024 * 1024, // 500MB max
+    files: 1
+  },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /mp4|mkv|avi|webm/;
+    const allowedTypes = /mp4|mkv|avi|webm|mov/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    const mimetype = file.mimetype.startsWith('video/');
     
     if (mimetype && extname) {
       return cb(null, true);
@@ -1058,28 +1077,61 @@ app.get('/upload', isAuthenticated, (req, res) => {
   res.render('upload-new', { user });
 });
 
-app.post('/upload', isAuthenticated, upload.single('video'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('Tidak ada file yang diupload!');
+app.post('/upload', isAuthenticated, upload.single('video'), asyncHandler(async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Tidak ada file yang diupload!' 
+      });
+    }
+
+    console.log('📤 Upload received:', {
+      filename: req.file.filename,
+      size: req.file.size,
+      mimetype: req.file.mimetype
+    });
+
+    const user = req.user;
+    
+    const animeId = await animeDB.create({
+      title: req.body.title,
+      description: req.body.description,
+      episode: req.body.episode,
+      genre: req.body.genre || '',
+      videoPath: req.file.filename,
+      uploadDate: new Date().toLocaleDateString('id-ID'),
+      uploaderId: user.id,
+      uploader: user.displayName || user.username,
+      views: 0,
+      category: req.body.category || 'action'
+    });
+
+    console.log('✅ Upload successful, anime ID:', animeId);
+    
+    res.json({ 
+      success: true, 
+      animeId: animeId,
+      message: 'Video berhasil diupload!' 
+    });
+  } catch (error) {
+    console.error('❌ Upload error:', error);
+    
+    // Delete uploaded file if database insert fails
+    if (req.file && req.file.path) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (e) {
+        console.error('Failed to delete file:', e);
+      }
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      error: 'Gagal menyimpan video: ' + error.message 
+    });
   }
-
-  const user = req.user;
-  
-  const animeId = await animeDB.create({
-    title: req.body.title,
-    description: req.body.description,
-    episode: req.body.episode,
-    genre: req.body.genre || '',
-    videoPath: req.file.filename,
-    uploadDate: new Date().toLocaleDateString('id-ID'),
-    uploaderId: user.id,
-    uploader: user.displayName || user.username,
-    views: 0,
-    category: req.body.category || 'action'
-  });
-
-  res.redirect('/');
-});
+}));
 
 app.get('/watch/:id', isAuthenticated, async (req, res) => {
   const anime = await animeDB.getById(req.params.id);
