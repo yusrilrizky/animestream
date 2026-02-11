@@ -234,7 +234,16 @@
               if (response.success) {
                 progressText.textContent = '✅ Upload berhasil!';
                 alert('✅ Video berhasil diupload!');
-                window.location.href = '/';
+                
+                // Reset form untuk upload berikutnya
+                form.reset();
+                fileInfo.innerHTML = '';
+                fileInfo.classList.remove('show');
+                
+                // Redirect ke homepage setelah 1 detik
+                setTimeout(() => {
+                  window.location.href = '/';
+                }, 1000);
               } else {
                 throw new Error(response.error || 'Upload gagal');
               }

@@ -290,13 +290,16 @@ const upload = multer({
     files: 1
   },
   fileFilter: (req, file, cb) => {
+    console.log('📁 File filter check:', file.originalname);
     const allowedTypes = /mp4|mkv|avi|webm|mov/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = file.mimetype.startsWith('video/');
     
     if (mimetype && extname) {
+      console.log('✅ File accepted:', file.originalname);
       return cb(null, true);
     }
+    console.log('❌ File rejected:', file.originalname);
     cb(new Error('Hanya file video yang diperbolehkan!'));
   }
 });
@@ -1077,7 +1080,30 @@ app.get('/upload', isAuthenticated, (req, res) => {
   res.render('upload-new', { user });
 });
 
-app.post('/upload', isAuthenticated, upload.single('video'), asyncHandler(async (req, res) => {
+app.post('/upload', isAuthenticated, (req, res, next) => {
+  upload.single('video')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      console.error('❌ Multer error:', err);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'File terlalu besar! Maksimal 500MB' 
+        });
+      }
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Error upload: ' + err.message 
+      });
+    } else if (err) {
+      console.error('❌ Upload error:', err);
+      return res.status(400).json({ 
+        success: false, 
+        error: err.message 
+      });
+    }
+    next();
+  });
+}, asyncHandler(async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ 
@@ -1089,10 +1115,23 @@ app.post('/upload', isAuthenticated, upload.single('video'), asyncHandler(async 
     console.log('📤 Upload received:', {
       filename: req.file.filename,
       size: req.file.size,
-      mimetype: req.file.mimetype
+      mimetype: req.file.mimetype,
+      path: req.file.path
     });
 
     const user = req.user;
+    
+    // Validate required fields
+    if (!req.body.title || !req.body.episode || !req.body.description) {
+      // Delete uploaded file
+      if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Judul, episode, dan deskripsi harus diisi!' 
+      });
+    }
     
     const animeId = await animeDB.create({
       title: req.body.title,
@@ -1116,11 +1155,13 @@ app.post('/upload', isAuthenticated, upload.single('video'), asyncHandler(async 
     });
   } catch (error) {
     console.error('❌ Upload error:', error);
+    console.error('Stack:', error.stack);
     
     // Delete uploaded file if database insert fails
-    if (req.file && req.file.path) {
+    if (req.file && req.file.path && fs.existsSync(req.file.path)) {
       try {
         fs.unlinkSync(req.file.path);
+        console.log('🗑️ Deleted failed upload file:', req.file.filename);
       } catch (e) {
         console.error('Failed to delete file:', e);
       }
@@ -1128,6 +1169,10 @@ app.post('/upload', isAuthenticated, upload.single('video'), asyncHandler(async 
     
     res.status(500).json({ 
       success: false, 
+      error: 'Gagal menyimpan video: ' + error.message 
+    });
+  }
+}));
       error: 'Gagal menyimpan video: ' + error.message 
     });
   }

@@ -1,0 +1,162 @@
+========================================
+✅ PERBAIKAN: UPLOAD MULTIPLE ANIME
+========================================
+
+MASALAH SEBELUMNYA:
+❌ Hanya bisa upload 1 anime
+❌ Upload kedua tidak bisa
+
+PENYEBAB:
+- Form tidak reset setelah upload
+- Error handling kurang lengkap
+- File tidak di-cleanup kalau gagal
+
+========================================
+PERBAIKAN YANG SUDAH DILAKUKAN:
+========================================
+
+1. ✅ Better error handling di multer
+   - Detect file size limit
+   - Detect file type error
+   - Better error messages
+
+2. ✅ Form auto-reset setelah upload berhasil
+   - Form di-clear
+   - File input di-reset
+   - Siap untuk upload berikutnya
+
+3. ✅ File cleanup kalau upload gagal
+   - File otomatis dihapus kalau database error
+   - Tidak ada file sampah di server
+
+4. ✅ Validation lebih ketat
+   - Cek judul, episode, deskripsi
+   - Cek file size
+   - Cek file type
+
+5. ✅ Better logging
+   - Log setiap step upload
+   - Mudah debug kalau ada error
+
+========================================
+CARA TEST:
+========================================
+
+1. Buka website kamu
+2. Login
+3. Klik "Upload"
+
+UPLOAD PERTAMA:
+4. Pilih video 1
+5. Isi form
+6. Upload
+7. Tunggu sampai "Upload berhasil!"
+8. Akan redirect ke homepage
+
+UPLOAD KEDUA:
+9. Klik "Upload" lagi
+10. Pilih video 2
+11. Isi form
+12. Upload
+13. Seharusnya berhasil lagi!
+
+UPLOAD KETIGA, KEEMPAT, dst:
+14. Ulangi langkah 9-13
+15. Seharusnya bisa terus upload!
+
+========================================
+TROUBLESHOOTING:
+========================================
+
+Q: Upload pertama berhasil, kedua gagal
+A: Cek Railway logs untuk error message
+   Kemungkinan:
+   - Disk space penuh (ephemeral storage terbatas)
+   - Memory limit tercapai
+   - File terlalu besar
+
+Q: Upload stuck di "Memproses..."
+A: Cek Railway logs
+   Kemungkinan database error
+   Atau file tidak bisa disimpan
+
+Q: Error "File terlalu besar"
+A: File > 500MB
+   Compress video dulu atau ubah limit di server.js
+
+Q: Error "Hanya file video yang diperbolehkan"
+A: File bukan video atau format tidak didukung
+   Format yang didukung: MP4, MKV, AVI, WebM, MOV
+
+Q: Upload berhasil tapi video tidak muncul
+A: Refresh homepage
+   Atau cek database apakah tersimpan
+
+========================================
+DISK SPACE EPHEMERAL:
+========================================
+
+Railway Free Plan punya disk space terbatas.
+Kalau upload banyak video besar, bisa kehabisan space.
+
+Solusi:
+1. Upload video kecil (< 100MB)
+2. Compress video sebelum upload
+3. Delete video lama yang tidak perlu
+4. Atau upgrade Hobby Plan / pakai external storage
+
+========================================
+CARA CEK DISK SPACE:
+========================================
+
+Lihat Railway logs, kalau ada error:
+"ENOSPC: no space left on device"
+
+Artinya disk penuh, harus:
+- Delete video lama
+- Atau redeploy (semua video hilang)
+- Atau upgrade/pakai external storage
+
+========================================
+TIPS HEMAT DISK SPACE:
+========================================
+
+1. Compress video sebelum upload
+   - Pakai HandBrake (free)
+   - Target: 720p, 50-100MB per episode
+   - Format: MP4 H.264
+
+2. Delete video yang jarang ditonton
+   - Buat fitur delete di admin panel
+
+3. Batasi jumlah video per user
+   - Edit server.js untuk add limit
+
+4. Pakai external storage
+   - Cloudflare R2 (10GB gratis)
+   - Supabase (1GB gratis)
+
+========================================
+NEXT STEPS:
+========================================
+
+1. Push ke GitHub:
+   git add .
+   git commit -m "Fix multiple upload issue"
+   git push
+
+2. Tunggu Railway auto-deploy (1-2 menit)
+
+3. Test upload multiple anime
+
+4. Seharusnya bisa upload berkali-kali!
+
+========================================
+FILE YANG DIUBAH:
+========================================
+
+✅ server.js - Better error handling & validation
+✅ views/upload-new.ejs - Form auto-reset
+✅ FIX_MULTIPLE_UPLOAD.txt - Panduan ini
+
+========================================
