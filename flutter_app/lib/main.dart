@@ -188,8 +188,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
   bool isLoading = true;
   String currentUrl = '';
   
-  // GANTI INI DENGAN URL RAILWAY KAMU!
-  final String websiteUrl = 'https://your-railway-app.railway.app';
+  // URL Railway AnimeStream
+  final String websiteUrl = 'https://animestream-production-95b2.up.railway.app';
 
   @override
   Widget build(BuildContext context) {
