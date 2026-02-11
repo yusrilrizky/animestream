@@ -105,7 +105,10 @@
 
           <!-- Progress Bar -->
           <div id="uploadProgress" style="display: none; margin-bottom: 1.5rem; background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border: 2px solid #a855f7;">
-            <h4 style="color: #a855f7; margin-bottom: 1rem; text-align: center; font-size: 1.1rem;">📤 Uploading Video...</h4>
+            <h4 id="progressTitle" style="color: #a855f7; margin-bottom: 1rem; text-align: center; font-size: 1.2rem;">
+              <span id="progressIcon" style="font-size: 1.5rem;">⏳</span>
+              <span id="progressTitleText">Memulai Upload...</span>
+            </h4>
             <div style="background: rgba(168, 85, 247, 0.2); border-radius: 8px; overflow: hidden; height: 40px; margin-bottom: 1rem;">
               <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);">0%</div>
             </div>
@@ -215,12 +218,16 @@
       const progressContainer = document.getElementById('uploadProgress');
       const progressBar = document.getElementById('progressBar');
       const progressText = document.getElementById('progressText');
+      const progressIcon = document.getElementById('progressIcon');
+      const progressTitleText = document.getElementById('progressTitleText');
       const uploadBtn = document.getElementById('uploadBtn');
       
       progressContainer.style.display = 'block';
       progressBar.style.width = '0%';
       progressBar.textContent = '0%';
       progressText.textContent = 'Memulai upload...';
+      progressIcon.textContent = '⏳';
+      progressTitleText.textContent = 'Memulai Upload...';
       uploadBtn.disabled = true;
       uploadBtn.textContent = '⏳ Uploading...';
       uploadBtn.style.opacity = '0.6';
@@ -248,13 +255,32 @@
           progressBar.textContent = percentComplete + '%';
           progressText.textContent = `Uploading... ${loadedMB} MB / ${totalMB} MB (${percentComplete}%)`;
           
-          // Change color based on progress
-          if (percentComplete >= 100) {
+          // Update icon based on progress
+          if (percentComplete === 0) {
+            progressIcon.textContent = '⏳';
+            progressTitleText.textContent = 'Memulai Upload...';
+          } else if (percentComplete < 25) {
+            progressIcon.textContent = '📤';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+          } else if (percentComplete < 50) {
+            progressIcon.textContent = '📊';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+          } else if (percentComplete < 75) {
+            progressIcon.textContent = '🚀';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+          } else if (percentComplete < 100) {
+            progressIcon.textContent = '⚡';
+            progressTitleText.textContent = 'Hampir Selesai... ' + percentComplete + '%';
+          } else {
+            progressIcon.textContent = '✅';
+            progressTitleText.textContent = 'Upload Selesai!';
             progressBar.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
             progressText.textContent = '✅ Upload selesai! Memproses...';
           }
         } else {
           console.log('📊 Upload progress: unknown (no content length)');
+          progressIcon.textContent = '📤';
+          progressTitleText.textContent = 'Uploading...';
           progressText.textContent = 'Uploading... (progress tidak tersedia)';
         }
       });
