@@ -1,0 +1,299 @@
+🔴 RAILWAY TIDAK BISA RUN - TROUBLESHOOTING
+============================================
+
+MASALAH:
+   "gk bisa di run di hostingnya"
+   Railway tidak bisa run setelah push perubahan terbaru
+
+🔍 KEMUNGKINAN PENYEBAB:
+========================
+
+1. DEPLOY MASIH PROSES
+   - Railway sedang build & deploy
+   - Tunggu 2-5 menit
+   - Check status di Railway dashboard
+
+2. BUILD ERROR
+   - Syntax error di code
+   - Missing dependencies
+   - Node version issue
+
+3. RUNTIME ERROR
+   - Database connection error
+   - Environment variable missing
+   - Port issue
+
+4. MEMORY/RESOURCE LIMIT
+   - Railway free tier limit
+   - Out of memory
+   - CPU limit exceeded
+
+✅ SOLUSI STEP-BY-STEP:
+=======================
+
+STEP 1: CHECK RAILWAY DASHBOARD
+--------------------------------
+   1. Buka: https://railway.app
+   2. Login
+   3. Pilih project AnimeStream
+   4. Tab "Deployments"
+   5. Lihat status deployment terakhir:
+      - 🟡 Building... (tunggu)
+      - 🟢 Success (deploy berhasil)
+      - 🔴 Failed (deploy gagal)
+
+STEP 2: CHECK LOGS
+-------------------
+   1. Railway dashboard
+   2. Tab "Logs"
+   3. Lihat error message
+   4. Screenshot error untuk debugging
+
+   Common errors:
+   - "npm ERR!" → dependency issue
+   - "SyntaxError" → code error
+   - "ECONNREFUSED" → database error
+   - "Port already in use" → port issue
+
+STEP 3: CHECK BUILD LOGS
+-------------------------
+   1. Tab "Deployments"
+   2. Klik deployment yang failed
+   3. Lihat "Build Logs"
+   4. Check error di build process
+
+STEP 4: VERIFY CODE
+--------------------
+   Di localhost:
+   1. npm start
+   2. Check apakah server jalan
+   3. Test upload di localhost
+   4. Jika work → masalah di Railway
+   5. Jika tidak → fix code dulu
+
+STEP 5: CHECK ENVIRONMENT VARIABLES
+------------------------------------
+   1. Railway dashboard
+   2. Tab "Variables"
+   3. Pastikan ada:
+      - PORT (auto-set by Railway)
+      - NODE_ENV=production (optional)
+   4. Jangan ada MySQL vars di Railway
+      (Railway pakai SQLite)
+
+STEP 6: REDEPLOY
+-----------------
+   1. Railway dashboard
+   2. Tab "Deployments"
+   3. Klik "..." pada deployment terakhir
+   4. Pilih "Redeploy"
+   5. Tunggu 2-5 menit
+
+STEP 7: CHECK DOMAIN
+---------------------
+   1. Tab "Settings"
+   2. Section "Domains"
+   3. Check Railway URL
+   4. Buka di browser
+   5. Test apakah work
+
+🔧 FIX BERDASARKAN ERROR:
+=========================
+
+ERROR 1: BUILD FAILED
+---------------------
+   Error: "npm ERR! code ELIFECYCLE"
+   
+   Solusi:
+   1. Check package.json
+   2. Pastikan dependencies lengkap
+   3. Push lagi ke GitHub
+   4. Railway auto-redeploy
+
+ERROR 2: SYNTAX ERROR
+---------------------
+   Error: "SyntaxError: Unexpected token"
+   
+   Solusi:
+   1. Check code di file yang error
+   2. Fix syntax error
+   3. Test di localhost (npm start)
+   4. Push ke GitHub
+
+ERROR 3: DATABASE ERROR
+-----------------------
+   Error: "ECONNREFUSED" atau "Database error"
+   
+   Solusi:
+   1. Railway pakai SQLite (bukan MySQL)
+   2. Check database.js auto-detect
+   3. Pastikan SQLite file bisa dibuat
+   4. Check permissions
+
+ERROR 4: PORT ERROR
+-------------------
+   Error: "Port already in use" atau "EADDRINUSE"
+   
+   Solusi:
+   1. Railway auto-set PORT env var
+   2. Check server.js: process.env.PORT
+   3. Jangan hardcode port 3000
+   4. Redeploy
+
+ERROR 5: MEMORY LIMIT
+---------------------
+   Error: "Out of memory" atau "ENOMEM"
+   
+   Solusi:
+   1. Railway free tier: 512MB-1GB
+   2. Optimize code
+   3. Remove unused dependencies
+   4. Upgrade Railway plan (optional)
+
+📊 CHECK STATUS:
+================
+
+CARA 1: RAILWAY DASHBOARD
+--------------------------
+   Status indicators:
+   - 🟢 Healthy → Running OK
+   - 🟡 Building → Sedang deploy
+   - 🔴 Crashed → Error, check logs
+   - ⚪ Sleeping → Inactive
+
+CARA 2: CURL/BROWSER
+--------------------
+   Test Railway URL:
+   1. Buka: https://your-app.railway.app
+   2. Jika load → Running OK
+   3. Jika error → Check logs
+   4. Jika timeout → Check status
+
+CARA 3: RAILWAY CLI
+-------------------
+   Install Railway CLI:
+   npm install -g @railway/cli
+   
+   Commands:
+   railway login
+   railway status
+   railway logs
+   railway up (redeploy)
+
+💡 QUICK FIX:
+=============
+
+JIKA DEPLOY GAGAL:
+
+1. CHECK LOGS
+   - Railway dashboard → Logs
+   - Lihat error message
+   - Screenshot untuk debugging
+
+2. VERIFY LOCALHOST
+   - npm start
+   - Test di http://localhost:3000
+   - Pastikan work di localhost
+
+3. REDEPLOY
+   - Railway dashboard → Redeploy
+   - Atau push dummy commit:
+     git commit --allow-empty -m "Redeploy"
+     git push origin main
+
+4. ROLLBACK (jika perlu)
+   - Railway dashboard → Deployments
+   - Pilih deployment sebelumnya yang work
+   - Klik "Redeploy"
+
+🎯 TESTING:
+===========
+
+TEST DI LOCALHOST DULU:
+
+1. npm start
+2. Buka http://localhost:3000
+3. Login (admin/admin123)
+4. Test upload file
+5. Check progress bar
+6. Jika work → code OK
+7. Jika tidak → fix code
+
+TEST DI RAILWAY:
+
+1. Tunggu deploy selesai (2-5 menit)
+2. Check status: 🟢 Healthy
+3. Buka Railway URL
+4. Login
+5. Test upload
+6. Check progress bar
+
+📋 CHECKLIST:
+=============
+
+✅ Code tidak ada syntax error?
+✅ npm start work di localhost?
+✅ Railway deployment status?
+✅ Railway logs ada error?
+✅ Environment variables OK?
+✅ Domain/URL accessible?
+✅ Database connection OK?
+
+⚠️ CATATAN PENTING:
+===================
+
+RAILWAY LIMITATIONS:
+
+1. EPHEMERAL STORAGE
+   - File upload akan hilang saat restart
+   - Pakai Cloudflare R2 untuk permanent storage
+   - Atau pakai localhost untuk testing
+
+2. FREE TIER LIMITS
+   - 512MB-1GB memory
+   - Limited CPU
+   - Limited bandwidth
+   - Auto-sleep after inactivity
+
+3. SQLITE DATABASE
+   - Railway pakai SQLite (bukan MySQL)
+   - Database file di /tmp (ephemeral)
+   - Data bisa hilang saat restart
+
+SOLUSI:
+
+1. UNTUK FILE UPLOAD
+   → Setup Cloudflare R2
+   → Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt
+
+2. UNTUK DATABASE PERMANENT
+   → Pakai Railway PostgreSQL addon
+   → Atau pakai external database
+
+3. UNTUK TESTING
+   → Pakai localhost
+   → MySQL + file storage permanent
+
+🔗 RESOURCES:
+=============
+
+Railway Docs:
+   https://docs.railway.app
+
+Railway Status:
+   https://status.railway.app
+
+Railway Community:
+   https://discord.gg/railway
+
+=====================================
+STATUS: 🔴 Railway not running
+SOLUSI: Check logs & redeploy
+TESTING: Test di localhost dulu
+=====================================
+
+💡 Kemungkinan besar: Deploy masih proses
+   Tunggu 2-5 menit, lalu check Railway dashboard!
+
+📖 Jika masih error, screenshot Railway logs
+   untuk debugging lebih lanjut

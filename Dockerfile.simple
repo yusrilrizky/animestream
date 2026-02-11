@@ -1,0 +1,33 @@
+# Simple Dockerfile without native build dependencies
+FROM node:18-alpine
+
+# Install only runtime dependencies
+RUN apk add --no-cache sqlite
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies (try multiple approaches)
+RUN npm install --omit=dev --verbose || \
+    npm install --legacy-peer-deps --omit=dev || \
+    npm install --force --omit=dev
+
+# Copy application files
+COPY . .
+
+# Create uploads directory
+RUN mkdir -p uploads
+
+# Set environment
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV UPLOADS_DIR=/app/uploads
+
+# Expose port
+EXPOSE 3000
+
+# Start application
+CMD ["node", "server.js"]

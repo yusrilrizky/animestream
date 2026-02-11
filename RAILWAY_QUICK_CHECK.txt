@@ -1,0 +1,129 @@
+⚡ RAILWAY QUICK CHECK - SUPER CEPAT!
+======================================
+
+MASALAH: Railway tidak bisa run
+SOLUSI: Check status & logs
+
+🎯 3 LANGKAH CEPAT:
+===================
+
+1️⃣ BUKA RAILWAY
+   https://railway.app
+   → Login
+   → Pilih project AnimeStream
+
+2️⃣ CHECK STATUS
+   Tab "Deployments"
+   Lihat deployment teratas:
+   
+   🟡 BUILDING → Tunggu 2-5 menit
+   🟢 SUCCESS → Buka Railway URL, test app
+   🔴 FAILED → Check logs, screenshot error
+   ⚪ CRASHED → Check runtime logs
+
+3️⃣ TEST APP
+   Tab "Settings" → Domains
+   Copy Railway URL
+   Buka di browser
+   Test upload
+
+📊 STATUS MEANING:
+==================
+
+🟡 BUILDING
+   = Sedang deploy
+   = TUNGGU 2-5 menit
+   = Refresh halaman
+   = Jangan panic!
+
+🟢 SUCCESS
+   = Deploy berhasil
+   = App running
+   = Buka Railway URL
+   = Test semua fitur
+
+🔴 FAILED
+   = Deploy gagal
+   = Ada error di code
+   = Check "Build Logs"
+   = Screenshot error
+   = Fix code, push lagi
+
+⚪ CRASHED
+   = App crash setelah deploy
+   = Check "Logs" (runtime)
+   = Screenshot error
+   = Fix error, redeploy
+
+🔧 QUICK FIX:
+=============
+
+FIX 1: TUNGGU
+   Jika status BUILDING (🟡)
+   → Tunggu 2-5 menit
+   → Refresh halaman
+   → Check lagi
+
+FIX 2: REDEPLOY
+   Jika status FAILED (🔴)
+   → Tab "Deployments"
+   → Klik "..." (3 dots)
+   → Pilih "Redeploy"
+   → Tunggu 2-5 menit
+
+FIX 3: CHECK LOGS
+   Jika status CRASHED (⚪)
+   → Tab "Logs"
+   → Screenshot error
+   → Debug error
+
+FIX 4: ROLLBACK
+   Jika versi baru error
+   → Tab "Deployments"
+   → Pilih deployment lama (SUCCESS)
+   → Klik "..." → "Redeploy"
+
+⚠️ PENTING:
+===========
+
+1. UPLOAD FILE DI RAILWAY
+   ❌ Tidak work permanent!
+   ✅ Pakai "Upload dengan Link"
+   ✅ Atau setup Cloudflare R2
+
+2. AUTO-DEPLOY
+   Push ke GitHub → Railway auto-deploy
+   Tunggu 2-5 menit selesai
+
+3. EPHEMERAL STORAGE
+   File upload hilang saat restart
+   Database bisa hilang saat restart
+
+📱 QUICK TEST:
+==============
+
+1. Buka Railway URL
+2. Login (admin/admin123)
+3. Test upload
+4. Check progress bar
+5. Jika work → ✅ DONE!
+
+🔗 RAILWAY DASHBOARD:
+=====================
+
+https://railway.app
+
+Tab penting:
+- Deployments → Status deploy
+- Logs → Runtime logs
+- Settings → Domains & env vars
+
+=====================================
+KEMUNGKINAN BESAR:
+Deploy masih proses (BUILDING)
+Tunggu 2-5 menit, refresh halaman!
+=====================================
+
+💡 Jika masih error setelah 5 menit:
+   Screenshot Railway logs & status
+   untuk debugging lebih lanjut!

@@ -1,0 +1,348 @@
+🔍 CARA CHECK STATUS RAILWAY - STEP BY STEP
+============================================
+
+MASALAH: "gk bisa di run di hostingnya"
+STATUS: Railway tidak bisa run setelah push perubahan
+
+📋 LANGKAH-LANGKAH CHECK RAILWAY:
+==================================
+
+STEP 1: BUKA RAILWAY DASHBOARD
+-------------------------------
+1. Buka browser
+2. Pergi ke: https://railway.app
+3. Login dengan akun kamu
+4. Pilih project "AnimeStream" (atau nama project kamu)
+
+STEP 2: CHECK DEPLOYMENT STATUS
+--------------------------------
+1. Klik tab "Deployments" di sidebar kiri
+2. Lihat deployment paling atas (yang terbaru)
+3. Check status:
+
+   🟢 SUCCESS = Deploy berhasil, app running
+   🟡 BUILDING = Sedang proses deploy (tunggu 2-5 menit)
+   🔴 FAILED = Deploy gagal (ada error)
+   ⚪ CRASHED = App crash setelah deploy
+
+STEP 3: JIKA STATUS "BUILDING" (🟡)
+------------------------------------
+✅ TUNGGU SAJA!
+   - Deploy sedang proses
+   - Biasanya 2-5 menit
+   - Refresh halaman setiap 30 detik
+   - Jangan panic, ini normal!
+
+STEP 4: JIKA STATUS "SUCCESS" (🟢)
+-----------------------------------
+✅ DEPLOY BERHASIL!
+
+Sekarang check apakah app bisa diakses:
+
+1. Klik tab "Settings" di sidebar
+2. Scroll ke section "Domains"
+3. Copy URL Railway (contoh: animestream-production.up.railway.app)
+4. Buka URL di browser baru
+5. Test:
+   - Apakah halaman load?
+   - Bisa login?
+   - Bisa upload?
+
+Jika semua work → ✅ SELESAI!
+
+STEP 5: JIKA STATUS "FAILED" (🔴)
+----------------------------------
+❌ DEPLOY GAGAL!
+
+Cara check error:
+
+1. Klik deployment yang failed
+2. Scroll ke bawah, lihat "Build Logs"
+3. Cari text merah (error message)
+4. Screenshot error tersebut
+
+Common errors & solusi:
+
+ERROR A: "npm ERR! code ELIFECYCLE"
+   → Dependency issue
+   → Solusi: Check package.json
+
+ERROR B: "SyntaxError: Unexpected token"
+   → Code error (typo, bracket salah, dll)
+   → Solusi: Fix code, push lagi
+
+ERROR C: "Module not found"
+   → Missing dependency
+   → Solusi: npm install <package>, push lagi
+
+ERROR D: "Build failed"
+   → General build error
+   → Solusi: Check build logs detail
+
+STEP 6: JIKA STATUS "CRASHED" (⚪)
+----------------------------------
+⚠️ APP CRASH SETELAH DEPLOY!
+
+Cara check error:
+
+1. Tab "Deployments" → klik deployment
+2. Klik tab "Logs" (bukan Build Logs)
+3. Lihat runtime logs
+4. Cari error message
+
+Common crashes:
+
+CRASH A: "ECONNREFUSED"
+   → Database connection error
+   → Railway pakai SQLite, bukan MySQL
+   → Solusi: Check database.js auto-detect
+
+CRASH B: "Port already in use"
+   → Port issue
+   → Solusi: Pastikan pakai process.env.PORT
+
+CRASH C: "Cannot find module"
+   → Missing file atau dependency
+   → Solusi: Check file exists, push lagi
+
+CRASH D: "Out of memory"
+   → Memory limit exceeded
+   → Solusi: Optimize code atau upgrade plan
+
+📊 CARA LIHAT LOGS DETAIL:
+==========================
+
+OPTION 1: RAILWAY DASHBOARD
+----------------------------
+1. Tab "Deployments"
+2. Klik deployment yang mau di-check
+3. Ada 2 jenis logs:
+   
+   A. BUILD LOGS
+      - Proses npm install
+      - Proses build
+      - Error saat build
+   
+   B. DEPLOY LOGS (Runtime Logs)
+      - Server starting
+      - Runtime errors
+      - Crash logs
+
+OPTION 2: REAL-TIME LOGS
+-------------------------
+1. Tab "Logs" di sidebar
+2. Lihat logs real-time
+3. Refresh untuk update
+4. Filter by:
+   - All logs
+   - Errors only
+   - Warnings
+
+🔧 CARA REDEPLOY:
+=================
+
+JIKA DEPLOY FAILED, COBA REDEPLOY:
+
+METHOD 1: REDEPLOY DARI DASHBOARD
+----------------------------------
+1. Tab "Deployments"
+2. Klik "..." (3 dots) di deployment terakhir
+3. Pilih "Redeploy"
+4. Tunggu 2-5 menit
+5. Check status lagi
+
+METHOD 2: PUSH DUMMY COMMIT
+----------------------------
+Di terminal/cmd:
+
+git commit --allow-empty -m "Redeploy Railway"
+git push origin main
+
+Railway akan auto-deploy lagi.
+
+METHOD 3: ROLLBACK KE VERSI SEBELUMNYA
+---------------------------------------
+Jika versi baru error, rollback ke versi lama:
+
+1. Tab "Deployments"
+2. Cari deployment yang SUCCESS (yang lama)
+3. Klik "..." (3 dots)
+4. Pilih "Redeploy"
+5. App akan kembali ke versi lama yang work
+
+✅ TESTING SETELAH DEPLOY:
+==========================
+
+CHECKLIST TESTING:
+
+1. ✅ URL Railway bisa dibuka?
+2. ✅ Halaman login tampil?
+3. ✅ Bisa login (admin/admin123)?
+4. ✅ Dashboard tampil?
+5. ✅ Halaman upload tampil?
+6. ✅ Bisa pilih video dari galeri?
+7. ✅ Progress bar tampil saat upload?
+8. ✅ MB naik 0-100%?
+9. ✅ Icon berubah (⏳→📤→🚀→✅)?
+10. ✅ Upload selesai & video muncul?
+
+Jika semua ✅ → PERFECT! 🎉
+
+⚠️ CATATAN PENTING RAILWAY:
+============================
+
+1. EPHEMERAL STORAGE
+   ⚠️ File upload akan HILANG saat restart!
+   
+   Kenapa?
+   - Railway pakai ephemeral filesystem
+   - File disimpan di /tmp
+   - Saat restart, /tmp dibersihkan
+   
+   Solusi:
+   → Setup Cloudflare R2 (permanent storage)
+   → Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt
+   → Atau pakai "Upload dengan Link" (recommended!)
+
+2. AUTO-DEPLOY
+   ✅ Railway auto-deploy dari GitHub
+   
+   Cara kerja:
+   - Push ke GitHub → Railway detect
+   - Railway pull code baru
+   - Railway build & deploy otomatis
+   - Tunggu 2-5 menit selesai
+
+3. FREE TIER LIMITS
+   Railway free tier:
+   - 512MB-1GB memory
+   - Limited CPU
+   - Limited bandwidth
+   - Auto-sleep after inactivity
+   
+   Jika kena limit:
+   → Optimize code
+   → Atau upgrade plan
+
+4. SQLITE DATABASE
+   Railway pakai SQLite (bukan MySQL)
+   
+   Database file:
+   - Disimpan di /tmp (ephemeral)
+   - Data bisa hilang saat restart
+   
+   Untuk permanent database:
+   → Pakai Railway PostgreSQL addon
+   → Atau pakai external database
+
+🎯 QUICK TROUBLESHOOTING:
+=========================
+
+PROBLEM 1: "Deploy masih building lama"
+SOLUSI: Tunggu 5-10 menit, Railway kadang lambat
+
+PROBLEM 2: "Deploy failed terus"
+SOLUSI: 
+   1. Check logs untuk error
+   2. Test di localhost (npm start)
+   3. Jika localhost work → masalah di Railway
+   4. Screenshot logs, debug error
+
+PROBLEM 3: "Deploy success tapi URL tidak bisa dibuka"
+SOLUSI:
+   1. Check tab "Logs" untuk runtime error
+   2. Check environment variables
+   3. Redeploy
+
+PROBLEM 4: "Upload tidak work di Railway"
+SOLUSI:
+   ⚠️ NORMAL! Railway pakai ephemeral storage
+   → Pakai "Upload dengan Link" (Terabox, Streamable, dll)
+   → Atau setup Cloudflare R2
+
+PROBLEM 5: "Data hilang setelah restart"
+SOLUSI:
+   ⚠️ NORMAL! Railway ephemeral storage
+   → Setup permanent database (PostgreSQL)
+   → Setup permanent storage (R2)
+
+📱 CARA CHECK DI HP:
+====================
+
+1. Buka browser di HP
+2. Pergi ke: https://railway.app
+3. Login
+4. Pilih project
+5. Tab "Deployments"
+6. Check status (sama seperti di PC)
+
+Atau:
+
+1. Langsung buka Railway URL
+2. Test apakah app work
+3. Jika tidak work → check Railway dashboard
+
+🔗 RESOURCES:
+=============
+
+Railway Dashboard:
+   https://railway.app
+
+Railway Docs:
+   https://docs.railway.app
+
+Railway Status:
+   https://status.railway.app
+
+Railway Community:
+   https://discord.gg/railway
+
+=====================================
+KESIMPULAN:
+=====================================
+
+1. CHECK RAILWAY DASHBOARD
+   → Tab "Deployments"
+   → Lihat status deployment
+
+2. JIKA BUILDING (🟡)
+   → Tunggu 2-5 menit
+   → Refresh halaman
+
+3. JIKA SUCCESS (🟢)
+   → Buka Railway URL
+   → Test app
+
+4. JIKA FAILED (🔴)
+   → Check logs
+   → Screenshot error
+   → Fix code, push lagi
+
+5. JIKA CRASHED (⚪)
+   → Check runtime logs
+   → Fix error
+   → Redeploy
+
+💡 TIPS:
+========
+
+✅ Selalu test di localhost dulu (npm start)
+✅ Check Railway logs untuk error detail
+✅ Pakai "Upload dengan Link" untuk Railway
+✅ Setup Cloudflare R2 untuk file upload permanent
+✅ Tunggu 2-5 menit setelah push ke GitHub
+
+=====================================
+NEXT STEPS:
+=====================================
+
+1. Buka Railway dashboard
+2. Check status deployment
+3. Screenshot status & logs
+4. Jika ada error, screenshot error message
+5. Test Railway URL di browser
+
+Setelah itu, kita bisa debug lebih lanjut
+berdasarkan error yang muncul!
+
+=====================================

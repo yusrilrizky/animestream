@@ -1,8 +1,15 @@
 # Use Node.js 18 Alpine (lightweight)
 FROM node:18-alpine
 
-# Install build dependencies for better-sqlite3
-RUN apk add --no-cache python3 make g++ sqlite
+# Install build dependencies for better-sqlite3 and native modules
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    sqlite \
+    sqlite-dev \
+    build-base \
+    linux-headers
 
 # Set working directory
 WORKDIR /app
@@ -10,8 +17,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies with verbose logging
-RUN npm install --production --verbose || npm install --legacy-peer-deps --production
+# Install dependencies with better error handling
+RUN npm ci --production --verbose 2>&1 || \
+    npm install --production --legacy-peer-deps --verbose 2>&1 || \
+    (npm cache clean --force && npm install --production --verbose 2>&1)
 
 # Copy application files
 COPY . .

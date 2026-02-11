@@ -117,6 +117,20 @@ RAILWAY:
    
    Buka: https://your-app.railway.app/upload
 
+⚠️ RAILWAY STATUS CHECK:
+   Jika Railway tidak bisa run setelah push:
+   
+   1. Buka: https://railway.app
+   2. Tab "Deployments"
+   3. Check status:
+      🟡 BUILDING → Tunggu 2-5 menit
+      🟢 SUCCESS → Buka Railway URL, test
+      🔴 FAILED → Check logs, screenshot error
+      ⚪ CRASHED → Check runtime logs
+   
+   📖 Baca: RAILWAY_QUICK_CHECK.txt
+   📖 Baca: RAILWAY_CHECK_STATUS.txt (detail)
+
 
 🎯 REKOMENDASI
 ==============
