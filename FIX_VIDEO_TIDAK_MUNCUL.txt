@@ -1,0 +1,299 @@
+🔧 FIX: Video Tidak Muncul di Web HP
+=====================================
+
+🔴 MASALAH:
+   "perbaiki masi gk bisa masukin video di web hp nya gk muncul"
+   
+   Video yang diupload tidak muncul di homepage web HP
+
+🔍 KEMUNGKINAN PENYEBAB:
+========================
+
+1. CACHE BROWSER
+   - Browser HP masih pakai versi lama
+   - Perlu hard refresh
+
+2. UPLOAD GAGAL
+   - Error saat upload
+   - File tidak tersimpan ke database
+   - Check console log
+
+3. RAILWAY EPHEMERAL STORAGE
+   - File berhasil diupload
+   - Tapi hilang saat restart
+   - Tidak permanent
+
+4. PATH VIDEO SALAH
+   - Video tersimpan tapi path salah
+   - Tidak bisa diakses
+
+5. DATABASE ISSUE
+   - Video tidak tersimpan ke database
+   - Atau database error
+
+✅ SOLUSI STEP-BY-STEP:
+=======================
+
+STEP 1: HARD REFRESH BROWSER
+-----------------------------
+   Di HP:
+   1. Buka browser (Chrome/Firefox)
+   2. Buka website
+   3. Tekan menu (3 titik)
+   4. Pilih "Refresh" atau "Reload"
+   5. Atau tutup tab, buka lagi
+
+   Atau:
+   1. Clear cache browser
+   2. Tutup browser
+   3. Buka lagi
+
+STEP 2: CHECK UPLOAD BERHASIL
+------------------------------
+   1. Buka /upload
+   2. Upload video kecil (<10MB)
+   3. Lihat progress bar sampai 100%
+   4. Tunggu alert "Upload berhasil!"
+   5. Redirect ke homepage
+   6. Check apakah video muncul
+
+   Jika TIDAK muncul:
+   → Lanjut ke Step 3
+
+STEP 3: CHECK CONSOLE LOG
+--------------------------
+   Di HP (Chrome):
+   1. Buka chrome://inspect
+   2. Atau pakai Chrome DevTools
+   3. Lihat tab Console
+   4. Check error message
+
+   Di PC:
+   1. Tekan F12
+   2. Tab Console
+   3. Lihat error
+
+   Jika ada error:
+   → Screenshot & check error message
+
+STEP 4: CHECK DATABASE
+----------------------
+   Di Localhost:
+   1. Buka XAMPP
+   2. phpMyAdmin
+   3. Database: animestream
+   4. Table: anime
+   5. Check apakah video ada
+
+   Jika TIDAK ada:
+   → Upload gagal, check server log
+
+   Jika ADA:
+   → Video tersimpan, tapi tidak tampil
+   → Check videoPath column
+
+STEP 5: CHECK SERVER LOG
+-------------------------
+   Di Terminal/CMD:
+   1. Lihat log server
+   2. Check saat upload:
+      - "📤 Upload received"
+      - "✅ Upload successful"
+      - "anime ID: xxx"
+
+   Jika ada error:
+   → Check error message
+   → Fix sesuai error
+
+STEP 6: CHECK FILE EXISTS
+--------------------------
+   Di Localhost:
+   1. Buka folder uploads/
+   2. Check apakah file video ada
+   3. Check nama file sesuai database
+
+   Jika TIDAK ada:
+   → File tidak tersimpan
+   → Check multer config
+
+   Jika ADA:
+   → File tersimpan
+   → Check path di database
+
+STEP 7: TEST DI LOCALHOST DULU
+-------------------------------
+   1. Jalankan server localhost
+   2. npm start
+   3. Buka http://localhost:3000
+   4. Login
+   5. Upload video kecil
+   6. Check apakah muncul
+
+   Jika WORK di localhost:
+   → Masalah di Railway (ephemeral storage)
+
+   Jika TIDAK WORK:
+   → Masalah di code/database
+
+🎯 SOLUSI BERDASARKAN PENYEBAB:
+===============================
+
+PENYEBAB 1: CACHE BROWSER
+--------------------------
+   SOLUSI:
+   ✅ Hard refresh (Ctrl+Shift+R)
+   ✅ Clear cache browser
+   ✅ Tutup & buka browser lagi
+   ✅ Pakai incognito mode
+
+PENYEBAB 2: UPLOAD GAGAL
+-------------------------
+   SOLUSI:
+   ✅ Check console log (F12)
+   ✅ Check server log
+   ✅ Check error message
+   ✅ Upload file kecil dulu (<10MB)
+   ✅ Check koneksi internet
+
+PENYEBAB 3: RAILWAY EPHEMERAL
+------------------------------
+   SOLUSI:
+   ✅ Setup Cloudflare R2 (file permanent)
+   ✅ Atau pakai localhost (file permanent)
+   ✅ Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt
+
+PENYEBAB 4: PATH SALAH
+-----------------------
+   SOLUSI:
+   ✅ Check database videoPath column
+   ✅ Pastikan path benar:
+      - Local: filename.mp4
+      - R2: https://r2-url/videos/filename.mp4
+   ✅ Check /uploads folder exists
+
+PENYEBAB 5: DATABASE ERROR
+---------------------------
+   SOLUSI:
+   ✅ Check database connection
+   ✅ Check table anime exists
+   ✅ Check columns correct
+   ✅ Restart database (XAMPP)
+
+📱 QUICK FIX UNTUK HP:
+======================
+
+CARA TERCEPAT:
+
+1. TUTUP BROWSER
+   - Tutup semua tab
+   - Tutup aplikasi browser
+
+2. CLEAR CACHE
+   - Settings → Apps → Browser
+   - Clear Cache
+   - Clear Data (optional)
+
+3. BUKA LAGI
+   - Buka browser
+   - Buka website
+   - Login
+   - Check homepage
+
+4. UPLOAD LAGI
+   - Klik Upload
+   - Pilih video KECIL (<10MB)
+   - Isi form
+   - Upload
+   - Tunggu sampai selesai
+
+5. CHECK HOMEPAGE
+   - Kembali ke homepage
+   - Refresh
+   - Video harus muncul
+
+Jika MASIH TIDAK MUNCUL:
+   → Test di PC/laptop dulu
+   → Check apakah work di localhost
+   → Check server log
+
+🔧 DEBUGGING CHECKLIST:
+=======================
+
+✅ Browser sudah di-refresh?
+✅ Cache sudah di-clear?
+✅ Upload sampai 100%?
+✅ Alert "Upload berhasil!" muncul?
+✅ Redirect ke homepage?
+✅ Video muncul di homepage?
+
+Jika semua ✅ tapi video TIDAK muncul:
+   → Check database
+   → Check server log
+   → Check file exists
+
+💡 TIPS:
+========
+
+1. TEST DI LOCALHOST DULU
+   - Pastikan work di localhost
+   - Baru test di Railway
+
+2. UPLOAD FILE KECIL
+   - Test dengan file <10MB
+   - Jangan langsung file besar
+
+3. CHECK CONSOLE LOG
+   - Selalu check console (F12)
+   - Lihat error message
+
+4. CHECK SERVER LOG
+   - Lihat terminal/CMD
+   - Check log saat upload
+
+5. PAKAI INCOGNITO MODE
+   - Test di incognito
+   - Tidak ada cache issue
+
+🎉 JIKA MASIH TIDAK WORK:
+=========================
+
+LAKUKAN INI:
+
+1. RESTART SERVER
+   - Stop server (Ctrl+C)
+   - npm start
+   - Test lagi
+
+2. RESTART DATABASE
+   - Stop XAMPP
+   - Start XAMPP
+   - Test lagi
+
+3. CHECK DATABASE MANUAL
+   - phpMyAdmin
+   - Table anime
+   - Check data
+
+4. TEST DI PC
+   - Buka di PC/laptop
+   - Check apakah work
+   - Jika work → masalah di HP
+   - Jika tidak → masalah di server
+
+5. CHECK RAILWAY LOGS
+   - Railway dashboard
+   - Tab Logs
+   - Check error
+
+=====================================
+STATUS: 🔧 Troubleshooting Guide
+SOLUSI: Hard refresh + check database
+TEST: Localhost dulu, baru Railway
+=====================================
+
+💡 Kemungkinan besar: Cache browser HP
+   Solusi: Hard refresh atau clear cache!
+
+📖 Baca juga:
+   - UPLOAD_FILE_ONLY_FIXED.txt
+   - UPLOAD_FILE_RAILWAY_SOLUTION.txt
