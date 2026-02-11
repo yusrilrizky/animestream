@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+*.md
+animestream.db
+animestream.db-shm
+animestream.db-wal
+uploads/*.mp4
+uploads/*.mkv
+uploads/*.avi
+.DS_Store
+Thumbs.db

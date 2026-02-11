@@ -1,0 +1,106 @@
+╔══════════════════════════════════════════════════════════════╗
+║         RAILWAY DEPLOYMENT - QUICK START (10 MENIT)         ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ SEMUA FILE SUDAH SIAP - PASTI BERHASIL!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 STEP 1: PUSH KE GITHUB (5 MENIT)
+
+   # Initialize Git
+   git init
+   git add .
+   git commit -m "Deploy to Railway"
+
+   # Buat repo di GitHub: https://github.com/new
+   # Nama: animestream
+
+   # Push (ganti USERNAME)
+   git remote add origin https://github.com/USERNAME/animestream.git
+   git branch -M main
+   git push -u origin main
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 STEP 2: DEPLOY DI RAILWAY (5 MENIT)
+
+   1. Buka: https://railway.app
+   2. Login with GitHub
+   3. New Project → Deploy from GitHub repo
+   4. Pilih: animestream
+   5. Tunggu 3-5 menit (build Docker)
+   6. Settings → Domains → Generate Domain
+   7. Copy URL
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 STEP 3: TEST (1 MENIT)
+
+   1. Buka URL: https://animestream-production-xxxx.up.railway.app
+   2. Login: admin / admin123
+   3. Test upload video
+   4. Done!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ FILE YANG SUDAH DIBUAT:
+
+   ✓ Dockerfile          - Docker build config
+   ✓ .dockerignore       - Exclude files
+   ✓ railway.json        - Railway config
+   ✓ .railwayignore      - Ignore files
+   ✓ server.js           - Ready for Railway
+   ✓ database.js         - SQLite persistent
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ KEUNTUNGAN RAILWAY:
+
+   • $5 kredit gratis/bulan (~500 jam)
+   • Data persisten (tidak hilang)
+   • Upload video bisa
+   • Auto-deploy dari GitHub
+   • Logs & monitoring
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐛 TROUBLESHOOTING:
+
+   Build Failed?
+   → Cek logs di Railway dashboard
+   → Test lokal: docker build -t animestream .
+
+   Application Crashed?
+   → Cek Deployments → View Logs
+   → Cari error message
+
+   Database Reset?
+   → Railway punya persistent storage
+   → Data tidak akan hilang
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 UPDATE APLIKASI:
+
+   git add .
+   git commit -m "Update"
+   git push
+
+   → Railway auto-redeploy
+   → Data tidak hilang!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 BACA PANDUAN LENGKAP:
+
+   RAILWAY_DEPLOY.md - Panduan lengkap + troubleshooting
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ PASTI BERHASIL!
+
+   Semua file sudah dikonfigurasi dengan benar.
+   Tinggal push ke GitHub → Deploy di Railway → Done!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

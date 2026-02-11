@@ -1,0 +1,71 @@
+╔══════════════════════════════════════════════════════════════╗
+║              VERCEL DEPLOYMENT - QUICK GUIDE                ║
+╚══════════════════════════════════════════════════════════════╝
+
+⚠️  WARNING: VERCEL TIDAK COCOK UNTUK APLIKASI INI!
+
+Alasan:
+  ❌ Database akan RESET setiap deploy
+  ❌ Upload video TIDAK BISA (filesystem read-only)
+  ❌ Data TIDAK PERSISTEN
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 CARA DEPLOY (Untuk Demo Saja):
+
+   1. npm install -g vercel
+   2. vercel login
+   3. vercel
+   4. Ikuti instruksi
+   5. Buka URL yang diberikan
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  MASALAH YANG AKAN MUNCUL:
+
+   1. Database Reset
+      → Setiap deploy, data hilang
+      → Login selalu admin/admin123
+
+   2. Upload Error
+      → Upload video akan error
+      → Filesystem read-only
+
+   3. Session Logout
+      → Login akan logout sendiri
+      → Session tidak tersimpan
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ ALTERNATIF YANG LEBIH BAIK:
+
+   1. LOCALHOST (Recommended)
+      • npm install && npm start
+      • Gratis, data persisten, upload bisa
+      • Hanya bisa diakses lokal
+
+   2. RAILWAY.APP (Recommended untuk Online)
+      • Push ke GitHub
+      • Deploy di railway.app
+      • $5 kredit gratis/bulan
+      • Data persisten, upload bisa
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 BACA PANDUAN LENGKAP:
+
+   • HOSTING_GUIDE.md  - Perbandingan hosting
+   • VERCEL_DEPLOY.md  - Detail Vercel (not recommended)
+   • README.md         - Localhost guide
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 REKOMENDASI:
+
+   Jangan pakai Vercel untuk aplikasi ini!
+   
+   Pakai:
+   • Localhost - Kalau cuma buat sendiri
+   • Railway  - Kalau mau online & data persisten
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

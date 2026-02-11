@@ -15,23 +15,10 @@ const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
 
 console.log('🚀 Starting AnimeStream server...');
 console.log('📍 PORT:', PORT);
-console.log('📍 HOST:', HOST);
 console.log('🌍 NODE_ENV:', process.env.NODE_ENV || 'development');
-console.log('📂 __dirname:', __dirname);
-console.log('💾 Database path:', process.env.DATABASE_PATH || 'animestream.db');
-
-// Railway health check
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
-});
 
 // Inisialisasi database
 try {
@@ -1115,13 +1102,10 @@ app.use((req, res) => {
   `);
 });
 
-const server = app.listen(PORT, HOST, () => {
-  console.log(`✅ Server berjalan di http://${HOST}:${PORT}`);
-  console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🌐 Ready to accept connections`);
-  console.log(`🚀 Railway deployment ready!`);
-  console.log(`💾 Database: SQLite (${process.env.DATABASE_PATH || 'animestream.db'})`);
-  console.log(`🔗 Health check: http://${HOST}:${PORT}/health`);
+const server = app.listen(PORT, () => {
+  console.log(`✅ Server berjalan di http://localhost:${PORT}`);
+  console.log(`📱 Login: http://localhost:${PORT}/login`);
+  console.log(`👤 Username: admin | Password: admin123`);
 });
 
 // Handle server errors
@@ -1135,11 +1119,13 @@ server.on('error', (error) => {
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+  console.log('Stopping server...');
+  server.close();
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT signal received: closing HTTP server');
+  console.log('Stopping server...');
+  server.close();
   process.exit(0);
 });

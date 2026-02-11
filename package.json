@@ -4,24 +4,12 @@
   "description": "Website untuk nonton anime dan upload film",
   "main": "server.js",
   "engines": {
-    "node": ">=18.x",
-    "npm": ">=9.x"
+    "node": ">=18.x"
   },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "android": "bash start-android.sh",
-    "stop": "bash stop-android.sh",
-    "init-db": "node database.js",
-    "reset-admin": "node reset-admin.js",
-    "test-email": "node test-email.js",
-    "backup-db": "cp animestream.db animestream.db.backup",
-    "restore-db": "cp animestream.db.backup animestream.db",
-    "build": "npm install --legacy-peer-deps && npm rebuild better-sqlite3",
-    "check-db": "node check-database.js",
-    "test-railway": "node test-railway-local.js",
-    "test-health": "node test-health.js",
-    "railway-deploy": "bash railway-deploy.sh"
+    "reset-admin": "node reset-admin.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",

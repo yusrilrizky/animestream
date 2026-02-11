@@ -3,30 +3,18 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
-// Tentukan path database - Railway perlu path yang bisa di-write
-const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'animestream.db');
-const dbDir = path.dirname(dbPath);
-
-// Pastikan folder untuk database ada
-if (!fs.existsSync(dbDir) && dbDir !== '.') {
-  try {
-    fs.mkdirSync(dbDir, { recursive: true });
-    console.log('✅ Database directory created:', dbDir);
-  } catch (error) {
-    console.error('⚠️ Cannot create database directory:', error.message);
-  }
-}
+// Tentukan path database
+const dbPath = path.join(__dirname, 'animestream.db');
 
 // Buat database file dengan error handling
 let db;
 try {
   db = new Database(dbPath);
-  console.log('✅ Database connection established:', dbPath);
+  console.log('✅ Database connected');
 } catch (error) {
-  console.error('❌ Database connection error:', error);
-  // Fallback: buat database in-memory untuk development
+  console.error('❌ Database error:', error);
   db = new Database(':memory:');
-  console.log('⚠️ Using in-memory database (data will not persist)');
+  console.log('⚠️ Using in-memory database');
 }
 
 // Enable foreign keys
