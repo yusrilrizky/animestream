@@ -243,10 +243,20 @@
 
         <!-- File Upload Section -->
         <div id="fileSection" class="upload-section">
-          <div class="info-box">
-            <h4>📁 Upload File Langsung</h4>
+          <div class="info-box" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1)); border-left: 4px solid #ffc107;">
+            <h4>⚠️ Upload File Langsung (Localhost Only)</h4>
             <p>Upload video dari galeri HP atau file PC kamu.</p>
-            <p><strong>⚠️ Catatan:</strong> Max 500MB. Video disimpan di server lokal.</p>
+            <p><strong>📌 PENTING:</strong></p>
+            <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #666; font-size: 0.9rem;">
+              <li><strong>Max 500MB</strong> - File lebih besar akan gagal</li>
+              <li><strong>Hanya work di localhost</strong> (http://localhost:3000)</li>
+              <li><strong>TIDAK work di Railway/hosting online</strong></li>
+              <li><strong>Koneksi lambat = timeout</strong></li>
+            </ul>
+            <p style="margin-top: 1rem; padding: 0.8rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px; border: 2px solid #a855f7;">
+              <strong>💡 Rekomendasi:</strong> Pakai tab <strong>"Upload dengan Link"</strong> untuk hasil terbaik!<br>
+              ✅ Instant, unlimited, work di mana saja!
+            </p>
           </div>
 
           <form action="/upload" method="POST" enctype="multipart/form-data" id="fileUploadForm">
@@ -375,6 +385,12 @@
       const fileInput = document.getElementById('videoFile');
       const file = fileInput.files[0];
       
+      console.log('📤 Starting file upload...', {
+        fileName: file?.name,
+        fileSize: file?.size,
+        fileType: file?.type
+      });
+      
       if (!file) {
         alert('❌ Pilih video terlebih dahulu!');
         return;
@@ -383,9 +399,21 @@
       // Check file size (max 500MB)
       const maxSize = 500 * 1024 * 1024;
       if (file.size > maxSize) {
-        alert('❌ File terlalu besar! Maksimal 500MB');
+        alert('❌ File terlalu besar! Maksimal 500MB\n\n💡 Solusi: Pakai "Upload dengan Link" untuk file unlimited!');
         return;
       }
+      
+      // Validate form fields
+      const title = document.getElementById('fileTitle').value;
+      const episode = document.getElementById('fileEpisode').value;
+      const description = document.getElementById('fileDescription').value;
+      
+      if (!title || !episode || !description) {
+        alert('❌ Semua field harus diisi!\n\nPastikan:\n- Judul Anime\n- Episode\n- Deskripsi\n\nSudah terisi semua.');
+        return;
+      }
+      
+      console.log('✅ Validation passed, starting upload...');
       
       // Show progress
       document.getElementById('uploadProgress').style.display = 'block';
@@ -395,47 +423,96 @@
       // Create FormData
       const formData = new FormData(this);
       
+      console.log('📦 FormData created, sending to server...');
+      
       // Upload with XMLHttpRequest for progress tracking
       const xhr = new XMLHttpRequest();
       
       xhr.upload.addEventListener('progress', function(e) {
         if (e.lengthComputable) {
           const percentComplete = (e.loaded / e.total) * 100;
+          const loadedMB = (e.loaded / (1024 * 1024)).toFixed(2);
+          const totalMB = (e.total / (1024 * 1024)).toFixed(2);
+          
+          console.log(`📊 Upload progress: ${Math.round(percentComplete)}% (${loadedMB}MB / ${totalMB}MB)`);
+          
           document.getElementById('progressBar').style.width = percentComplete + '%';
           document.getElementById('progressBar').textContent = Math.round(percentComplete) + '%';
-          document.getElementById('progressText').textContent = `Uploading... ${(e.loaded / (1024 * 1024)).toFixed(2)} MB / ${(e.total / (1024 * 1024)).toFixed(2)} MB`;
+          document.getElementById('progressText').textContent = `Uploading... ${loadedMB} MB / ${totalMB} MB`;
         }
       });
       
       xhr.addEventListener('load', function() {
+        console.log('📥 Server response received:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          responseLength: xhr.responseText?.length
+        });
+        
         if (xhr.status === 200) {
-          const response = JSON.parse(xhr.responseText);
-          if (response.success) {
-            alert('✅ Upload berhasil!');
-            window.location.href = '/';
-          } else {
-            alert('❌ Upload gagal: ' + response.error);
-            document.getElementById('uploadBtn').disabled = false;
-            document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
-            document.getElementById('uploadProgress').style.display = 'none';
+          try {
+            const response = JSON.parse(xhr.responseText);
+            console.log('✅ Response parsed:', response);
+            
+            if (response.success) {
+              alert('✅ Upload berhasil!');
+              window.location.href = '/';
+            } else {
+              console.error('❌ Upload failed:', response.error);
+              alert('❌ Upload gagal: ' + (response.error || 'Unknown error'));
+              resetUploadForm();
+            }
+          } catch (e) {
+            console.error('❌ Parse error:', e, 'Response:', xhr.responseText);
+            alert('❌ Server error! Response tidak valid.');
+            resetUploadForm();
           }
+        } else if (xhr.status === 413) {
+          console.error('❌ File too large (413)');
+          alert('❌ File terlalu besar! Server tidak bisa menerima file ini.\n\nSolusi:\n1. Kompres video dulu\n2. Atau pakai "Upload dengan Link" (unlimited size)');
+          resetUploadForm();
+        } else if (xhr.status === 0) {
+          console.error('❌ Request failed (status 0) - timeout or cancelled');
+          alert('❌ Upload dibatalkan atau timeout!\n\nKemungkinan:\n1. File terlalu besar untuk koneksi kamu\n2. Server tidak merespon\n3. Koneksi terputus\n\nSolusi: Pakai "Upload dengan Link" untuk file besar!');
+          resetUploadForm();
         } else {
-          alert('❌ Upload gagal! Status: ' + xhr.status);
-          document.getElementById('uploadBtn').disabled = false;
-          document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
-          document.getElementById('uploadProgress').style.display = 'none';
+          console.error('❌ HTTP error:', xhr.status, xhr.statusText);
+          alert('❌ Upload gagal! Status: ' + xhr.status + '\n\nCoba lagi atau pakai "Upload dengan Link"');
+          resetUploadForm();
         }
       });
       
-      xhr.addEventListener('error', function() {
-        alert('❌ Upload error! Cek koneksi internet.');
-        document.getElementById('uploadBtn').disabled = false;
-        document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
-        document.getElementById('uploadProgress').style.display = 'none';
+      xhr.addEventListener('error', function(e) {
+        console.error('XHR Error:', e);
+        alert('❌ Upload error!\n\nKemungkinan penyebab:\n1. Koneksi internet terputus\n2. Server tidak merespon\n3. File terlalu besar untuk koneksi kamu\n4. CORS atau firewall issue\n\n💡 Solusi: Pakai "Upload dengan Link" (tab sebelah) untuk hasil terbaik!');
+        resetUploadForm();
       });
+      
+      xhr.addEventListener('timeout', function() {
+        alert('❌ Upload timeout!\n\nFile terlalu besar atau koneksi lambat.\n\n💡 Solusi: Pakai "Upload dengan Link" untuk file besar!');
+        resetUploadForm();
+      });
+      
+      xhr.addEventListener('abort', function() {
+        alert('⚠️ Upload dibatalkan!');
+        resetUploadForm();
+      });
+      
+      // Set timeout 10 minutes
+      xhr.timeout = 600000;
       
       xhr.open('POST', '/upload');
       xhr.send(formData);
+    });
+    
+    // Helper function to reset upload form
+    function resetUploadForm() {
+      document.getElementById('uploadBtn').disabled = false;
+      document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+      document.getElementById('uploadProgress').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressBar').textContent = '';
+      document.getElementById('progressText').textContent = '';
     });
   </script>
 

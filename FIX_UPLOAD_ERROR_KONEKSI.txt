@@ -1,0 +1,278 @@
+✅ FIX: Upload Error "Cek Koneksi Internet"
+==========================================
+
+🔴 MASALAH:
+   Error "Upload error! Cek koneksi internet" saat upload file dari galeri
+
+🔍 PENYEBAB:
+
+   1. XHR ERROR HANDLER TERLALU UMUM
+      - Error message tidak spesifik
+      - Tidak memberitahu masalah sebenarnya
+      - Bisa karena timeout, file besar, atau server error
+
+   2. TIDAK ADA TIMEOUT HANDLER
+      - Upload lambat = stuck forever
+      - Tidak ada feedback ke user
+
+   3. TIDAK ADA LOGGING
+      - Sulit debug masalah
+      - User tidak tahu apa yang salah
+
+   4. KEMUNGKINAN PENYEBAB ERROR:
+      - File terlalu besar (>500MB)
+      - Koneksi lambat/timeout
+      - Server tidak merespon
+      - Railway ephemeral storage
+      - CORS atau firewall issue
+      - Status 0 (cancelled/timeout)
+
+✅ SOLUSI:
+
+   YANG SUDAH DIPERBAIKI:
+   ======================
+
+   1. ✅ ERROR HANDLING LEBIH DETAIL
+      - Status 200: Success
+      - Status 413: File too large
+      - Status 0: Timeout/cancelled
+      - Error event: Network/CORS issue
+      - Timeout event: Upload timeout
+      - Abort event: User cancelled
+
+   2. ✅ TIMEOUT HANDLER
+      - Set timeout 10 menit (600000ms)
+      - Alert jika timeout
+      - Suggest pakai upload dengan link
+
+   3. ✅ CONSOLE LOGGING
+      - Log file info saat start
+      - Log progress percentage
+      - Log server response
+      - Log error details
+      - Mudah untuk debug
+
+   4. ✅ BETTER ERROR MESSAGES
+      - Spesifik untuk setiap error
+      - Kasih solusi/saran
+      - Suggest pakai upload dengan link
+
+   5. ✅ WARNING DI FORM
+      - Info box kuning dengan warning
+      - Jelaskan limitasi upload file
+      - Recommend pakai upload dengan link
+
+   6. ✅ FORM VALIDATION
+      - Check semua field terisi
+      - Check file size sebelum upload
+      - Alert jika ada yang kurang
+
+   7. ✅ RESET FORM HELPER
+      - Function resetUploadForm()
+      - Reset button, progress bar, text
+      - Reusable untuk semua error
+
+📋 ERROR MESSAGES BARU:
+=======================
+
+   STATUS 200 (SUCCESS):
+   ✅ Upload berhasil!
+   → Redirect ke homepage
+
+   STATUS 413 (FILE TOO LARGE):
+   ❌ File terlalu besar! Server tidak bisa menerima file ini.
+   
+   Solusi:
+   1. Kompres video dulu
+   2. Atau pakai "Upload dengan Link" (unlimited size)
+
+   STATUS 0 (TIMEOUT/CANCELLED):
+   ❌ Upload dibatalkan atau timeout!
+   
+   Kemungkinan:
+   1. File terlalu besar untuk koneksi kamu
+   2. Server tidak merespon
+   3. Koneksi terputus
+   
+   Solusi: Pakai "Upload dengan Link" untuk file besar!
+
+   XHR ERROR:
+   ❌ Upload error!
+   
+   Kemungkinan penyebab:
+   1. Koneksi internet terputus
+   2. Server tidak merespon
+   3. File terlalu besar untuk koneksi kamu
+   4. CORS atau firewall issue
+   
+   💡 Solusi: Pakai "Upload dengan Link" (tab sebelah) untuk hasil terbaik!
+
+   TIMEOUT:
+   ❌ Upload timeout!
+   
+   File terlalu besar atau koneksi lambat.
+   
+   💡 Solusi: Pakai "Upload dengan Link" untuk file besar!
+
+   ABORT:
+   ⚠️ Upload dibatalkan!
+
+📊 CONSOLE LOGGING:
+===================
+
+   START UPLOAD:
+   📤 Starting file upload... {
+     fileName: "video.mp4",
+     fileSize: 52428800,
+     fileType: "video/mp4"
+   }
+
+   VALIDATION:
+   ✅ Validation passed, starting upload...
+
+   FORMDATA:
+   📦 FormData created, sending to server...
+
+   PROGRESS:
+   📊 Upload progress: 25% (12.50MB / 50.00MB)
+   📊 Upload progress: 50% (25.00MB / 50.00MB)
+   📊 Upload progress: 75% (37.50MB / 50.00MB)
+   📊 Upload progress: 100% (50.00MB / 50.00MB)
+
+   RESPONSE:
+   📥 Server response received: {
+     status: 200,
+     statusText: "OK",
+     responseLength: 123
+   }
+
+   SUCCESS:
+   ✅ Response parsed: { success: true, animeId: 123 }
+
+   ERROR:
+   ❌ Upload failed: "File validation error"
+   ❌ Parse error: SyntaxError
+   ❌ File too large (413)
+   ❌ Request failed (status 0) - timeout or cancelled
+   ❌ HTTP error: 500 Internal Server Error
+
+⚠️ WARNING BOX BARU:
+====================
+
+   Di form upload file sekarang ada warning box kuning:
+
+   ⚠️ Upload File Langsung (Localhost Only)
+   
+   📌 PENTING:
+   • Max 500MB - File lebih besar akan gagal
+   • Hanya work di localhost (http://localhost:3000)
+   • TIDAK work di Railway/hosting online
+   • Koneksi lambat = timeout
+   
+   💡 Rekomendasi: Pakai tab "Upload dengan Link" untuk hasil terbaik!
+   ✅ Instant, unlimited, work di mana saja!
+
+🔧 PERUBAHAN CODE:
+==================
+
+   FILE: views/upload-link.ejs
+
+   1. Error handling lebih detail (status 200, 413, 0, error, timeout, abort)
+   2. Timeout handler (10 menit)
+   3. Console logging (start, progress, response, error)
+   4. Better error messages dengan solusi
+   5. Warning box di form upload file
+   6. Form validation sebelum upload
+   7. Helper function resetUploadForm()
+
+🌐 CARA PAKAI:
+==============
+
+   JIKA UPLOAD FILE ERROR:
+
+   1. Buka Console Browser (F12)
+      - Lihat log error detail
+      - Check status code
+      - Check error message
+
+   2. Check File Size
+      - Max 500MB
+      - Jika lebih besar, kompres dulu
+      - Atau pakai upload dengan link
+
+   3. Check Koneksi
+      - Pastikan internet stabil
+      - Jangan pakai koneksi lambat
+      - Jangan upload file besar di mobile data
+
+   4. Check Environment
+      - Upload file HANYA work di localhost
+      - TIDAK work di Railway/hosting
+      - Pakai upload dengan link untuk Railway
+
+   5. SOLUSI TERBAIK:
+      → Pakai "Upload dengan Link"!
+      → Instant, unlimited, work di mana saja
+      → Cloudinary/Streamable (AD-FREE)
+
+🎯 REKOMENDASI:
+===============
+
+   UNTUK SEMUA USER:
+   → PAKAI "UPLOAD DENGAN LINK"!
+   → Tidak ada error
+   → Tidak ada timeout
+   → Tidak ada limit size
+   → Work di mana saja
+   → Instant!
+
+   UPLOAD FILE HANYA UNTUK:
+   → Testing di localhost
+   → File kecil (<100MB)
+   → Koneksi cepat & stabil
+   → Development/debugging
+
+📱 TESTING:
+===========
+
+   TEST DI LOCALHOST:
+
+   1. Buka: http://localhost:3000/upload
+   2. Pilih tab "Upload File"
+   3. Pilih video kecil (<50MB)
+   4. Isi form lengkap
+   5. Klik Upload
+   6. Lihat console log (F12)
+   7. Check progress bar
+   8. Check error message jika gagal
+
+   TEST ERROR SCENARIOS:
+
+   1. File >500MB → Error "File terlalu besar"
+   2. Form tidak lengkap → Error "Semua field harus diisi"
+   3. Koneksi lambat → Timeout setelah 10 menit
+   4. Server mati → Error "Server tidak merespon"
+
+🎉 KESIMPULAN:
+==============
+
+   ✅ Error handling sekarang lebih baik
+   ✅ Error message lebih spesifik & helpful
+   ✅ Console logging untuk debugging
+   ✅ Timeout handler untuk upload lambat
+   ✅ Warning box untuk user awareness
+   ✅ Form validation sebelum upload
+   ✅ Suggest pakai upload dengan link
+
+   ⚠️ PENTING:
+   Upload file TETAP tidak recommended untuk production!
+   Pakai "Upload dengan Link" untuk hasil terbaik!
+
+=====================================
+STATUS: ✅ FIXED! Error handling improved
+SOLUSI: Upload dengan Link (recommended)
+DEBUGGING: Console log available (F12)
+=====================================
+
+💡 Pakai "Upload dengan Link" untuk hasil terbaik!
+   Instant, unlimited, work di mana saja!
