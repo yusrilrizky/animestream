@@ -1,0 +1,272 @@
+✅ FIXED: Upload HANYA File Langsung!
+======================================
+
+🎉 SELESAI! Upload sekarang HANYA file langsung!
+=================================================
+
+YANG KAMU MINTA:
+   ✅ "upload file dri file hp atau pc gk bisa gk ada pilihan tetap melalui link dia yg ada"
+   
+   Sekarang:
+   ✅ HANYA upload file langsung
+   ✅ TIDAK ADA opsi link
+   ✅ Progress bar jalan (MB naik 0-100%)
+   ✅ Upload langsung dari galeri HP atau file PC
+
+📋 APA YANG BERUBAH?
+====================
+
+SEBELUMNYA:
+   ❌ Ada 2 tab: "Upload dengan Link" + "Upload File"
+   ❌ Tab link muncul duluan
+   ❌ User bingung pilih yang mana
+
+SEKARANG:
+   ✅ HANYA 1 form: Upload File
+   ✅ Tidak ada tab selector
+   ✅ Tidak ada opsi link
+   ✅ Langsung upload file dari galeri/PC
+   ✅ Progress bar jalan (MB naik)
+
+🔧 PERUBAHAN CODE:
+==================
+
+FILE: views/upload-link.ejs
+
+DIHAPUS:
+   ❌ Tab selector (Upload dengan Link / Upload File)
+   ❌ Link upload section
+   ❌ Link form & validation
+   ❌ Platform badges (Cloudinary, Streamable, dll)
+   ❌ CSS untuk tab switching
+   ❌ JavaScript switchMethod()
+
+DITAMBAHKAN:
+   ✅ Header sederhana: "Upload Video Anime"
+   ✅ Info box: Upload file langsung
+   ✅ Form upload file dengan progress bar
+   ✅ File input dengan tombol "Buka Galeri"
+   ✅ Progress bar (MB naik 0-100%)
+   ✅ Form anime info (judul, episode, kategori, dll)
+
+📱 CARA PAKAI SEKARANG:
+=======================
+
+DI LOCALHOST:
+
+   1. JALANKAN SERVER
+      - npm start
+      - Server di http://localhost:3000
+
+   2. BUKA BROWSER
+      - http://localhost:3000
+      - Login (admin/admin123)
+
+   3. KLIK MENU "UPLOAD"
+      - Langsung tampil form upload file
+      - TIDAK ADA opsi link
+
+   4. KLIK "BUKA GALERI"
+      - Pilih video dari galeri HP
+      - Atau pilih file dari PC
+      - Max 500MB
+
+   5. ISI FORM ANIME
+      - Judul Anime: Naruto Shippuden
+      - Episode: Episode 1
+      - Kategori: Action
+      - Genre: Action, Adventure, Shounen
+      - Deskripsi: cerita anime
+
+   6. KLIK "UPLOAD VIDEO"
+      - Progress bar muncul
+      - MB naik 0-100%
+      - "Uploading... 25.50 MB / 100.00 MB"
+      - Tunggu sampai 100%
+
+   7. SELESAI!
+      - Video tersimpan di uploads/
+      - Muncul di homepage
+      - Permanent (tidak hilang)
+
+DI RAILWAY:
+
+   1. BUKA RAILWAY URL
+      - https://your-app.railway.app
+      - Login (admin/admin123)
+
+   2. KLIK MENU "UPLOAD"
+      - Langsung tampil form upload file
+
+   3. UPLOAD FILE
+      - Klik "Buka Galeri"
+      - Pilih video
+      - Isi form
+      - Klik "Upload Video"
+
+   4. PROGRESS BAR JALAN
+      - MB naik 0-100%
+      - Upload ke server
+
+   5. TAPI...
+      ⚠️ File akan HILANG saat Railway restart
+      ⚠️ Ephemeral storage (tidak permanent)
+      ⚠️ Bisa timeout untuk file besar
+
+   SOLUSI UNTUK RAILWAY:
+      → Setup Cloudflare R2 (file permanent)
+      → Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt
+
+✅ FITUR YANG WORK:
+===================
+
+1. ✅ UPLOAD FILE LANGSUNG
+   - Dari galeri HP
+   - Dari file PC
+   - Klik "Buka Galeri"
+   - Pilih video
+
+2. ✅ PROGRESS BAR
+   - Tampil saat upload
+   - MB naik 0-100%
+   - "Uploading... X MB / Y MB"
+   - Real-time progress
+
+3. ✅ FILE VALIDATION
+   - Max 500MB
+   - Format: MP4, MKV, AVI, WebM, MOV
+   - Alert jika file terlalu besar
+   - Check sebelum upload
+
+4. ✅ FORM VALIDATION
+   - Check semua field terisi
+   - Alert jika ada yang kurang
+   - Validate sebelum upload
+
+5. ✅ ERROR HANDLING
+   - Error message detail
+   - Console logging (F12)
+   - Timeout handler (10 menit)
+   - Detect Railway vs localhost
+
+6. ✅ RESPONSIVE
+   - Work di HP & PC
+   - Mobile-friendly
+   - Touch-optimized
+
+⚠️ CATATAN PENTING:
+===================
+
+LOCALHOST:
+   ✅ Upload file work 100%
+   ✅ Progress bar jalan
+   ✅ File permanent di uploads/
+   ✅ MySQL database permanent
+   ✅ GRATIS, tidak perlu setup
+
+RAILWAY:
+   ⚠️ Upload file work TAPI...
+   ⚠️ File akan HILANG saat restart
+   ⚠️ Ephemeral storage
+   ⚠️ Tidak permanent
+   
+   SOLUSI:
+   → Setup Cloudflare R2 (file permanent)
+   → Atau pakai localhost untuk upload
+
+🎯 REKOMENDASI:
+===============
+
+UNTUK DEVELOPMENT (LOCALHOST):
+   ✅ Upload file work perfect
+   ✅ Progress bar jalan
+   ✅ File permanent
+   ✅ Tidak perlu setup apapun
+   ✅ GRATIS
+
+UNTUK PRODUCTION (RAILWAY):
+   ⚠️ Butuh setup Cloudflare R2
+   ⚠️ Atau pakai localhost untuk upload
+   ⚠️ File akan hilang tanpa R2
+
+SETUP R2 (OPTIONAL):
+   - Buat akun Cloudflare R2
+   - Buat bucket
+   - Dapatkan credentials
+   - Tambahkan ke Railway env vars
+   - File akan permanent
+   - Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt
+
+📊 TESTING:
+===========
+
+TEST DI LOCALHOST:
+
+   1. npm start
+   2. Buka http://localhost:3000
+   3. Login
+   4. Klik "Upload"
+   5. Lihat form upload file (TIDAK ADA opsi link)
+   6. Klik "Buka Galeri"
+   7. Pilih video kecil (<50MB)
+   8. Isi form
+   9. Klik "Upload Video"
+   10. Lihat progress bar (MB naik)
+   11. Tunggu sampai 100%
+   12. Check video di homepage
+   13. SELESAI!
+
+TEST DI RAILWAY:
+
+   1. Tunggu Railway deploy (2-5 menit)
+   2. Buka Railway URL
+   3. Hard refresh (Ctrl+Shift+R)
+   4. Login
+   5. Klik "Upload"
+   6. Lihat form upload file (TIDAK ADA opsi link)
+   7. Test upload file
+   8. Progress bar jalan
+   9. Tapi file akan hilang saat restart
+
+🎉 KESIMPULAN:
+==============
+
+✅ Upload sekarang HANYA file langsung
+✅ TIDAK ADA opsi link
+✅ Progress bar jalan (MB naik 0-100%)
+✅ Upload dari galeri HP atau file PC
+✅ Work di localhost (permanent)
+⚠️ Work di Railway (tapi file hilang tanpa R2)
+
+PERUBAHAN:
+   ✅ Hapus tab selector
+   ✅ Hapus opsi link
+   ✅ Hanya upload file
+   ✅ Progress bar jalan
+   ✅ Sudah di GitHub
+   ✅ Railway sedang deploy
+
+CARA PAKAI:
+   1. Buka /upload
+   2. Klik "Buka Galeri"
+   3. Pilih video
+   4. Isi form
+   5. Klik "Upload Video"
+   6. Lihat progress bar (MB naik)
+   7. SELESAI!
+
+=====================================
+STATUS: ✅ FIXED! Hanya upload file
+PROGRESS BAR: ✅ MB naik 0-100%
+OPSI LINK: ❌ Dihapus
+PUSHED: ✅ Sudah di GitHub
+RAILWAY: 🟡 Sedang deploy (2-5 menit)
+=====================================
+
+🚀 Railway sedang deploy perubahan!
+   Tunggu 2-5 menit, lalu test upload file!
+
+💡 Upload file work di localhost (permanent)
+   Di Railway butuh R2 untuk file permanent
+
+📖 Baca: UPLOAD_FILE_RAILWAY_SOLUTION.txt untuk setup R2
