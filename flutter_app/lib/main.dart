@@ -5,7 +5,9 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -179,6 +181,27 @@ class _WebViewScreenState extends State<WebViewScreen> {
           }
         },
       )
+      ..addJavaScriptChannel(
+        'FlutterFileUpload',
+        onMessageReceived: (JavaScriptMessage message) async {
+          try {
+            // Parse upload data from JavaScript
+            final data = jsonDecode(message.message);
+            final filePath = data['filePath'] as String;
+            final title = data['title'] as String;
+            final episode = data['episode'] as String;
+            final category = data['category'] as String;
+            final genre = data['genre'] as String?;
+            final description = data['description'] as String;
+            
+            // Upload file
+            await _uploadFile(filePath, title, episode, category, genre ?? '', description);
+          } catch (e) {
+            debugPrint('Upload error: $e');
+            await controller.runJavaScript('if(window.handleUploadError) window.handleUploadError("${e.toString()}");');
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -215,9 +238,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
             }
           },
           onNavigationRequest: (NavigationRequest request) {
-            // Redirect /upload to /upload-apk in APK
-            if (request.url.contains('/upload') && !request.url.contains('/upload-apk') && !request.url.contains('/upload-link')) {
-              controller.loadRequest(Uri.parse(request.url.replaceFirst('/upload', '/upload-apk')));
+            // Redirect /upload to /upload-link in APK (file upload not working in WebView)
+            if (request.url.contains('/upload-apk')) {
+              controller.loadRequest(Uri.parse(request.url.replaceFirst('/upload-apk', '/upload')));
               return NavigationDecision.prevent;
             }
             
@@ -285,6 +308,57 @@ class _WebViewScreenState extends State<WebViewScreen> {
         };
       })();
     ''');
+  }
+
+  Future<void> _uploadFile(String filePath, String title, String episode, String category, String genre, String description) async {
+    try {
+      // Notify JavaScript upload started
+      await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(0, "Preparing upload...");');
+      
+      final file = File(filePath);
+      if (!await file.exists()) {
+        throw Exception('File not found');
+      }
+
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$websiteUrl/upload'.replaceAll('/login', '/upload')),
+      );
+
+      // Add form fields
+      request.fields['title'] = title;
+      request.fields['episode'] = episode;
+      request.fields['category'] = category;
+      request.fields['genre'] = genre;
+      request.fields['description'] = description;
+
+      // Add file
+      final fileStream = http.ByteStream(file.openRead());
+      final fileLength = await file.length();
+      final multipartFile = http.MultipartFile(
+        'video',
+        fileStream,
+        fileLength,
+        filename: file.path.split('/').last,
+      );
+      request.files.add(multipartFile);
+
+      // Send request
+      await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(10, "Uploading...");');
+      
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(100, "Upload complete!");');
+        await controller.runJavaScript('if(window.handleUploadSuccess) window.handleUploadSuccess();');
+      } else {
+        throw Exception('Upload failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Upload error: $e');
+      await controller.runJavaScript('if(window.handleUploadError) window.handleUploadError("${e.toString()}");');
+    }
   }
 
   @override

@@ -90,67 +90,23 @@
 
     <!-- File Upload Section -->
     <div id="fileSection">
-      <div style="background: rgba(168, 85, 247, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-        <h3 style="color: #a855f7; margin-bottom: 1rem;">📱 Upload dari Galeri</h3>
-        <p style="margin-bottom: 1rem;">Klik tombol di bawah untuk pilih video dari galeri HP kamu.</p>
-        <p style="font-size: 0.9rem; color: #666;"><strong>⚠️ Catatan:</strong> Max 500MB. Video disimpan di server lokal.</p>
-        
-        <button onclick="pickFile()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 1rem;">
-          📂 Pilih Video dari Galeri
+      <div style="background: rgba(255, 193, 7, 0.1); border: 2px solid #ff9800; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h3 style="color: #ff9800; margin-bottom: 1rem;">⚠️ Upload File Tidak Tersedia di APK</h3>
+        <p style="margin-bottom: 1rem; color: #666;">Upload file dari galeri tidak bisa digunakan di aplikasi mobile karena keterbatasan WebView.</p>
+        <p style="font-weight: 600; color: #ff9800;">Gunakan "Upload dengan Link" untuk upload video!</p>
+        <button onclick="switchMethod('link')" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 1rem;">
+          🔗 Beralih ke Upload dengan Link
         </button>
+      </div>
+
+      <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; opacity: 0.5;">
+        <h3 style="color: #999; margin-bottom: 1rem;">📱 Upload dari Galeri (Tidak Tersedia)</h3>
+        <p style="margin-bottom: 1rem; color: #999;">Fitur ini hanya tersedia di website (browser), tidak di aplikasi mobile.</p>
         
-        <div id="fileInfo" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; display: none;">
-          <p id="fileName" style="font-weight: 600; color: #a855f7;"></p>
-          <p id="fileSize" style="color: #666; font-size: 0.9rem;"></p>
-        </div>
+        <button disabled style="width: 100%; padding: 1rem; background: #ccc; color: #666; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: not-allowed;">
+          📂 Pilih Video dari Galeri (Disabled)
+        </button>
       </div>
-
-      <form id="uploadForm">
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🎬 Judul Anime</label>
-        <input type="text" id="title" required placeholder="Contoh: Naruto Shippuden" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
-      </div>
-
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📺 Episode</label>
-        <input type="text" id="episode" required placeholder="Contoh: Episode 1" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
-      </div>
-
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📂 Kategori</label>
-        <select id="category" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
-          <option value="action">Action</option>
-          <option value="adventure">Adventure</option>
-          <option value="comedy">Comedy</option>
-          <option value="drama">Drama</option>
-          <option value="fantasy">Fantasy</option>
-          <option value="romance">Romance</option>
-          <option value="sci-fi">Sci-Fi</option>
-          <option value="slice-of-life">Slice of Life</option>
-        </select>
-      </div>
-
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🏷️ Genre</label>
-        <input type="text" id="genre" placeholder="Contoh: Action, Adventure, Shounen" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
-      </div>
-
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📝 Deskripsi</label>
-        <textarea id="description" required rows="4" placeholder="Ceritakan tentang anime ini..." style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;"></textarea>
-      </div>
-
-      <div id="uploadProgress" style="display: none; margin-bottom: 1rem;">
-        <div style="background: rgba(168, 85, 247, 0.1); border-radius: 8px; overflow: hidden; height: 30px;">
-          <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;"></div>
-        </div>
-        <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: #666;"></p>
-      </div>
-
-      <button type="submit" id="uploadBtn" disabled style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; opacity: 0.5;">
-        🚀 Upload Video (Pilih video dulu)
-      </button>
-    </form>
     </div>
   </div>
 
@@ -231,50 +187,21 @@
       document.getElementById('uploadBtn').textContent = '⏳ Uploading...';
 
       try {
-        // Read file as base64
-        const response = await fetch('file://' + selectedFile.path);
-        const blob = await response.blob();
+        // Use Flutter native upload
+        const uploadData = {
+          filePath: selectedFile.path,
+          title: document.getElementById('title').value,
+          episode: document.getElementById('episode').value,
+          category: document.getElementById('category').value,
+          genre: document.getElementById('genre').value,
+          description: document.getElementById('description').value
+        };
         
-        const formData = new FormData();
-        formData.append('video', blob, selectedFile.name);
-        formData.append('title', document.getElementById('title').value);
-        formData.append('episode', document.getElementById('episode').value);
-        formData.append('category', document.getElementById('category').value);
-        formData.append('genre', document.getElementById('genre').value);
-        formData.append('description', document.getElementById('description').value);
-
-        const xhr = new XMLHttpRequest();
-        
-        xhr.upload.addEventListener('progress', function(e) {
-          if (e.lengthComputable) {
-            const percent = (e.loaded / e.total) * 100;
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressBar').textContent = Math.round(percent) + '%';
-            document.getElementById('progressText').textContent = 'Uploading... ' + (e.loaded / (1024 * 1024)).toFixed(2) + ' MB / ' + (e.total / (1024 * 1024)).toFixed(2) + ' MB';
-          }
-        });
-
-        xhr.addEventListener('load', function() {
-          if (xhr.status === 200) {
-            alert('✅ Upload berhasil!');
-            window.location.href = '/';
-          } else {
-            alert('❌ Upload gagal: ' + xhr.status);
-            document.getElementById('uploadBtn').disabled = false;
-            document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
-            document.getElementById('uploadProgress').style.display = 'none';
-          }
-        });
-
-        xhr.addEventListener('error', function() {
-          alert('❌ Upload error!');
-          document.getElementById('uploadBtn').disabled = false;
-          document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
-          document.getElementById('uploadProgress').style.display = 'none';
-        });
-
-        xhr.open('POST', '/upload');
-        xhr.send(formData);
+        if (window.FlutterFileUpload) {
+          window.FlutterFileUpload.postMessage(JSON.stringify(uploadData));
+        } else {
+          throw new Error('Flutter upload not available');
+        }
       } catch (error) {
         alert('❌ Error: ' + error.message);
         document.getElementById('uploadBtn').disabled = false;
@@ -282,6 +209,27 @@
         document.getElementById('uploadProgress').style.display = 'none';
       }
     });
+
+    // Handle upload progress from Flutter
+    window.handleUploadProgress = function(percent, message) {
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressBar').textContent = Math.round(percent) + '%';
+      document.getElementById('progressText').textContent = message;
+    };
+
+    // Handle upload success
+    window.handleUploadSuccess = function() {
+      alert('✅ Upload berhasil!');
+      window.location.href = '/';
+    };
+
+    // Handle upload error
+    window.handleUploadError = function(error) {
+      alert('❌ Upload gagal: ' + error);
+      document.getElementById('uploadBtn').disabled = false;
+      document.getElementById('uploadBtn').textContent = '🚀 Upload Video';
+      document.getElementById('uploadProgress').style.display = 'none';
+    };
   </script>
 
   <!-- WhatsApp Button -->

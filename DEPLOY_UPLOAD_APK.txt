@@ -1,0 +1,90 @@
+✅ DEPLOY UPLOAD-APK ROUTE
+===========================
+
+🚀 PUSHED TO GITHUB!
+
+📋 PERUBAHAN:
+
+1. ✅ views/upload-apk.ejs (BARU!)
+   - Halaman upload khusus APK
+   - Native file picker button
+
+2. ✅ server.js
+   - Route GET /upload-apk
+   - Render upload-apk.ejs
+
+3. ✅ flutter_app/lib/main.dart
+   - JavaScript channel FlutterFilePicker
+   - Auto redirect /upload → /upload-apk
+
+4. ✅ flutter_app/pubspec.yaml
+   - Dependency file_picker
+
+5. ✅ Dokumentasi (11 files baru)
+
+📊 GIT STATUS:
+
+   Commit: a389521
+   Message: "Add native file picker for APK upload + upload-apk route"
+   Files changed: 23 files
+   Insertions: +2156 lines
+
+🌐 RAILWAY AUTO-DEPLOY:
+
+   Railway akan auto-deploy dalam 2-5 menit.
+   
+   Cek status:
+   → https://railway.app/dashboard
+   
+   Setelah deploy selesai:
+   → https://animestream-production-95b2.up.railway.app/upload-apk
+
+⏳ TUNGGU DEPLOY SELESAI:
+
+   1. Buka Railway dashboard
+   2. Cek deployment status
+   3. Tunggu sampai "Success"
+   4. Test URL: /upload-apk
+
+🧪 TESTING SETELAH DEPLOY:
+
+   WEB (Browser):
+   1. Buka: https://animestream-production-95b2.up.railway.app/upload-apk
+   2. Login
+   3. Halaman upload APK muncul
+   4. Button "Pilih Video dari Galeri" terlihat
+
+   APK (Android):
+   1. Install APK baru: animestream-native-picker.apk
+   2. Login
+   3. Klik "Upload"
+   4. Auto redirect ke /upload-apk
+   5. Klik "Pilih Video dari Galeri"
+   6. Galeri terbuka (native!)
+   7. Pilih video
+   8. Upload!
+
+📱 APK LOCATION:
+
+   flutter_app\output\animestream-native-picker.apk
+   Size: 43.7 MB
+
+⚠️ CATATAN:
+
+   - Railway pakai SQLite (ephemeral)
+   - Localhost pakai MySQL (permanent)
+   - Upload dengan link tetap recommended
+   - File upload max 500MB
+
+🔗 URLS:
+
+   Production: https://animestream-production-95b2.up.railway.app
+   Upload APK: https://animestream-production-95b2.up.railway.app/upload-apk
+   Login: https://animestream-production-95b2.up.railway.app/login
+
+===========================
+STATUS: ✅ PUSHED
+NEXT: Tunggu Railway deploy
+===========================
+
+🚀 Deploy akan selesai dalam 2-5 menit!
