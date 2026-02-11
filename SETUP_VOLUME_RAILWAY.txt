@@ -1,0 +1,169 @@
+========================================
+📦 SETUP RAILWAY VOLUME - STEP BY STEP
+========================================
+
+PENTING! Tanpa Volume, video yang diupload akan HILANG saat redeploy!
+
+========================================
+LANGKAH 1: BUKA RAILWAY DASHBOARD
+========================================
+
+1. Buka browser
+2. Login ke: https://railway.app
+3. Klik project "animestream" kamu
+4. Klik service yang sedang running
+
+========================================
+LANGKAH 2: BUKA TAB SETTINGS
+========================================
+
+Di halaman service, klik tab:
+- "Settings" (biasanya di kanan atas)
+
+Atau bisa juga di tab:
+- "Variables" → scroll ke bawah
+
+========================================
+LANGKAH 3: TAMBAH VOLUME
+========================================
+
+Scroll ke bawah sampai ketemu section "Volumes"
+
+Klik tombol: "+ New Volume" atau "Add Volume"
+
+========================================
+LANGKAH 4: ISI KONFIGURASI
+========================================
+
+Akan muncul form, isi dengan:
+
+┌─────────────────────────────────────┐
+│ Mount Path: /data                   │
+│                                     │
+│ (HARUS PERSIS /data, jangan salah!) │
+└─────────────────────────────────────┘
+
+Klik "Add" atau "Create"
+
+========================================
+LANGKAH 5: TUNGGU REDEPLOY
+========================================
+
+Railway akan otomatis:
+1. Redeploy service kamu
+2. Mount volume ke /data
+3. Restart container
+
+Tunggu 1-2 menit sampai status jadi "Active" atau "Running"
+
+========================================
+LANGKAH 6: VERIFIKASI
+========================================
+
+Cek Railway Logs:
+1. Klik tab "Deployments"
+2. Klik deployment terakhir
+3. Klik "View Logs"
+
+Cari log ini:
+✅ Created uploads directory: /data/uploads
+
+Kalau ada, berarti Volume sudah aktif!
+
+========================================
+LANGKAH 7: TEST UPLOAD
+========================================
+
+1. Buka website kamu
+2. Login
+3. Klik "Upload"
+4. Pilih video kecil dulu (< 50MB untuk test)
+5. Isi form
+6. Klik "Upload Sekarang"
+7. Lihat progress bar naik
+8. Tunggu sampai "Upload berhasil!"
+
+========================================
+TROUBLESHOOTING
+========================================
+
+Q: Tidak ada menu "Volumes" di Settings
+A: Scroll lebih ke bawah, atau coba di tab "Variables"
+
+Q: Mount path apa yang harus diisi?
+A: HARUS /data (jangan /uploads atau yang lain!)
+
+Q: Apakah perlu bayar untuk Volume?
+A: Free plan dapat 1GB, cukup untuk 10-20 video
+
+Q: Video masih hilang setelah redeploy
+A: Pastikan mount path = /data (bukan /uploads!)
+
+Q: Upload masih stuck 0%
+A: 
+   1. Pastikan Volume sudah di-setup
+   2. Cek Railway logs untuk error
+   3. Coba file lebih kecil dulu
+   4. Cek koneksi internet
+
+========================================
+STRUKTUR DIRECTORY SETELAH SETUP
+========================================
+
+Railway Container:
+/app/                    ← Application code
+├── server.js
+├── views/
+└── public/
+
+/data/                   ← Volume (PERSISTENT!)
+├── uploads/            ← Video files disimpan di sini
+│   ├── 1234567890-video1.mp4
+│   └── 1234567891-video2.mp4
+└── animestream.db      ← Database (akan ditambahkan nanti)
+
+========================================
+QUOTA VOLUME
+========================================
+
+Free Plan:
+- 1GB storage
+- Cukup untuk ~10-20 video (50-100MB each)
+
+Hobby Plan ($5/month):
+- 100GB storage
+- Cukup untuk ratusan video
+
+========================================
+TIPS HEMAT STORAGE
+========================================
+
+1. Compress video sebelum upload
+   - Pakai HandBrake (free)
+   - Target: 720p, 50-100MB per episode
+
+2. Delete video lama yang jarang ditonton
+
+3. Atau pakai external storage:
+   - Cloudflare R2 (free 10GB)
+   - Bunny CDN (murah)
+   - Google Drive API
+
+========================================
+SELESAI!
+========================================
+
+Setelah setup Volume:
+✅ Video tidak akan hilang saat redeploy
+✅ Upload akan berfungsi dengan baik
+✅ Progress bar akan jalan dari 0% → 100%
+✅ Database akan persistent
+
+Selamat mencoba! 🎉
+
+Kalau masih ada masalah, cek:
+- RAILWAY_VOLUME_SETUP.md (detail lengkap)
+- FIX_UPLOAD_VIDEO.txt (troubleshooting)
+- Railway logs (untuk error messages)
+
+========================================
