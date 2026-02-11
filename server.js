@@ -1173,10 +1173,6 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
     });
   }
 }));
-      error: 'Gagal menyimpan video: ' + error.message 
-    });
-  }
-}));
 
 app.get('/watch/:id', isAuthenticated, async (req, res) => {
   const anime = await animeDB.getById(req.params.id);
