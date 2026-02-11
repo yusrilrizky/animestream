@@ -128,6 +128,40 @@ Baca file yang sesuai dengan kebutuhan Anda.
    → Build APK offline
    → Tanpa internet
 
+5. CARA_FIX_FILE_UPLOAD_APK.txt ⭐⭐⭐⭐⭐ 🆕
+   → Fix file upload di APK
+   → Cara rebuild APK
+   → Testing checklist
+
+6. FILE_UPLOAD_APK_STATUS.txt ⭐⭐⭐⭐ 🆕
+   → Status file upload fix
+   → Perubahan yang sudah dilakukan
+   → Troubleshooting lengkap
+
+7. APK_FILE_UPLOAD_FIX.md ⭐⭐⭐⭐ 🆕
+   → Panduan teknis file upload fix
+   → Android permissions
+   → WebView configuration
+
+8. README_FILE_UPLOAD_FIX.txt ⭐⭐⭐⭐⭐ 🆕
+   → Overview file upload fix
+   → Visual guide
+   → Quick reference
+
+9. CHECKLIST_FILE_UPLOAD_FIX.txt ⭐⭐⭐⭐⭐ 🆕
+   → Step-by-step checklist
+   → Testing checklist
+   → Troubleshooting checklist
+
+10. DONE_FILE_UPLOAD_FIX.txt ⭐⭐⭐⭐ 🆕
+    → Summary lengkap
+    → Next steps
+    → File changes
+
+11. rebuild-apk.bat 🆕
+    → Script otomatis rebuild APK
+    → Double-click langsung jalan
+
 ═══════════════════════════════════════════════════════════════
    🚀 RAILWAY DEPLOYMENT
 ═══════════════════════════════════════════════════════════════
@@ -248,9 +282,12 @@ UNTUK DEVELOPER:
    4. README_MYSQL.md ⭐⭐⭐⭐
 
 UNTUK BUILD APK:
-   1. FLUTTER_APK_SETUP.md ⭐⭐⭐⭐⭐
-   2. BUILD_APK_MANUAL.md ⭐⭐⭐⭐
-   3. APK_SUMMARY.txt ⭐⭐⭐
+   1. README_FILE_UPLOAD_FIX.txt ⭐⭐⭐⭐⭐ 🆕 (START HERE!)
+   2. CHECKLIST_FILE_UPLOAD_FIX.txt ⭐⭐⭐⭐⭐ 🆕
+   3. FLUTTER_APK_SETUP.md ⭐⭐⭐⭐⭐
+   4. BUILD_APK_MANUAL.md ⭐⭐⭐⭐
+   5. CARA_FIX_FILE_UPLOAD_APK.txt ⭐⭐⭐⭐⭐ 🆕
+   6. APK_SUMMARY.txt ⭐⭐⭐
 
 UNTUK DEPLOY:
    1. RAILWAY_DEPLOY.md ⭐⭐⭐⭐⭐
@@ -266,12 +303,12 @@ UNTUK TROUBLESHOOTING:
    📊 STATISTIK DOKUMENTASI
 ═══════════════════════════════════════════════════════════════
 
-Total File Dokumentasi: 50+ files
+Total File Dokumentasi: 57+ files
 
 Kategori:
    - MySQL & Database: 6 files
    - Video Hosting: 9 files
-   - Flutter APK: 4 files
+   - Flutter APK: 11 files (+7 🆕)
    - Railway Deployment: 10 files
    - Troubleshooting: 7 files
    - Lainnya: 9 files

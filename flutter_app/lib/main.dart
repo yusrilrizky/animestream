@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -139,6 +142,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   double progress = 0;
   
   final String websiteUrl = 'https://animestream-production-95b2.up.railway.app/login';
+  bool _filePickerActive = false;
 
   @override
   void initState() {
@@ -147,6 +151,34 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..enableZoom(true)
+      ..addJavaScriptChannel(
+        'FlutterFilePicker',
+        onMessageReceived: (JavaScriptMessage message) async {
+          if (_filePickerActive) return;
+          _filePickerActive = true;
+          
+          try {
+            // Handle file picker from JavaScript
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              type: FileType.video,
+              allowMultiple: false,
+            );
+            
+            if (result != null && result.files.isNotEmpty) {
+              PlatformFile file = result.files.first;
+              // Send file info back to JavaScript
+              String fileInfo = jsonEncode({
+                'name': file.name,
+                'size': file.size,
+                'path': file.path,
+              });
+              await controller.runJavaScript('if(window.handleFileSelected) window.handleFileSelected($fileInfo);');
+            }
+          } finally {
+            _filePickerActive = false;
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -163,9 +195,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
             setState(() {
               progress = 1;
             });
+            // Inject JavaScript to intercept file input clicks
+            _injectFilePickerScript();
           },
           onWebResourceError: (WebResourceError error) {
-            print('WebView error: ${error.description}');
+            debugPrint('WebView error: ${error.description}');
             if (error.errorType == WebResourceErrorType.hostLookup ||
                 error.errorType == WebResourceErrorType.connect ||
                 error.errorType == WebResourceErrorType.timeout) {
@@ -181,6 +215,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
             }
           },
           onNavigationRequest: (NavigationRequest request) {
+            // Redirect /upload to /upload-apk in APK
+            if (request.url.contains('/upload') && !request.url.contains('/upload-apk') && !request.url.contains('/upload-link')) {
+              controller.loadRequest(Uri.parse(request.url.replaceFirst('/upload', '/upload-apk')));
+              return NavigationDecision.prevent;
+            }
+            
+            // Allow file picker and external links
             if (request.url.startsWith('https://wa.me/') ||
                 request.url.startsWith('whatsapp://')) {
               launchUrl(Uri.parse(request.url), mode: LaunchMode.externalApplication);
@@ -191,6 +232,59 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ),
       )
       ..loadRequest(Uri.parse(websiteUrl));
+    
+    // Enable file upload support for Android
+    if (controller.platform is AndroidWebViewController) {
+      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
+    }
+  }
+  
+  void _injectFilePickerScript() {
+    controller.runJavaScript('''
+      (function() {
+        // Intercept file input clicks
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          
+          // Check if clicked element is file input or triggers file input
+          if (target.tagName === 'INPUT' && target.type === 'file') {
+            e.preventDefault();
+            e.stopPropagation();
+            window.FlutterFilePicker.postMessage('pickFile');
+            return false;
+          }
+          
+          // Check if clicked button triggers file input
+          if (target.tagName === 'BUTTON' || target.classList.contains('file-input-area')) {
+            var fileInput = document.getElementById('videoFile');
+            if (fileInput) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.FlutterFilePicker.postMessage('pickFile');
+              return false;
+            }
+          }
+        }, true);
+        
+        // Handle file selected from Flutter
+        window.handleFileSelected = function(fileInfo) {
+          var fileInput = document.getElementById('videoFile');
+          if (fileInput) {
+            // Update file name display
+            var fileNameDisplay = document.getElementById('fileName');
+            if (fileNameDisplay) {
+              var sizeMB = (fileInfo.size / (1024 * 1024)).toFixed(2);
+              fileNameDisplay.textContent = '📁 ' + fileInfo.name + ' (' + sizeMB + ' MB)';
+            }
+            
+            // Store file path for upload
+            window.selectedFilePath = fileInfo.path;
+            window.selectedFileName = fileInfo.name;
+            window.selectedFileSize = fileInfo.size;
+          }
+        };
+      })();
+    ''');
   }
 
   @override

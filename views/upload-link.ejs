@@ -253,12 +253,15 @@
             <!-- File Input -->
             <div class="form-group">
               <label>🎥 Pilih Video</label>
-              <div class="file-input-area" style="background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer;" onclick="document.getElementById('videoFile').click()">
+              <div class="file-input-area" style="background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent;" onclick="document.getElementById('videoFile').click()">
                 <div class="icon" style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
-                <h3>Pilih Video dari Galeri/PC</h3>
+                <h3 style="margin-bottom: 0.5rem;">Pilih Video dari Galeri/PC</h3>
                 <p style="color: #999; margin-top: 0.5rem;">Klik untuk pilih video (MP4, MKV, AVI, WebM)</p>
                 <p id="fileName" style="color: #a855f7; margin-top: 1rem; font-weight: 600;"></p>
-                <input type="file" id="videoFile" name="video" accept="video/*" style="display: none;" onchange="updateFileName(this)" required>
+                <input type="file" id="videoFile" name="video" accept="video/*,video/mp4,video/x-matroska,video/avi,video/webm" style="display: none;" onchange="updateFileName(this)" required>
+                <button type="button" onclick="document.getElementById('videoFile').click()" style="margin-top: 1rem; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                  📂 Buka Galeri
+                </button>
               </div>
             </div>
 

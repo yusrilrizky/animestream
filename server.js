@@ -1109,6 +1109,12 @@ app.get('/upload', isAuthenticated, (req, res) => {
   res.render('upload-link', { user });
 });
 
+// Upload APK mode (native file picker)
+app.get('/upload-apk', isAuthenticated, (req, res) => {
+  const user = req.user;
+  res.render('upload-apk', { user });
+});
+
 // Upload with link (Terabox, Google Drive, etc)
 app.post('/upload-link', isAuthenticated, asyncHandler(async (req, res) => {
   try {

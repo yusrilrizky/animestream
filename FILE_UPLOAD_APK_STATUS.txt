@@ -1,0 +1,153 @@
+📱 STATUS FILE UPLOAD DI APK - UPDATE TERBARU
+================================================
+
+🔴 MASALAH AWAL:
+- User report: "gk mau import videonya dri apk gk bisa di pencet stuk aja"
+- File input button di APK tidak bisa diklik
+- Galeri tidak terbuka saat klik input file
+
+✅ SOLUSI YANG SUDAH DITERAPKAN:
+
+1. PERMISSIONS (AndroidManifest.xml)
+   ✅ READ_EXTERNAL_STORAGE - Baca file dari storage
+   ✅ WRITE_EXTERNAL_STORAGE - Tulis file ke storage
+   ✅ READ_MEDIA_VIDEO - Android 13+ video access
+   ✅ CAMERA - Camera access
+   ✅ requestLegacyExternalStorage="true" - Compatibility
+
+2. FILE PICKER INTENTS (AndroidManifest.xml)
+   ✅ ACTION_GET_CONTENT - File picker intent
+   ✅ ACTION_PICK - Gallery picker intent
+   ✅ ACTION_PROCESS_TEXT - Text processing
+
+3. UI IMPROVEMENTS (upload-link.ejs)
+   ✅ Button "Buka Galeri" yang visible dan clickable
+   ✅ Accept attribute dengan MIME types spesifik
+   ✅ -webkit-tap-highlight-color: transparent
+   ✅ onclick handler untuk trigger file input
+
+4. WEBVIEW CONFIGURATION (main.dart)
+   ✅ Import webview_flutter_android
+   ✅ setMediaPlaybackRequiresUserGesture(false)
+   ✅ Android-specific WebView config
+   ✅ debugPrint instead of print
+
+5. DEPENDENCIES (pubspec.yaml)
+   ✅ webview_flutter: ^4.10.0
+   ✅ webview_flutter_android: ^3.16.0 (BARU!)
+   ✅ url_launcher: ^6.3.1
+   ✅ connectivity_plus: ^6.1.0
+
+📋 LANGKAH SELANJUTNYA:
+
+1. REBUILD APK
+   Jalankan: rebuild-apk.bat
+   Atau manual:
+   ```
+   cd flutter_app
+   flutter clean
+   flutter pub get
+   flutter build apk --release
+   ```
+
+2. INSTALL APK BARU
+   - Transfer APK ke HP Android
+   - Install APK (uninstall yang lama dulu)
+   - Grant permissions saat diminta
+
+3. TEST FILE UPLOAD
+   - Buka app AnimeStream
+   - Login
+   - Klik Upload
+   - Klik tab "Upload File"
+   - Klik button "Buka Galeri"
+   - Pilih video dari galeri
+   - Isi form
+   - Upload
+
+🧪 TESTING CHECKLIST:
+
+[ ] APK berhasil di-build
+[ ] APK berhasil di-install di HP
+[ ] App bisa dibuka tanpa crash
+[ ] Halaman upload bisa dibuka
+[ ] Tab "Upload File" bisa diklik
+[ ] Button "Buka Galeri" terlihat
+[ ] Button "Buka Galeri" bisa diklik
+[ ] Galeri terbuka saat klik button
+[ ] Video bisa dipilih dari galeri
+[ ] Nama file muncul setelah pilih
+[ ] Form bisa diisi
+[ ] Upload button bisa diklik
+[ ] Progress bar muncul
+[ ] Upload berhasil
+
+⚠️ JIKA MASIH GAGAL:
+
+OPSI 1: Manual Permission Grant
+- Settings > Apps > AnimeStream > Permissions
+- Enable "Storage" dan "Media"
+
+OPSI 2: Add Permission Handler Plugin
+```
+cd flutter_app
+flutter pub add permission_handler
+```
+Lalu tambah runtime permission request di code.
+
+OPSI 3: Native File Picker
+```
+cd flutter_app
+flutter pub add file_picker
+```
+Ganti WebView file input dengan native file picker.
+
+📱 ANDROID VERSION SUPPORT:
+
+✅ Android 13+ (API 33+) - READ_MEDIA_VIDEO
+✅ Android 10-12 (API 29-32) - READ_EXTERNAL_STORAGE
+✅ Android 6-9 (API 23-28) - READ_EXTERNAL_STORAGE + Runtime
+⚠️ Android 5 (API 21-22) - Might need additional config
+
+🔧 FILES YANG DIUBAH:
+
+1. flutter_app/android/app/src/main/AndroidManifest.xml
+   - Added storage permissions
+   - Added file picker intents
+
+2. flutter_app/lib/main.dart
+   - Import webview_flutter_android
+   - Added Android WebView config
+   - Changed print to debugPrint
+
+3. flutter_app/pubspec.yaml
+   - Added webview_flutter_android: ^3.16.0
+
+4. views/upload-link.ejs
+   - Already has "Buka Galeri" button (from previous fix)
+
+📝 CATATAN PENTING:
+
+1. WebView file upload SEHARUSNYA work otomatis dengan webview_flutter plugin
+2. Permissions sudah lengkap untuk Android 6-13+
+3. UI button sudah visible dan clickable
+4. HARUS test di device fisik, bukan emulator
+5. Jika masih gagal, kemungkinan butuh native file picker
+
+🚀 QUICK COMMANDS:
+
+Build APK:
+  rebuild-apk.bat
+
+Manual Build:
+  cd flutter_app
+  flutter clean && flutter pub get && flutter build apk --release
+
+APK Location:
+  flutter_app\build\app\outputs\flutter-apk\app-release.apk
+  flutter_app\output\animestream-file-upload-fix.apk
+
+================================================
+STATUS: ⏳ READY TO REBUILD - WAITING FOR TEST
+LAST UPDATE: 2026-02-11
+================================================

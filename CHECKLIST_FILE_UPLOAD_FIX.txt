@@ -1,0 +1,180 @@
+☑️ CHECKLIST - FILE UPLOAD APK FIX
+===================================
+
+Ikuti checklist ini step-by-step untuk fix file upload di APK.
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 1: PERSIAPAN                                           ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[ ] 1. Baca dokumentasi:
+       → README_FILE_UPLOAD_FIX.txt (overview)
+       → CARA_FIX_FILE_UPLOAD_APK.txt (panduan lengkap)
+
+[ ] 2. Pastikan Flutter sudah terinstall:
+       Cek: flutter --version
+
+[ ] 3. Pastikan di folder project yang benar:
+       Cek: dir flutter_app
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 2: REBUILD APK                                         ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[ ] 4. Pilih cara rebuild:
+
+       CARA 1 (Mudah):
+       [ ] Double-click: rebuild-apk.bat
+       [ ] Tunggu sampai selesai (5-10 menit)
+       [ ] Cek APK di: flutter_app\output\
+
+       CARA 2 (Manual):
+       [ ] Buka Command Prompt
+       [ ] cd flutter_app
+       [ ] flutter clean
+       [ ] flutter pub get
+       [ ] flutter build apk --release
+       [ ] Cek APK di: flutter_app\build\app\outputs\flutter-apk\
+
+[ ] 5. Verify APK berhasil dibuat:
+       [ ] File app-release.apk ada
+       [ ] Size APK > 20MB
+       [ ] No error saat build
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 3: INSTALL APK                                         ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[ ] 6. Transfer APK ke HP Android:
+       [ ] Via USB
+       [ ] Via WhatsApp
+       [ ] Via Email
+       [ ] Via Google Drive
+
+[ ] 7. Uninstall app lama:
+       [ ] Settings > Apps > AnimeStream
+       [ ] Uninstall
+
+[ ] 8. Install APK baru:
+       [ ] Buka file APK di HP
+       [ ] Allow install from unknown sources
+       [ ] Install
+
+[ ] 9. Grant permissions:
+       [ ] Allow storage permission
+       [ ] Allow media permission
+       [ ] Allow camera permission (optional)
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 4: TESTING                                             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[ ] 10. Test basic functionality:
+        [ ] App bisa dibuka
+        [ ] No crash
+        [ ] Login berhasil
+
+[ ] 11. Test file upload:
+        [ ] Klik menu "Upload"
+        [ ] Klik tab "Upload File"
+        [ ] Button "Buka Galeri" terlihat
+        [ ] Button "Buka Galeri" bisa diklik
+        [ ] Galeri terbuka
+        [ ] Video bisa dipilih
+        [ ] Nama file muncul setelah pilih
+        [ ] Form bisa diisi (judul, episode, dll)
+        [ ] Button "Upload Video" bisa diklik
+        [ ] Progress bar muncul
+        [ ] Progress bar naik 0% → 100%
+        [ ] Upload berhasil
+        [ ] Video muncul di dashboard
+
+[ ] 12. Test link upload (pastikan masih jalan):
+        [ ] Klik tab "Upload dengan Link"
+        [ ] Paste link video
+        [ ] Isi form
+        [ ] Upload berhasil
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 5: TROUBLESHOOTING (JIKA GAGAL)                        ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Jika ada yang tidak jalan, cek:
+
+[ ] 13. Permissions:
+        [ ] Settings > Apps > AnimeStream > Permissions
+        [ ] Enable "Storage"
+        [ ] Enable "Media"
+
+[ ] 14. Android version:
+        [ ] Minimal Android 6.0 (Marshmallow)
+        [ ] Cek: Settings > About Phone > Android Version
+
+[ ] 15. File size:
+        [ ] Video max 500MB
+        [ ] Coba file lebih kecil dulu
+
+[ ] 16. Internet connection:
+        [ ] WiFi atau data aktif
+        [ ] Koneksi stabil
+
+[ ] 17. Restart:
+        [ ] Restart app
+        [ ] Restart HP
+
+[ ] 18. Reinstall:
+        [ ] Uninstall app
+        [ ] Restart HP
+        [ ] Install APK lagi
+
+╔═══════════════════════════════════════════════════════════════╗
+║  PHASE 6: DOKUMENTASI                                         ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[ ] 19. Baca troubleshooting lengkap:
+        [ ] FILE_UPLOAD_APK_STATUS.txt
+        [ ] APK_FILE_UPLOAD_FIX.md
+
+[ ] 20. Report hasil test:
+        [ ] File upload berhasil? ✅ / ❌
+        [ ] Galeri terbuka? ✅ / ❌
+        [ ] Upload berhasil? ✅ / ❌
+        [ ] Error message (jika ada): _____________
+
+╔═══════════════════════════════════════════════════════════════╗
+║  SUMMARY                                                      ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Total Steps: 20
+Estimated Time: 15-30 menit
+
+CRITICAL STEPS:
+   ⭐ Step 4: Rebuild APK
+   ⭐ Step 8: Install APK baru
+   ⭐ Step 9: Grant permissions
+   ⭐ Step 11: Test file upload
+
+JIKA SEMUA ✅:
+   🎉 Selamat! File upload di APK sudah jalan!
+
+JIKA ADA ❌:
+   📖 Baca FILE_UPLOAD_APK_STATUS.txt untuk troubleshooting
+
+╔═══════════════════════════════════════════════════════════════╗
+║  QUICK REFERENCE                                              ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Rebuild APK:
+   → rebuild-apk.bat
+
+APK Location:
+   → flutter_app\output\animestream-file-upload-fix.apk
+
+Dokumentasi:
+   → README_FILE_UPLOAD_FIX.txt (overview)
+   → CARA_FIX_FILE_UPLOAD_APK.txt (panduan)
+   → FILE_UPLOAD_APK_STATUS.txt (troubleshooting)
+
+===================================
+GOOD LUCK! 🚀
+===================================

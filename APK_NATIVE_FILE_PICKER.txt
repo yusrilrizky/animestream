@@ -1,0 +1,66 @@
+✅ NATIVE FILE PICKER - APK FIX
+================================
+
+🔧 SOLUSI BARU:
+
+WebView file input TIDAK WORK di Android.
+Solusi: Pakai native file picker dari Flutter!
+
+📋 PERUBAHAN:
+
+1. ✅ Tambah file_picker plugin
+   - flutter pub add file_picker
+   - Native file picker untuk Android
+
+2. ✅ Buat halaman upload khusus APK
+   - views/upload-apk.ejs
+   - UI sederhana dengan native file picker
+   - JavaScript channel ke Flutter
+
+3. ✅ Update main.dart
+   - JavaScript channel "FlutterFilePicker"
+   - Handle file picker dari JavaScript
+   - Auto redirect /upload → /upload-apk di APK
+
+4. ✅ Update server.js
+   - Route /upload-apk
+   - Render upload-apk.ejs
+
+🎯 CARA KERJA:
+
+1. User klik "Upload" di APK
+2. Auto redirect ke /upload-apk
+3. User klik "Pilih Video dari Galeri"
+4. Native file picker terbuka (dari Flutter)
+5. User pilih video
+6. File info dikirim ke JavaScript
+7. Form muncul, user isi data
+8. Upload via HTTP POST
+
+📱 TESTING:
+
+1. Install APK baru
+2. Login
+3. Klik "Upload"
+4. Otomatis ke halaman upload APK
+5. Klik "📂 Pilih Video dari Galeri"
+6. Galeri terbuka (native!)
+7. Pilih video
+8. Isi form
+9. Upload!
+
+⚠️ CATATAN:
+
+- Upload dengan LINK tetap recommended
+- File upload max 500MB
+- Butuh internet untuk upload
+- Native file picker lebih reliable
+
+🚀 STATUS:
+
+APK sedang di-build...
+Tunggu sampai selesai (5-10 menit)
+
+================================
+NEXT: Install APK baru & test
+================================

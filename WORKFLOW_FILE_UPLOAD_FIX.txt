@@ -1,0 +1,248 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║         📱 WORKFLOW FILE UPLOAD APK FIX                       ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+┌───────────────────────────────────────────────────────────────┐
+│                    VISUAL WORKFLOW                            │
+└───────────────────────────────────────────────────────────────┘
+
+🔴 MASALAH AWAL
+   │
+   ├─ User: "gk mau import videonya dri apk"
+   ├─ File input button stuck
+   └─ Galeri tidak terbuka
+   
+   ↓
+
+✅ ANALISIS
+   │
+   ├─ WebView file upload tidak support
+   ├─ Permissions storage belum ada
+   ├─ Android config belum optimal
+   └─ Button UI kurang visible
+   
+   ↓
+
+🔧 SOLUSI DITERAPKAN
+   │
+   ├─ [1] AndroidManifest.xml
+   │   ├─ READ_EXTERNAL_STORAGE
+   │   ├─ WRITE_EXTERNAL_STORAGE
+   │   ├─ READ_MEDIA_VIDEO (Android 13+)
+   │   └─ File picker intents
+   │
+   ├─ [2] main.dart
+   │   ├─ Import webview_flutter_android
+   │   ├─ Android WebView config
+   │   └─ Media playback support
+   │
+   ├─ [3] pubspec.yaml
+   │   └─ webview_flutter_android: ^3.16.0
+   │
+   └─ [4] upload-link.ejs
+       └─ Button "Buka Galeri" (sudah ada)
+   
+   ↓
+
+📋 DOKUMENTASI DIBUAT
+   │
+   ├─ README_FILE_UPLOAD_FIX.txt (overview)
+   ├─ CHECKLIST_FILE_UPLOAD_FIX.txt (checklist)
+   ├─ CARA_FIX_FILE_UPLOAD_APK.txt (panduan user)
+   ├─ FILE_UPLOAD_APK_STATUS.txt (status lengkap)
+   ├─ APK_FILE_UPLOAD_FIX.md (panduan teknis)
+   ├─ DONE_FILE_UPLOAD_FIX.txt (summary)
+   ├─ WORKFLOW_FILE_UPLOAD_FIX.txt (file ini)
+   └─ rebuild-apk.bat (script otomatis)
+   
+   ↓
+
+🚀 LANGKAH SELANJUTNYA
+   │
+   ├─ [1] REBUILD APK
+   │   ├─ Cara 1: Double-click rebuild-apk.bat
+   │   └─ Cara 2: Manual (flutter clean, pub get, build)
+   │
+   ├─ [2] INSTALL APK
+   │   ├─ Transfer ke HP
+   │   ├─ Uninstall app lama
+   │   └─ Install APK baru
+   │
+   ├─ [3] GRANT PERMISSIONS
+   │   ├─ Storage
+   │   ├─ Media
+   │   └─ Camera (optional)
+   │
+   └─ [4] TEST FILE UPLOAD
+       ├─ Buka app
+       ├─ Login
+       ├─ Upload > Upload File
+       ├─ Klik "Buka Galeri"
+       ├─ Pilih video
+       └─ Upload!
+   
+   ↓
+
+🎯 EXPECTED RESULT
+   │
+   ├─ ✅ Button "Buka Galeri" bisa diklik
+   ├─ ✅ Galeri terbuka
+   ├─ ✅ Video bisa dipilih
+   ├─ ✅ Upload berhasil
+   └─ ✅ Video muncul di dashboard
+
+┌───────────────────────────────────────────────────────────────┐
+│                    DECISION TREE                              │
+└───────────────────────────────────────────────────────────────┘
+
+START: Rebuild APK
+   │
+   ├─ Build berhasil? ──[NO]──> Cek Flutter version
+   │                            Cek dependencies
+   │                            Baca BUILD_APK_MANUAL.md
+   │
+   └─ [YES]
+       │
+       Install APK
+       │
+       ├─ Install berhasil? ──[NO]──> Uninstall app lama
+       │                              Enable unknown sources
+       │                              Cek Android version
+       │
+       └─ [YES]
+           │
+           Grant Permissions
+           │
+           ├─ Permissions granted? ──[NO]──> Settings > Apps
+           │                                  Enable manual
+           │
+           └─ [YES]
+               │
+               Test File Upload
+               │
+               ├─ Button terlihat? ──[NO]──> Pastikan APK baru
+               │                             Restart app
+               │
+               └─ [YES]
+                   │
+                   Klik Button
+                   │
+                   ├─ Galeri terbuka? ──[NO]──> Cek permissions
+                   │                            Restart HP
+                   │                            Baca troubleshooting
+                   │
+                   └─ [YES]
+                       │
+                       Pilih Video
+                       │
+                       ├─ Upload berhasil? ──[NO]──> Cek file size
+                       │                             Cek internet
+                       │                             Coba file kecil
+                       │
+                       └─ [YES]
+                           │
+                           🎉 SUCCESS!
+
+┌───────────────────────────────────────────────────────────────┐
+│                    FILE STRUCTURE                             │
+└───────────────────────────────────────────────────────────────┘
+
+AnimeStream/
+│
+├─ flutter_app/
+│  ├─ android/
+│  │  └─ app/
+│  │     └─ src/
+│  │        └─ main/
+│  │           └─ AndroidManifest.xml ✅ UPDATED
+│  │
+│  ├─ lib/
+│  │  └─ main.dart ✅ UPDATED
+│  │
+│  ├─ pubspec.yaml ✅ UPDATED
+│  │
+│  └─ build/
+│     └─ app/
+│        └─ outputs/
+│           └─ flutter-apk/
+│              └─ app-release.apk ⬅️ APK BARU
+│
+├─ views/
+│  └─ upload-link.ejs ✅ (sudah ada button)
+│
+└─ Dokumentasi/ 🆕
+   ├─ README_FILE_UPLOAD_FIX.txt ⭐ START HERE
+   ├─ CHECKLIST_FILE_UPLOAD_FIX.txt
+   ├─ CARA_FIX_FILE_UPLOAD_APK.txt
+   ├─ FILE_UPLOAD_APK_STATUS.txt
+   ├─ APK_FILE_UPLOAD_FIX.md
+   ├─ DONE_FILE_UPLOAD_FIX.txt
+   ├─ WORKFLOW_FILE_UPLOAD_FIX.txt (file ini)
+   └─ rebuild-apk.bat
+
+┌───────────────────────────────────────────────────────────────┐
+│                    TIMELINE                                   │
+└───────────────────────────────────────────────────────────────┘
+
+[DONE] ✅ Analisis masalah
+[DONE] ✅ Tambah permissions (AndroidManifest.xml)
+[DONE] ✅ Update WebView config (main.dart)
+[DONE] ✅ Tambah dependency (pubspec.yaml)
+[DONE] ✅ Buat dokumentasi lengkap (8 files)
+[DONE] ✅ Buat script otomatis (rebuild-apk.bat)
+[DONE] ✅ Update INDEX_DOKUMENTASI.txt
+
+[TODO] ⏳ Rebuild APK
+[TODO] ⏳ Install APK baru
+[TODO] ⏳ Test file upload
+[TODO] ⏳ Verify hasil
+
+┌───────────────────────────────────────────────────────────────┐
+│                    QUICK COMMANDS                             │
+└───────────────────────────────────────────────────────────────┘
+
+Rebuild APK (Otomatis):
+   > rebuild-apk.bat
+
+Rebuild APK (Manual):
+   > cd flutter_app
+   > flutter clean
+   > flutter pub get
+   > flutter build apk --release
+
+Check Flutter:
+   > flutter --version
+   > flutter doctor
+
+Check APK:
+   > dir flutter_app\build\app\outputs\flutter-apk\app-release.apk
+
+┌───────────────────────────────────────────────────────────────┐
+│                    SUPPORT & HELP                             │
+└───────────────────────────────────────────────────────────────┘
+
+Dokumentasi Lengkap:
+   → README_FILE_UPLOAD_FIX.txt (overview)
+   → CHECKLIST_FILE_UPLOAD_FIX.txt (step-by-step)
+   → CARA_FIX_FILE_UPLOAD_APK.txt (panduan user)
+
+Troubleshooting:
+   → FILE_UPLOAD_APK_STATUS.txt (troubleshooting lengkap)
+   → APK_FILE_UPLOAD_FIX.md (panduan teknis)
+
+Summary:
+   → DONE_FILE_UPLOAD_FIX.txt (summary lengkap)
+
+Index:
+   → INDEX_DOKUMENTASI.txt (index semua docs)
+
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║   STATUS: ✅ READY TO REBUILD                                 ║
+║   NEXT: Jalankan rebuild-apk.bat                              ║
+║                                                               ║
+║   🚀 GOOD LUCK!                                               ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝

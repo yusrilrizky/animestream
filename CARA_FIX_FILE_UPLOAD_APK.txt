@@ -1,0 +1,92 @@
+🔧 CARA FIX FILE UPLOAD DI APK
+================================
+
+📱 MASALAH:
+File upload di APK tidak bisa diklik, stuck, galeri tidak terbuka.
+
+✅ SUDAH DIPERBAIKI:
+1. Permissions storage ditambahkan
+2. WebView config untuk file upload
+3. Button "Buka Galeri" yang visible
+4. Support Android 6-13+
+
+🚀 CARA REBUILD APK:
+
+CARA 1: OTOMATIS (MUDAH!)
+--------------------------
+1. Double-click file: rebuild-apk.bat
+2. Tunggu sampai selesai
+3. APK ada di: flutter_app\output\animestream-file-upload-fix.apk
+
+CARA 2: MANUAL
+--------------
+1. Buka Command Prompt / Terminal
+2. Ketik:
+   cd flutter_app
+   flutter clean
+   flutter pub get
+   flutter build apk --release
+
+3. APK ada di:
+   flutter_app\build\app\outputs\flutter-apk\app-release.apk
+
+📲 CARA INSTALL APK BARU:
+
+1. Transfer APK ke HP Android (via USB/WhatsApp/Email)
+2. Uninstall app AnimeStream yang lama
+3. Install APK baru
+4. Buka app
+5. Kalau minta permission, klik "Allow"
+
+🧪 CARA TEST:
+
+1. Buka app AnimeStream
+2. Login
+3. Klik menu "Upload"
+4. Klik tab "Upload File" (yang kedua)
+5. Klik button ungu "📂 Buka Galeri"
+6. Pilih video dari galeri HP
+7. Isi form (judul, episode, dll)
+8. Klik "🚀 Upload Video"
+9. Tunggu progress bar sampai 100%
+10. Selesai!
+
+⚠️ KALAU MASIH GAGAL:
+
+1. Cek permission manual:
+   Settings > Apps > AnimeStream > Permissions
+   Enable "Storage" dan "Media"
+
+2. Cek Android version:
+   Minimal Android 6.0 (Marshmallow)
+
+3. Cek file size:
+   Maksimal 500MB
+
+4. Cek internet:
+   Harus ada koneksi internet untuk upload
+
+📝 CATATAN:
+
+- Upload dengan LINK tetap recommended (unlimited, gratis)
+- Upload FILE untuk video dari galeri/PC (max 500MB)
+- Test di HP fisik, bukan emulator
+- Kalau masih stuck, coba restart HP
+
+🆘 TROUBLESHOOTING:
+
+Q: Button "Buka Galeri" tidak muncul?
+A: Pastikan sudah install APK baru, bukan yang lama.
+
+Q: Galeri tidak terbuka saat klik?
+A: Cek permission di Settings > Apps > AnimeStream.
+
+Q: Upload stuck di 0%?
+A: Cek koneksi internet, coba file lebih kecil.
+
+Q: Error "File too large"?
+A: File max 500MB, compress dulu atau pakai upload link.
+
+================================
+READY TO BUILD! 🚀
+================================
