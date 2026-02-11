@@ -145,6 +145,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..enableZoom(true)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -161,6 +163,22 @@ class _WebViewScreenState extends State<WebViewScreen> {
             setState(() {
               progress = 1;
             });
+          },
+          onWebResourceError: (WebResourceError error) {
+            print('WebView error: ${error.description}');
+            if (error.errorType == WebResourceErrorType.hostLookup ||
+                error.errorType == WebResourceErrorType.connect ||
+                error.errorType == WebResourceErrorType.timeout) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error: ${error.description}'),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () => controller.reload(),
+                  ),
+                ),
+              );
+            }
           },
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://wa.me/') ||
