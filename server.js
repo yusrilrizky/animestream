@@ -12,6 +12,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { initDatabase, userDB, animeDB, resetTokenDB } = require('./database');
+const googleDrive = require('./google-drive');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -68,6 +69,9 @@ try {
   console.error('Stack:', error.stack);
   // Lanjut jalan meskipun database error
 }
+
+// Initialize Google Drive
+const googleDriveEnabled = googleDrive.initGoogleDrive();
 
 // Email transporter setup dengan error handling
 let emailTransporter;
@@ -1133,17 +1137,49 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
       });
     }
     
+    let videoPath = req.file.filename;
+    let googleDriveFileId = null;
+    let googleDriveLink = null;
+    
+    // Upload to Google Drive if configured
+    if (googleDriveEnabled) {
+      try {
+        console.log('📤 Uploading to Google Drive...');
+        const driveResult = await googleDrive.uploadToGoogleDrive(
+          req.file.path,
+          req.file.filename,
+          req.file.mimetype
+        );
+        
+        googleDriveFileId = driveResult.fileId;
+        googleDriveLink = driveResult.streamLink;
+        videoPath = driveResult.streamLink; // Use Google Drive link
+        
+        console.log('✅ Uploaded to Google Drive:', googleDriveFileId);
+        
+        // Delete local file after successful upload to Google Drive
+        if (fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+          console.log('🗑️ Deleted local file:', req.file.filename);
+        }
+      } catch (driveError) {
+        console.error('⚠️ Google Drive upload failed, using local storage:', driveError.message);
+        // Continue with local storage if Google Drive fails
+      }
+    }
+    
     const animeId = await animeDB.create({
       title: req.body.title,
       description: req.body.description,
       episode: req.body.episode,
       genre: req.body.genre || '',
-      videoPath: req.file.filename,
+      videoPath: videoPath,
       uploadDate: new Date().toLocaleDateString('id-ID'),
       uploaderId: user.id,
       uploader: user.displayName || user.username,
       views: 0,
-      category: req.body.category || 'action'
+      category: req.body.category || 'action',
+      googleDriveFileId: googleDriveFileId
     });
 
     console.log('✅ Upload successful, anime ID:', animeId);
@@ -1151,7 +1187,8 @@ app.post('/upload', isAuthenticated, (req, res, next) => {
     res.json({ 
       success: true, 
       animeId: animeId,
-      message: 'Video berhasil diupload!' 
+      message: 'Video berhasil diupload!' + (googleDriveFileId ? ' (Google Drive)' : ''),
+      storage: googleDriveFileId ? 'google-drive' : 'local'
     });
   } catch (error) {
     console.error('❌ Upload error:', error);

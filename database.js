@@ -50,6 +50,7 @@ function initDatabase() {
         episode TEXT,
         genre TEXT,
         videoPath TEXT NOT NULL,
+        googleDriveFileId TEXT,
         uploadDate TEXT NOT NULL,
         uploaderId INTEGER NOT NULL,
         uploader TEXT NOT NULL,
@@ -244,8 +245,8 @@ const animeDB = {
   // Create new anime
   create: (animeData) => {
     const stmt = db.prepare(`
-      INSERT INTO anime (title, description, episode, genre, videoPath, uploadDate, uploaderId, uploader, views, category)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO anime (title, description, episode, genre, videoPath, googleDriveFileId, uploadDate, uploaderId, uploader, views, category)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     
     const result = stmt.run(
@@ -254,6 +255,7 @@ const animeDB = {
       animeData.episode,
       animeData.genre || '',
       animeData.videoPath,
+      animeData.googleDriveFileId || null,
       animeData.uploadDate || new Date().toLocaleDateString('id-ID'),
       animeData.uploaderId,
       animeData.uploader,
