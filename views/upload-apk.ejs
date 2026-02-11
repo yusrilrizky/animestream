@@ -22,23 +22,90 @@
   </nav>
 
   <div class="container" style="padding: 2rem;">
-    <h2>📤 Upload Video (APK Mode)</h2>
+    <h2>📤 Upload Anime Baru</h2>
     
-    <div style="background: rgba(168, 85, 247, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-      <h3 style="color: #a855f7; margin-bottom: 1rem;">📱 Upload dari Galeri</h3>
-      <p style="margin-bottom: 1rem;">Klik tombol di bawah untuk pilih video dari galeri HP kamu.</p>
-      
-      <button onclick="pickFile()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
-        📂 Pilih Video dari Galeri
+    <!-- Upload Method Selector -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; background: rgba(168, 85, 247, 0.1); padding: 0.5rem; border-radius: 12px;">
+      <button type="button" onclick="switchMethod('link')" id="linkBtn" style="flex: 1; padding: 1rem; border: 2px solid transparent; background: transparent; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600; color: #666;">
+        🔗 Upload dengan Link
       </button>
-      
-      <div id="fileInfo" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; display: none;">
-        <p id="fileName" style="font-weight: 600; color: #a855f7;"></p>
-        <p id="fileSize" style="color: #666; font-size: 0.9rem;"></p>
-      </div>
+      <button type="button" onclick="switchMethod('file')" id="fileBtn" class="active" style="flex: 1; padding: 1rem; border: 2px solid #a855f7; background: linear-gradient(135deg, #a855f7, #c084fc); border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600; color: white;">
+        📁 Upload File
+      </button>
     </div>
 
-    <form id="uploadForm" style="display: none;">
+    <!-- Link Upload Section -->
+    <div id="linkSection" style="display: none;">
+      <div style="background: rgba(168, 85, 247, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h3 style="color: #a855f7; margin-bottom: 1rem;">🔗 Upload dengan Link (Recommended!)</h3>
+        <p style="margin-bottom: 1rem;"><strong>Gratis Unlimited!</strong> Upload video ke platform streaming, lalu paste link di sini.</p>
+        <p style="font-size: 0.9rem; color: #666;">Platform: Cloudinary, Streamable, Vimeo (AD-FREE), Streamtape, Doodstream, Mixdrop, dll.</p>
+      </div>
+
+      <form action="/upload-link" method="POST" id="linkUploadForm">
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🔗 Link Video</label>
+          <input type="url" name="videoLink" required placeholder="https://cloudinary.com/... atau https://streamtape.com/v/xxxxx" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🎬 Judul Anime</label>
+          <input type="text" name="title" required placeholder="Contoh: Naruto Shippuden" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📺 Episode</label>
+          <input type="text" name="episode" required placeholder="Contoh: Episode 1" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📂 Kategori</label>
+          <select name="category" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="comedy">Comedy</option>
+            <option value="drama">Drama</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="romance">Romance</option>
+            <option value="sci-fi">Sci-Fi</option>
+            <option value="slice-of-life">Slice of Life</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🏷️ Genre</label>
+          <input type="text" name="genre" placeholder="Contoh: Action, Adventure, Shounen" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">📝 Deskripsi</label>
+          <textarea name="description" required rows="4" placeholder="Ceritakan tentang anime ini..." style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;"></textarea>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
+          🚀 Upload Sekarang
+        </button>
+      </form>
+    </div>
+
+    <!-- File Upload Section -->
+    <div id="fileSection">
+      <div style="background: rgba(168, 85, 247, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h3 style="color: #a855f7; margin-bottom: 1rem;">📱 Upload dari Galeri</h3>
+        <p style="margin-bottom: 1rem;">Klik tombol di bawah untuk pilih video dari galeri HP kamu.</p>
+        <p style="font-size: 0.9rem; color: #666;"><strong>⚠️ Catatan:</strong> Max 500MB. Video disimpan di server lokal.</p>
+        
+        <button onclick="pickFile()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 1rem;">
+          📂 Pilih Video dari Galeri
+        </button>
+        
+        <div id="fileInfo" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; display: none;">
+          <p id="fileName" style="font-weight: 600; color: #a855f7;"></p>
+          <p id="fileSize" style="color: #666; font-size: 0.9rem;"></p>
+        </div>
+      </div>
+
+      <form id="uploadForm" style="display: none;">
       <div style="margin-bottom: 1rem;">
         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">🎬 Judul Anime</label>
         <input type="text" id="title" required placeholder="Contoh: Naruto Shippuden" style="width: 100%; padding: 0.8rem; border: 2px solid #a855f7; border-radius: 8px;">
@@ -87,6 +154,33 @@
 
   <script>
     let selectedFile = null;
+
+    function switchMethod(method) {
+      const linkBtn = document.getElementById('linkBtn');
+      const fileBtn = document.getElementById('fileBtn');
+      const linkSection = document.getElementById('linkSection');
+      const fileSection = document.getElementById('fileSection');
+      
+      if (method === 'link') {
+        linkBtn.style.background = 'linear-gradient(135deg, #a855f7, #c084fc)';
+        linkBtn.style.color = 'white';
+        linkBtn.style.border = '2px solid #a855f7';
+        fileBtn.style.background = 'transparent';
+        fileBtn.style.color = '#666';
+        fileBtn.style.border = '2px solid transparent';
+        linkSection.style.display = 'block';
+        fileSection.style.display = 'none';
+      } else {
+        fileBtn.style.background = 'linear-gradient(135deg, #a855f7, #c084fc)';
+        fileBtn.style.color = 'white';
+        fileBtn.style.border = '2px solid #a855f7';
+        linkBtn.style.background = 'transparent';
+        linkBtn.style.color = '#666';
+        linkBtn.style.border = '2px solid transparent';
+        fileSection.style.display = 'block';
+        linkSection.style.display = 'none';
+      }
+    }
 
     function pickFile() {
       // Call Flutter file picker via JavaScript channel
