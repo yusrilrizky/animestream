@@ -136,6 +136,63 @@
             %>
             <iframe src="<%= embedUrl %>" width="100%" height="500" frameborder="0" allowfullscreen allow="autoplay" style="border-radius: 8px; background: #000;"></iframe>
             
+          <% } else if (videoUrl.includes('cloudinary.com')) { %>
+            <!-- Cloudinary Embed (AD-FREE!) -->
+            <% 
+            let embedUrl = videoUrl;
+            // Cloudinary video player
+            %>
+            <video controls autoplay style="width: 100%; max-height: 500px; border-radius: 8px; background: #000;">
+              <source src="<%= embedUrl %>" type="video/mp4">
+              Browser Anda tidak mendukung video player.
+            </video>
+            <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)); padding: 0.8rem; margin-top: 0.5rem; border-radius: 8px; text-align: center; border: 2px solid #4caf50;">
+              <p style="color: #4caf50; margin: 0; font-size: 0.9rem; font-weight: 600;">
+                ✅ AD-FREE - Tidak ada iklan!
+              </p>
+            </div>
+            
+          <% } else if (videoUrl.includes('streamable.com')) { %>
+            <!-- Streamable Embed (AD-FREE!) -->
+            <% 
+            let embedUrl = videoUrl;
+            // Convert streamable link to embed
+            if (videoUrl.includes('/e/')) {
+              embedUrl = videoUrl;
+            } else {
+              let videoId = videoUrl.split('/').pop().split('?')[0];
+              embedUrl = `https://streamable.com/e/${videoId}`;
+            }
+            %>
+            <iframe src="<%= embedUrl %>" width="100%" height="500" frameborder="0" allowfullscreen allow="autoplay" style="border-radius: 8px; background: #000;"></iframe>
+            <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)); padding: 0.8rem; margin-top: 0.5rem; border-radius: 8px; text-align: center; border: 2px solid #4caf50;">
+              <p style="color: #4caf50; margin: 0; font-size: 0.9rem; font-weight: 600;">
+                ✅ AD-FREE - Tidak ada iklan!
+              </p>
+            </div>
+            
+          <% } else if (videoUrl.includes('vimeo.com')) { %>
+            <!-- Vimeo Embed (AD-FREE!) -->
+            <% 
+            let embedUrl = videoUrl;
+            // Convert vimeo link to embed
+            if (videoUrl.includes('/video/')) {
+              let videoId = videoUrl.split('/video/')[1].split('/')[0].split('?')[0];
+              embedUrl = `https://player.vimeo.com/video/${videoId}`;
+            } else if (videoUrl.includes('player.vimeo.com')) {
+              embedUrl = videoUrl;
+            } else {
+              let videoId = videoUrl.split('/').pop().split('?')[0];
+              embedUrl = `https://player.vimeo.com/video/${videoId}`;
+            }
+            %>
+            <iframe src="<%= embedUrl %>" width="100%" height="500" frameborder="0" allowfullscreen allow="autoplay" style="border-radius: 8px; background: #000;"></iframe>
+            <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)); padding: 0.8rem; margin-top: 0.5rem; border-radius: 8px; text-align: center; border: 2px solid #4caf50;">
+              <p style="color: #4caf50; margin: 0; font-size: 0.9rem; font-weight: 600;">
+                ✅ AD-FREE - Tidak ada iklan!
+              </p>
+            </div>
+            
           <% } else if (videoUrl.includes('drive.google.com')) { %>
             <!-- Google Drive - Show button -->
             <div style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(168, 85, 247, 0.2)); padding: 3rem 2rem; border-radius: 12px; text-align: center; border: 2px solid rgba(168, 85, 247, 0.3);">

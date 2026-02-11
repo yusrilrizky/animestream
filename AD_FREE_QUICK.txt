@@ -1,0 +1,173 @@
+✅ PLATFORM AD-FREE - TIDAK ADA IKLAN!
+======================================
+
+🎯 3 PLATFORM TANPA IKLAN SAMA SEKALI:
+
+1. ✅ Cloudinary - https://cloudinary.com
+   - 100% AD-FREE
+   - Gratis selamanya
+   - 25GB storage + 25GB bandwidth/bulan
+   - Max 100MB per video
+   - Bisa embed langsung
+   - ⭐⭐⭐⭐⭐ PALING RECOMMENDED!
+
+2. ✅ Streamable - https://streamable.com
+   - 100% AD-FREE
+   - Unlimited uploads
+   - Max 10GB per video
+   - Tidak perlu akun (anonymous)
+   - Bisa embed langsung
+   - ⭐⭐⭐⭐⭐ UNTUK VIDEO BESAR!
+
+3. ✅ Vimeo - https://vimeo.com
+   - 100% AD-FREE
+   - Professional quality
+   - Free tier: 5GB, tidak bisa embed
+   - Paid tier: $12/bulan, bisa embed
+   - ⭐⭐⭐⭐ UNTUK PROFESSIONAL!
+
+🚀 CARA PAKAI CLOUDINARY (PALING MUDAH):
+
+1. DAFTAR AKUN
+   - Buka https://cloudinary.com
+   - Klik "Sign Up Free"
+   - Isi email & password
+   - Verifikasi email
+
+2. UPLOAD VIDEO
+   - Login → Klik "Media Library"
+   - Klik "Upload" → Pilih "Video"
+   - Upload video (max 100MB)
+   - Tunggu upload selesai
+
+3. COPY LINK
+   - Klik video di Media Library
+   - Copy "Secure URL"
+   - Format: https://res.cloudinary.com/[cloud_name]/video/upload/[id].mp4
+
+4. PASTE DI ANIMESTREAM
+   - Buka AnimeStream
+   - Klik "Upload" → "Upload dengan Link"
+   - Paste link Cloudinary
+   - Isi detail anime
+   - Upload!
+
+5. SELESAI! 🎉
+   - Video embed tanpa iklan!
+   - Tidak ada popup!
+   - Tidak ada redirect!
+
+🚀 CARA PAKAI STREAMABLE (PALING SIMPLE):
+
+1. UPLOAD (TIDAK PERLU AKUN!)
+   - Buka https://streamable.com
+   - Klik "Upload Video"
+   - Pilih file (max 10GB)
+   - Tunggu upload selesai
+
+2. COPY LINK
+   - Copy URL dari address bar
+   - Format: https://streamable.com/xxxxxxx
+
+3. PASTE DI ANIMESTREAM
+   - Paste link di form upload
+   - Isi detail anime
+   - Upload!
+
+4. SELESAI! 🎉
+   - Video embed tanpa iklan!
+
+📋 FORMAT LINK YANG DIDUKUNG:
+
+Cloudinary:
+✅ https://res.cloudinary.com/[cloud_name]/video/upload/[id].mp4
+
+Streamable:
+✅ https://streamable.com/xxxxxxx
+✅ https://streamable.com/e/xxxxxxx
+
+Vimeo:
+✅ https://vimeo.com/xxxxxxx
+✅ https://player.vimeo.com/video/xxxxxxx
+
+📊 PERBANDINGAN:
+
+| Platform | Iklan | Max File | Storage | Embed | Harga |
+|----------|-------|----------|---------|-------|-------|
+| Cloudinary | ❌ | 100MB | 25GB | ✅ | Gratis |
+| Streamable | ❌ | 10GB | Unlimited | ✅ | Gratis |
+| Vimeo | ❌ | 5GB | 5GB | ❌ (free) | $12/bulan |
+
+💡 REKOMENDASI:
+
+UNTUK VIDEO KECIL (<100MB):
+→ Cloudinary (paling bagus, 100% gratis)
+
+UNTUK VIDEO BESAR (>100MB):
+→ Streamable (unlimited, max 10GB)
+
+UNTUK PROFESSIONAL:
+→ Vimeo Plus ($12/bulan)
+
+🎯 TIPS:
+
+1. Compress video sebelum upload (agar <100MB untuk Cloudinary)
+   - Tools: Handbrake, FFmpeg
+   - Settings: 720p, 1500 kbps, MP4
+
+2. Upload ke 2 platform sebagai backup:
+   - Primary: Cloudinary (ad-free, cepat)
+   - Backup: Streamable (ad-free, unlimited)
+
+3. Monitor bandwidth Cloudinary (25GB/bulan)
+   - Video 80MB = ~300 views/bulan
+   - Video 50MB = ~500 views/bulan
+
+4. Daftar akun Streamable (gratis) agar video tidak dihapus
+
+✅ KEUNTUNGAN AD-FREE:
+
+✅ Tidak ada iklan sama sekali
+✅ Tidak ada popup
+✅ Tidak ada redirect ke halaman lain
+✅ Video player bersih
+✅ Pengalaman seperti YouTube Premium
+✅ User lebih senang nonton
+✅ Terlihat lebih profesional
+
+❌ PLATFORM DENGAN IKLAN (JANGAN PAKAI):
+
+Streamtape/Doodstream/Mixdrop:
+- Ada iklan saat play video
+- Ada popup kadang-kadang
+- Kadang redirect ke halaman lain
+- Video player ada iklan
+
+⚠️ LIMITASI:
+
+Cloudinary:
+- Max 100MB per video (free plan)
+- 25GB bandwidth per bulan
+- Kalau bandwidth habis, tunggu bulan depan
+
+Streamable:
+- Video dihapus setelah 90 hari (anonymous)
+- Dengan akun gratis, video permanen
+
+Vimeo:
+- Free tier tidak bisa embed
+- Perlu upgrade $12/bulan untuk embed
+
+🎉 KESIMPULAN:
+
+Pakai Cloudinary atau Streamable untuk pengalaman AD-FREE!
+
+- Video tanpa iklan ✅
+- Tidak ada popup ✅
+- Tidak ada redirect ✅
+- Streaming bersih & profesional ✅
+
+📞 BUTUH BANTUAN?
+WhatsApp: https://wa.me/6282297706541
+
+© 2026 AnimeStream
