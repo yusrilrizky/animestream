@@ -28,19 +28,54 @@
       <h2><%= anime.title %> - Episode <%= anime.episode %></h2>
       
       <div class="video-player">
-        <% if (anime.videoPath.startsWith('http://') || anime.videoPath.startsWith('https://')) { %>
-          <!-- External Link (Terabox, Google Drive, etc) -->
-          <div style="background: #1a1a2e; padding: 2rem; border-radius: 12px; text-align: center;">
-            <h3 style="color: #a855f7; margin-bottom: 1rem;">🎬 Tonton Video</h3>
-            <p style="color: #aaa; margin-bottom: 1.5rem;">Video di-host di platform eksternal</p>
-            <a href="<%= anime.videoPath %>" target="_blank" class="btn btn-primary" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem;">
-              ▶️ Buka Video
-            </a>
-            <p style="color: #666; margin-top: 1rem; font-size: 0.85rem;">Video akan dibuka di tab baru</p>
-          </div>
+        <% 
+        let videoUrl = anime.videoPath;
+        let isExternal = videoUrl.startsWith('http://') || videoUrl.startsWith('https://');
+        
+        // Convert Google Drive link to direct streaming link
+        if (isExternal && videoUrl.includes('drive.google.com')) {
+          // Extract file ID from Google Drive URL
+          let fileId = null;
+          if (videoUrl.includes('/file/d/')) {
+            fileId = videoUrl.split('/file/d/')[1].split('/')[0];
+          } else if (videoUrl.includes('id=')) {
+            fileId = videoUrl.split('id=')[1].split('&')[0];
+          }
+          
+          if (fileId) {
+            // Convert to direct streaming URL
+            videoUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          }
+        }
+        %>
+        
+        <% if (isExternal) { %>
+          <!-- External Link - Try to embed -->
+          <% if (videoUrl.includes('drive.google.com')) { %>
+            <!-- Google Drive Video -->
+            <iframe 
+              src="https://drive.google.com/file/d/<%= videoUrl.includes('/file/d/') ? videoUrl.split('/file/d/')[1].split('/')[0] : videoUrl.split('id=')[1].split('&')[0] %>/preview" 
+              width="100%" 
+              height="480" 
+              allow="autoplay"
+              style="border: none; background: #000;"
+            ></iframe>
+          <% } else { %>
+            <!-- Other External Links -->
+            <video controls autoplay style="width: 100%; max-height: 500px;">
+              <source src="<%= videoUrl %>" type="video/mp4">
+              Browser Anda tidak mendukung video player.
+            </video>
+            <div style="background: rgba(168, 85, 247, 0.1); padding: 1rem; margin-top: 1rem; border-radius: 8px; text-align: center;">
+              <p style="color: #aaa; margin-bottom: 0.5rem;">Tidak bisa play? Buka di tab baru:</p>
+              <a href="<%= videoUrl %>" target="_blank" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 1.5rem;">
+                ▶️ Buka Video
+              </a>
+            </div>
+          <% } %>
         <% } else { %>
           <!-- Local Video -->
-          <video controls autoplay>
+          <video controls autoplay style="width: 100%; max-height: 500px;">
             <source src="/uploads/<%= anime.videoPath %>" type="video/mp4">
             Browser Anda tidak mendukung video player.
           </video>
