@@ -112,6 +112,27 @@
             <div style="background: rgba(168, 85, 247, 0.2); border-radius: 8px; overflow: hidden; height: 40px; margin-bottom: 1rem;">
               <div id="progressBar" style="background: linear-gradient(135deg, #a855f7, #c084fc); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);">0%</div>
             </div>
+            
+            <!-- Detail Info -->
+            <div style="background: rgba(168, 85, 247, 0.08); padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="color: #666; font-size: 0.9rem;">📤 Terupload:</span>
+                <span id="uploadedMB" style="color: #a855f7; font-weight: 700; font-size: 0.95rem;">0 MB</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="color: #666; font-size: 0.9rem;">📦 Total Size:</span>
+                <span id="totalMB" style="color: #666; font-weight: 600; font-size: 0.95rem;">0 MB</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="color: #666; font-size: 0.9rem;">⏳ Sisa:</span>
+                <span id="remainingMB" style="color: #ff9800; font-weight: 700; font-size: 0.95rem;">0 MB</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #666; font-size: 0.9rem;">📊 Progress:</span>
+                <span id="percentText" style="color: #a855f7; font-weight: 700; font-size: 0.95rem;">0%</span>
+              </div>
+            </div>
+            
             <p id="progressText" style="text-align: center; margin: 0; color: #666; font-size: 1rem; font-weight: 600;">Memulai upload...</p>
           </div>
 
@@ -220,6 +241,10 @@
       const progressText = document.getElementById('progressText');
       const progressIcon = document.getElementById('progressIcon');
       const progressTitleText = document.getElementById('progressTitleText');
+      const uploadedMB = document.getElementById('uploadedMB');
+      const totalMB = document.getElementById('totalMB');
+      const remainingMB = document.getElementById('remainingMB');
+      const percentText = document.getElementById('percentText');
       const uploadBtn = document.getElementById('uploadBtn');
       
       progressContainer.style.display = 'block';
@@ -228,6 +253,10 @@
       progressText.textContent = 'Memulai upload...';
       progressIcon.textContent = '⏳';
       progressTitleText.textContent = 'Memulai Upload...';
+      uploadedMB.textContent = '0 MB';
+      totalMB.textContent = '0 MB';
+      remainingMB.textContent = '0 MB';
+      percentText.textContent = '0%';
       uploadBtn.disabled = true;
       uploadBtn.textContent = '⏳ Uploading...';
       uploadBtn.style.opacity = '0.6';
@@ -246,14 +275,24 @@
         if (e.lengthComputable) {
           const percentComplete = Math.round((e.loaded / e.total) * 100);
           const loadedMB = (e.loaded / (1024 * 1024)).toFixed(2);
-          const totalMB = (e.total / (1024 * 1024)).toFixed(2);
+          const totalMBValue = (e.total / (1024 * 1024)).toFixed(2);
+          const remainingMBValue = ((e.total - e.loaded) / (1024 * 1024)).toFixed(2);
+          const remainingPercent = 100 - percentComplete;
           
-          console.log(`📊 Upload progress: ${percentComplete}% (${loadedMB}MB / ${totalMB}MB)`);
+          console.log(`📊 Upload progress: ${percentComplete}% (${loadedMB}MB / ${totalMBValue}MB) - Sisa: ${remainingMBValue}MB (${remainingPercent}%)`);
           
           // Update progress bar
           progressBar.style.width = percentComplete + '%';
           progressBar.textContent = percentComplete + '%';
-          progressText.textContent = `Uploading... ${loadedMB} MB / ${totalMB} MB (${percentComplete}%)`;
+          
+          // Update detail info
+          uploadedMB.textContent = loadedMB + ' MB';
+          totalMB.textContent = totalMBValue + ' MB';
+          remainingMB.textContent = remainingMBValue + ' MB';
+          percentText.textContent = percentComplete + '%';
+          
+          // Update main text
+          progressText.textContent = `Uploading... ${loadedMB} MB / ${totalMBValue} MB • Sisa ${remainingPercent}% (${remainingMBValue} MB)`;
           
           // Update icon based on progress
           if (percentComplete === 0) {
@@ -261,21 +300,23 @@
             progressTitleText.textContent = 'Memulai Upload...';
           } else if (percentComplete < 25) {
             progressIcon.textContent = '📤';
-            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '% • Sisa ' + remainingPercent + '%';
           } else if (percentComplete < 50) {
             progressIcon.textContent = '📊';
-            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '% • Sisa ' + remainingPercent + '%';
           } else if (percentComplete < 75) {
             progressIcon.textContent = '🚀';
-            progressTitleText.textContent = 'Uploading... ' + percentComplete + '%';
+            progressTitleText.textContent = 'Uploading... ' + percentComplete + '% • Sisa ' + remainingPercent + '%';
           } else if (percentComplete < 100) {
             progressIcon.textContent = '⚡';
-            progressTitleText.textContent = 'Hampir Selesai... ' + percentComplete + '%';
+            progressTitleText.textContent = 'Hampir Selesai... ' + percentComplete + '% • Sisa ' + remainingPercent + '%';
           } else {
             progressIcon.textContent = '✅';
-            progressTitleText.textContent = 'Upload Selesai!';
+            progressTitleText.textContent = 'Upload Selesai! 100%';
             progressBar.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
             progressText.textContent = '✅ Upload selesai! Memproses...';
+            remainingMB.textContent = '0 MB';
+            remainingMB.style.color = '#4caf50';
           }
         } else {
           console.log('📊 Upload progress: unknown (no content length)');
