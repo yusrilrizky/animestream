@@ -1,0 +1,52 @@
+========================================
+✅ ERROR VIEWS SUDAH DIPERBAIKI!
+========================================
+
+Error: "Failed to lookup view 'login-new' in views directory '/app/views'"
+
+SUDAH DIPERBAIKI DI:
+✅ Dockerfile - ditambah explicit copy views folder
+✅ server.js - ditambah explicit views path
+
+========================================
+CARA DEPLOY ULANG KE RAILWAY:
+========================================
+
+1. PUSH KE GITHUB (PALING MUDAH):
+   
+   git add .
+   git commit -m "Fix views error"
+   git push
+
+   Railway akan otomatis detect dan redeploy!
+
+2. ATAU PAKAI RAILWAY CLI:
+   
+   railway up
+
+3. ATAU MANUAL DI RAILWAY DASHBOARD:
+   - Buka railway.app
+   - Klik project kamu
+   - Klik "Deployments"
+   - Klik "Redeploy"
+
+========================================
+TUNGGU 1-2 MENIT
+========================================
+
+Setelah deploy, tunggu 1-2 menit sampai selesai.
+Lalu buka website kamu lagi.
+
+Halaman login seharusnya sudah muncul! 🎉
+
+========================================
+KALAU MASIH ERROR:
+========================================
+
+Cek logs di Railway:
+- Buka Railway dashboard
+- Klik project → Deployments → Latest → View Logs
+
+Atau lihat file: RAILWAY_TROUBLESHOOT.md
+
+========================================

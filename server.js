@@ -20,12 +20,52 @@ console.log('🚀 Starting AnimeStream server...');
 console.log('📍 PORT:', PORT);
 console.log('🌍 NODE_ENV:', process.env.NODE_ENV || 'development');
 
-// Inisialisasi database
+// Global error handler untuk uncaught errors
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  console.error('Stack:', error.stack);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise);
+  console.error('Reason:', reason);
+});
+
+// Async error wrapper untuk routes
+const asyncHandler = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch((error) => {
+    console.error('❌ Route error:', error);
+    console.error('Stack:', error.stack);
+    res.status(500).send(`
+      <html>
+        <head>
+          <title>Error - AnimeStream</title>
+          <style>
+            body { font-family: Arial; padding: 2rem; background: #0f0f1e; color: white; text-align: center; }
+            h1 { color: #ff6b6b; }
+            p { color: #aaa; }
+            a { color: #a855f7; text-decoration: none; }
+          </style>
+        </head>
+        <body>
+          <h1>⚠️ Terjadi Kesalahan</h1>
+          <p>Maaf, terjadi kesalahan pada server.</p>
+          <p><a href="/">← Kembali ke Beranda</a></p>
+        </body>
+      </html>
+    `);
+  });
+};
+
+// Inisialisasi database dengan better error handling
+let dbInitialized = false;
 try {
   initDatabase();
+  dbInitialized = true;
   console.log('✅ Database initialized');
 } catch (error) {
   console.error('⚠️ Database init error:', error.message);
+  console.error('Stack:', error.stack);
   // Lanjut jalan meskipun database error
 }
 
@@ -91,6 +131,7 @@ async function sendResetEmail(email, resetToken) {
 
 // Middleware
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -122,62 +163,70 @@ passport.deserializeUser((id, done) => {
   done(null, user);
 });
 
-// Google OAuth Strategy
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL
-  },
-  (accessToken, refreshToken, profile, done) => {
-    // Cek apakah user sudah ada
-    let user = userDB.getByGoogleId(profile.id);
-    
-    if (!user) {
-      // Cek apakah email sudah terdaftar
-      user = userDB.getByEmail(profile.emails[0].value);
+// Google OAuth Strategy - Only if credentials provided
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && 
+    process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id-here') {
+  passport.use(new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback'
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // Cek apakah user sudah ada
+      let user = userDB.getByGoogleId(profile.id);
       
-      if (user) {
-        // Update user dengan Google ID
-        userDB.update(user.id, { googleId: profile.id });
-        user = userDB.getById(user.id);
-      } else {
-        // Buat user baru
-        const userId = userDB.create({
-          googleId: profile.id,
-          username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
-          email: profile.emails[0].value,
-          displayName: profile.displayName,
-          avatar: profile.photos[0].value,
-          password: null,
-          role: 'user',
-          joinDate: new Date().toLocaleDateString('id-ID')
-        });
-        user = userDB.getById(userId);
+      if (!user) {
+        // Cek apakah email sudah terdaftar
+        user = userDB.getByEmail(profile.emails[0].value);
+        
+        if (user) {
+          // Update user dengan Google ID
+          userDB.update(user.id, { googleId: profile.id });
+          user = userDB.getById(user.id);
+        } else {
+          // Buat user baru
+          const userId = userDB.create({
+            googleId: profile.id,
+            username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000),
+            email: profile.emails[0].value,
+            displayName: profile.displayName,
+            avatar: profile.photos[0].value,
+            password: null,
+            role: 'user',
+            joinDate: new Date().toLocaleDateString('id-ID')
+          });
+          user = userDB.getById(userId);
+        }
       }
-    }
-    
-    return done(null, user);
-  }
-));
-
-// Facebook OAuth Strategy
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-    profileFields: ['id', 'displayName', 'emails', 'photos']
-  },
-  (accessToken, refreshToken, profile, done) => {
-    // Cek apakah user sudah ada
-    let user = userDB.getByFacebookId(profile.id);
-    
-    if (!user) {
-      // Cek apakah email sudah terdaftar
-      const email = profile.emails ? profile.emails[0].value : `${profile.id}@facebook.com`;
-      user = userDB.getByEmail(email);
       
-      if (user) {
-        // Update user dengan Facebook ID
+      return done(null, user);
+    }
+  ));
+  console.log('✅ Google OAuth configured');
+} else {
+  console.log('⚠️ Google OAuth not configured (credentials missing)');
+}
+
+// Facebook OAuth Strategy - Only if credentials provided
+if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET &&
+    process.env.FACEBOOK_APP_ID !== 'your-facebook-app-id-here') {
+  passport.use(new FacebookStrategy({
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL || 'http://localhost:3000/auth/facebook/callback',
+      profileFields: ['id', 'displayName', 'emails', 'photos']
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // Cek apakah user sudah ada
+      let user = userDB.getByFacebookId(profile.id);
+      
+      if (!user) {
+        // Cek apakah email sudah terdaftar
+        const email = profile.emails ? profile.emails[0].value : `${profile.id}@facebook.com`;
+        user = userDB.getByEmail(email);
+        
+        if (user) {
+          // Update user dengan Facebook ID
         userDB.update(user.id, { facebookId: profile.id });
         user = userDB.getById(user.id);
       } else {
@@ -198,8 +247,11 @@ passport.use(new FacebookStrategy({
     
     return done(null, user);
   }
-));
-
+  ));
+  console.log('✅ Facebook OAuth configured');
+} else {
+  console.log('⚠️ Facebook OAuth not configured (credentials missing)');
+}
 // Buat folder uploads jika belum ada
 if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
@@ -269,7 +321,7 @@ app.get('/login', (req, res) => {
   res.render('login-new', { error: null, success: success });
 });
 
-app.post('/login', async (req, res, next) => {
+app.post('/login', asyncHandler(async (req, res, next) => {
   try {
     const { username, password } = req.body;
     
@@ -306,7 +358,7 @@ app.post('/login', async (req, res, next) => {
     console.error('Login exception:', error);
     return res.render('login-new', { error: 'Terjadi kesalahan sistem. Silakan coba lagi.', success: null });
   }
-});
+}));
 
 // Google OAuth Routes - Mock untuk development
 app.get('/auth/google', (req, res) => {
@@ -422,7 +474,7 @@ app.get('/forgot-password', (req, res) => {
   }
 });
 
-app.post('/forgot-password', async (req, res) => {
+app.post('/forgot-password', asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
     
@@ -483,7 +535,7 @@ app.post('/forgot-password', async (req, res) => {
       email: null
     });
   }
-});
+}));
 
 // Route untuk verifikasi kode
 app.post('/verify-code', async (req, res) => {
