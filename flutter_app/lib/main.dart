@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:io';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -144,7 +139,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
   double progress = 0;
   
   final String websiteUrl = 'https://animestream-production-95b2.up.railway.app/login';
-  bool _filePickerActive = false;
 
   @override
   void initState() {
@@ -153,55 +147,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..enableZoom(true)
-      ..addJavaScriptChannel(
-        'FlutterFilePicker',
-        onMessageReceived: (JavaScriptMessage message) async {
-          if (_filePickerActive) return;
-          _filePickerActive = true;
-          
-          try {
-            // Handle file picker from JavaScript
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.video,
-              allowMultiple: false,
-            );
-            
-            if (result != null && result.files.isNotEmpty) {
-              PlatformFile file = result.files.first;
-              // Send file info back to JavaScript
-              String fileInfo = jsonEncode({
-                'name': file.name,
-                'size': file.size,
-                'path': file.path,
-              });
-              await controller.runJavaScript('if(window.handleFileSelected) window.handleFileSelected($fileInfo);');
-            }
-          } finally {
-            _filePickerActive = false;
-          }
-        },
-      )
-      ..addJavaScriptChannel(
-        'FlutterFileUpload',
-        onMessageReceived: (JavaScriptMessage message) async {
-          try {
-            // Parse upload data from JavaScript
-            final data = jsonDecode(message.message);
-            final filePath = data['filePath'] as String;
-            final title = data['title'] as String;
-            final episode = data['episode'] as String;
-            final category = data['category'] as String;
-            final genre = data['genre'] as String?;
-            final description = data['description'] as String;
-            
-            // Upload file
-            await _uploadFile(filePath, title, episode, category, genre ?? '', description);
-          } catch (e) {
-            debugPrint('Upload error: $e');
-            await controller.runJavaScript('if(window.handleUploadError) window.handleUploadError("${e.toString()}");');
-          }
-        },
-      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -218,33 +163,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
             setState(() {
               progress = 1;
             });
-            // Inject JavaScript to intercept file input clicks
-            _injectFilePickerScript();
           },
           onWebResourceError: (WebResourceError error) {
             debugPrint('WebView error: ${error.description}');
-            if (error.errorType == WebResourceErrorType.hostLookup ||
-                error.errorType == WebResourceErrorType.connect ||
-                error.errorType == WebResourceErrorType.timeout) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error: ${error.description}'),
-                  action: SnackBarAction(
-                    label: 'Retry',
-                    onPressed: () => controller.reload(),
-                  ),
-                ),
-              );
-            }
           },
           onNavigationRequest: (NavigationRequest request) {
-            // Redirect /upload to /upload-link in APK (file upload not working in WebView)
-            if (request.url.contains('/upload-apk')) {
-              controller.loadRequest(Uri.parse(request.url.replaceFirst('/upload-apk', '/upload')));
-              return NavigationDecision.prevent;
-            }
-            
-            // Allow file picker and external links
+            // Open WhatsApp in external app
             if (request.url.startsWith('https://wa.me/') ||
                 request.url.startsWith('whatsapp://')) {
               launchUrl(Uri.parse(request.url), mode: LaunchMode.externalApplication);
@@ -255,110 +179,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ),
       )
       ..loadRequest(Uri.parse(websiteUrl));
-    
-    // Enable file upload support for Android
-    if (controller.platform is AndroidWebViewController) {
-      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
-    }
-  }
-  
-  void _injectFilePickerScript() {
-    controller.runJavaScript('''
-      (function() {
-        // Intercept file input clicks
-        document.addEventListener('click', function(e) {
-          var target = e.target;
-          
-          // Check if clicked element is file input or triggers file input
-          if (target.tagName === 'INPUT' && target.type === 'file') {
-            e.preventDefault();
-            e.stopPropagation();
-            window.FlutterFilePicker.postMessage('pickFile');
-            return false;
-          }
-          
-          // Check if clicked button triggers file input
-          if (target.tagName === 'BUTTON' || target.classList.contains('file-input-area')) {
-            var fileInput = document.getElementById('videoFile');
-            if (fileInput) {
-              e.preventDefault();
-              e.stopPropagation();
-              window.FlutterFilePicker.postMessage('pickFile');
-              return false;
-            }
-          }
-        }, true);
-        
-        // Handle file selected from Flutter
-        window.handleFileSelected = function(fileInfo) {
-          var fileInput = document.getElementById('videoFile');
-          if (fileInput) {
-            // Update file name display
-            var fileNameDisplay = document.getElementById('fileName');
-            if (fileNameDisplay) {
-              var sizeMB = (fileInfo.size / (1024 * 1024)).toFixed(2);
-              fileNameDisplay.textContent = '📁 ' + fileInfo.name + ' (' + sizeMB + ' MB)';
-            }
-            
-            // Store file path for upload
-            window.selectedFilePath = fileInfo.path;
-            window.selectedFileName = fileInfo.name;
-            window.selectedFileSize = fileInfo.size;
-          }
-        };
-      })();
-    ''');
-  }
-
-  Future<void> _uploadFile(String filePath, String title, String episode, String category, String genre, String description) async {
-    try {
-      // Notify JavaScript upload started
-      await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(0, "Preparing upload...");');
-      
-      final file = File(filePath);
-      if (!await file.exists()) {
-        throw Exception('File not found');
-      }
-
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$websiteUrl/upload'.replaceAll('/login', '/upload')),
-      );
-
-      // Add form fields
-      request.fields['title'] = title;
-      request.fields['episode'] = episode;
-      request.fields['category'] = category;
-      request.fields['genre'] = genre;
-      request.fields['description'] = description;
-
-      // Add file
-      final fileStream = http.ByteStream(file.openRead());
-      final fileLength = await file.length();
-      final multipartFile = http.MultipartFile(
-        'video',
-        fileStream,
-        fileLength,
-        filename: file.path.split('/').last,
-      );
-      request.files.add(multipartFile);
-
-      // Send request
-      await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(10, "Uploading...");');
-      
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-
-      if (response.statusCode == 200) {
-        await controller.runJavaScript('if(window.handleUploadProgress) window.handleUploadProgress(100, "Upload complete!");');
-        await controller.runJavaScript('if(window.handleUploadSuccess) window.handleUploadSuccess();');
-      } else {
-        throw Exception('Upload failed: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('Upload error: $e');
-      await controller.runJavaScript('if(window.handleUploadError) window.handleUploadError("${e.toString()}");');
-    }
   }
 
   @override

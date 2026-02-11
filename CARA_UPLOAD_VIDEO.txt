@@ -1,0 +1,162 @@
+📱 CARA UPLOAD VIDEO - MUDAH!
+==============================
+
+Sekarang ada 2 CARA upload video:
+
+
+🔗 CARA 1: UPLOAD DENGAN LINK (PALING MUDAH!)
+==============================================
+
+1. Upload video ke platform streaming:
+   - Buka: https://cloudinary.com (GRATIS, TANPA IKLAN)
+   - Atau: https://streamable.com (GRATIS, TANPA IKLAN)
+   - Upload video kamu di sana
+   - Copy link share yang dikasih
+
+2. Buka AnimeStream:
+   - Login dulu
+   - Klik menu "Upload"
+   - Pilih tab "🔗 Upload dengan Link"
+
+3. Isi form:
+   - Link Video: paste link dari Cloudinary/Streamable
+   - Judul Anime: Naruto Shippuden
+   - Episode: Episode 1
+   - Kategori: Action
+   - Genre: Action, Adventure, Shounen
+   - Deskripsi: cerita anime
+
+4. Klik "🚀 Upload Sekarang"
+
+5. SELESAI! Video langsung muncul di homepage
+
+✅ KEUNTUNGAN:
+   - INSTANT! Tidak perlu tunggu upload
+   - UNLIMITED! Tidak ada limit size
+   - GRATIS selamanya
+   - Work di HP & Laptop
+   - Work di Railway & localhost
+
+
+📁 CARA 2: UPLOAD FILE LANGSUNG
+================================
+
+⚠️ CATATAN: Hanya work di localhost (http://localhost:3000)
+           TIDAK work di Railway!
+
+1. Buka AnimeStream:
+   - Login dulu
+   - Klik menu "Upload"
+   - Pilih tab "📁 Upload File"
+
+2. Pilih video:
+   - Klik "📂 Buka Galeri"
+   - Di HP: pilih dari galeri
+   - Di PC: pilih dari folder
+   - Max 500MB
+
+3. Isi form:
+   - Judul Anime: Naruto Shippuden
+   - Episode: Episode 1
+   - Kategori: Action
+   - Genre: Action, Adventure, Shounen
+   - Deskripsi: cerita anime
+
+4. Klik "🚀 Upload Video"
+
+5. Tunggu progress bar 0-100%
+
+6. SELESAI! Video tersimpan di server
+
+✅ KEUNTUNGAN:
+   - Upload langsung dari HP/PC
+   - Progress bar jelas (0-100%)
+   - File tersimpan di server
+
+❌ KEKURANGAN:
+   - Max 500MB
+   - Hanya work di localhost
+   - TIDAK work di Railway
+
+
+🎯 REKOMENDASI
+==============
+
+UNTUK RAILWAY (HOSTING ONLINE):
+   → WAJIB pakai CARA 1 (Upload dengan Link)
+   → Cloudinary atau Streamable (TANPA IKLAN!)
+   → Instant, unlimited, gratis!
+
+UNTUK LOCALHOST (TESTING DI KOMPUTER):
+   → Bisa pakai CARA 1 atau CARA 2
+   → Upload file work dengan progress bar
+
+
+🎬 PLATFORM STREAMING GRATIS
+=============================
+
+TANPA IKLAN (RECOMMENDED!):
+   ✅ Cloudinary - https://cloudinary.com
+      → 25GB gratis
+      → Tanpa iklan sama sekali
+      → Streaming HD
+
+   ✅ Streamable - https://streamable.com
+      → Unlimited gratis
+      → Tanpa iklan
+      → Upload mudah
+
+   ✅ Vimeo - https://vimeo.com
+      → Kualitas HD
+      → Tanpa iklan
+      → Professional
+
+ADA IKLAN (TAPI GRATIS):
+   🎬 Streamtape - https://streamtape.com
+   🎬 Doodstream - https://doodstream.com
+   🎬 Mixdrop - https://mixdrop.co
+
+STORAGE (DOWNLOAD):
+   📦 Terabox - https://terabox.com (1TB gratis!)
+   📦 Google Drive - https://drive.google.com
+
+
+❓ FAQ
+======
+
+Q: Cara mana yang paling mudah?
+A: CARA 1 (Upload dengan Link)! Instant, unlimited, gratis!
+
+Q: Kenapa upload file stuck di Railway?
+A: Railway pakai ephemeral storage. File hilang saat restart.
+   Solusi: pakai upload dengan link!
+
+Q: Apakah Cloudinary gratis?
+A: Ya! 25GB gratis selamanya, tanpa iklan!
+
+Q: Apakah progress bar work?
+A: Ya! Work di localhost untuk upload file.
+   Upload dengan link instant (tidak perlu progress bar).
+
+Q: Bisa upload dari HP?
+A: Ya! Kedua cara work di HP & laptop.
+   Tapi untuk Railway, wajib pakai upload dengan link.
+
+
+🎉 KESIMPULAN
+=============
+
+Pakai CARA 1 (Upload dengan Link) untuk hasil terbaik!
+- Instant (tidak perlu tunggu)
+- Unlimited (tidak ada limit)
+- Gratis selamanya
+- Work di mana saja
+
+Upload video sekarang jadi MUDAH! 🚀
+
+
+=====================================
+CARA TERBAIK: 🔗 Upload dengan Link
+PLATFORM: Cloudinary/Streamable (AD-FREE)
+STATUS: ✅ WORK DI HP & LAPTOP
+=====================================
