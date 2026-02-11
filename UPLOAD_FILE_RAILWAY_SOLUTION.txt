@@ -1,0 +1,302 @@
+⚠️ UPLOAD FILE DI RAILWAY - SOLUSI LENGKAP
+===========================================
+
+🔴 MASALAH:
+   "aku gk mau dri link dri browser langsung hrus bisa upload mb nya berjalan pas uploading"
+   
+   Kamu mau:
+   ✅ Upload file langsung dari browser/galeri
+   ✅ Progress bar jalan (MB naik 0-100%)
+   ✅ Work di Railway (hosting online)
+
+❌ KENAPA TIDAK BISA DI RAILWAY?
+=================================
+
+   RAILWAY PAKAI EPHEMERAL STORAGE:
+   
+   1. File yang diupload ke server akan HILANG saat restart
+   2. Railway restart otomatis setiap deploy
+   3. Tidak ada persistent disk storage
+   4. File upload = BUANG-BUANG WAKTU (akan hilang)
+
+   TECHNICAL LIMITATIONS:
+   
+   1. Timeout untuk file besar (>100MB)
+   2. Limited bandwidth di free tier
+   3. Memory limit (512MB-1GB)
+   4. No persistent /uploads folder
+   5. File hilang setelah restart/redeploy
+
+✅ SOLUSI 1: CLOUDFLARE R2 (RECOMMENDED!)
+=========================================
+
+   SETUP CLOUDFLARE R2 = UPLOAD FILE WORK DI RAILWAY!
+
+   KEUNTUNGAN:
+   ✅ Upload file langsung dari browser
+   ✅ Progress bar jalan (MB naik)
+   ✅ File PERMANENT (tidak hilang)
+   ✅ Unlimited storage (bayar sesuai pemakaian)
+   ✅ Work di Railway & localhost
+   ✅ Fast CDN delivery
+
+   CARA SETUP:
+
+   1. BUAT AKUN CLOUDFLARE R2
+      - Buka: https://dash.cloudflare.com
+      - Sign up gratis
+      - Pilih R2 Object Storage
+      - Buat bucket baru (nama: animestream-videos)
+
+   2. DAPATKAN CREDENTIALS
+      - Account ID: di dashboard R2
+      - Access Key ID: buat di R2 API Tokens
+      - Secret Access Key: copy saat buat token
+      - Bucket Name: animestream-videos
+
+   3. TAMBAHKAN KE RAILWAY ENV VARS
+      - Buka Railway dashboard
+      - Pilih project AnimeStream
+      - Tab "Variables"
+      - Tambahkan:
+        R2_ACCOUNT_ID=your-account-id
+        R2_ACCESS_KEY_ID=your-access-key
+        R2_SECRET_ACCESS_KEY=your-secret-key
+        R2_BUCKET_NAME=animestream-videos
+        R2_PUBLIC_URL=https://your-bucket-url
+
+   4. REDEPLOY RAILWAY
+      - Railway akan auto-detect R2
+      - Upload file akan otomatis ke R2
+      - File permanent & tidak hilang
+
+   5. TEST UPLOAD
+      - Buka Railway URL
+      - Upload file dari galeri
+      - Progress bar jalan!
+      - File tersimpan di R2
+      - SELESAI!
+
+   BIAYA R2:
+   - 10GB gratis per bulan
+   - $0.015 per GB setelah itu
+   - Sangat murah!
+
+✅ SOLUSI 2: UPLOAD DI LOCALHOST (GRATIS!)
+==========================================
+
+   UPLOAD FILE WORK 100% DI LOCALHOST!
+
+   KEUNTUNGAN:
+   ✅ Upload file langsung
+   ✅ Progress bar jalan (MB naik)
+   ✅ File permanent di uploads/
+   ✅ MySQL database permanent
+   ✅ GRATIS! Tidak perlu bayar
+
+   CARA PAKAI:
+
+   1. JALANKAN SERVER LOCALHOST
+      - Buka terminal
+      - cd ke folder project
+      - npm start
+      - Server jalan di http://localhost:3000
+
+   2. BUKA BROWSER
+      - http://localhost:3000
+      - Login (admin/admin123)
+
+   3. UPLOAD FILE
+      - Klik menu "Upload"
+      - Pilih tab "Upload File"
+      - Klik "Buka Galeri"
+      - Pilih video (<500MB)
+      - Isi form anime
+      - Klik "Upload Video"
+
+   4. LIHAT PROGRESS BAR
+      - Progress bar muncul
+      - MB naik 0-100%
+      - "Uploading... 25.50 MB / 100.00 MB"
+      - Tunggu sampai 100%
+
+   5. SELESAI!
+      - Video tersimpan di uploads/
+      - Muncul di homepage
+      - Permanent (tidak hilang)
+
+   LIMITASI:
+   ⚠️ Hanya work di localhost
+   ⚠️ Tidak bisa diakses dari luar
+   ⚠️ Harus jalankan server sendiri
+
+✅ SOLUSI 3: UPLOAD DENGAN LINK (PALING MUDAH!)
+===============================================
+
+   TIDAK PERLU SETUP APAPUN!
+
+   KEUNTUNGAN:
+   ✅ INSTANT! Tidak perlu tunggu upload
+   ✅ UNLIMITED! Tidak ada limit size
+   ✅ Work di Railway & localhost
+   ✅ GRATIS selamanya
+   ✅ File permanent
+   ✅ Tidak perlu setup R2
+
+   CARA PAKAI:
+
+   1. UPLOAD VIDEO KE CLOUDINARY
+      - Buka: https://cloudinary.com
+      - Sign up gratis (25GB)
+      - Upload video kamu
+      - Copy link share
+
+   2. PASTE DI ANIMESTREAM
+      - Buka Railway URL atau localhost
+      - Klik menu "Upload"
+      - Pilih tab "Upload dengan Link"
+      - Paste link Cloudinary
+      - Isi form anime
+      - Klik "Upload Sekarang"
+
+   3. SELESAI!
+      - Video langsung muncul
+      - Tidak perlu tunggu upload
+      - INSTANT!
+
+   PLATFORM RECOMMENDED:
+   ✅ Cloudinary - https://cloudinary.com (AD-FREE, 25GB)
+   ✅ Streamable - https://streamable.com (AD-FREE, unlimited)
+   ✅ Vimeo - https://vimeo.com (AD-FREE, HD)
+
+🎯 PERBANDINGAN SOLUSI
+======================
+
+   SOLUSI 1: CLOUDFLARE R2
+   ✅ Upload file langsung
+   ✅ Progress bar jalan
+   ✅ Work di Railway
+   ✅ File permanent
+   ❌ Perlu setup (15 menit)
+   ❌ Bayar setelah 10GB
+
+   SOLUSI 2: LOCALHOST
+   ✅ Upload file langsung
+   ✅ Progress bar jalan
+   ✅ File permanent
+   ✅ GRATIS
+   ❌ Hanya work di localhost
+   ❌ Tidak bisa diakses online
+
+   SOLUSI 3: UPLOAD DENGAN LINK
+   ✅ INSTANT (tidak perlu tunggu)
+   ✅ UNLIMITED size
+   ✅ Work di Railway
+   ✅ File permanent
+   ✅ GRATIS selamanya
+   ✅ Tidak perlu setup
+   ❌ Harus upload ke platform lain dulu
+
+📋 REKOMENDASI
+==============
+
+   UNTUK RAILWAY (PRODUCTION):
+   
+   Pilihan 1: CLOUDFLARE R2
+   → Setup sekali, work selamanya
+   → Upload file langsung dengan progress bar
+   → File permanent, tidak hilang
+   → Biaya murah ($0.015/GB)
+   
+   Pilihan 2: UPLOAD DENGAN LINK
+   → Tidak perlu setup
+   → Instant, unlimited, gratis
+   → Cloudinary/Streamable (AD-FREE)
+   → Paling mudah & praktis
+
+   UNTUK LOCALHOST (DEVELOPMENT):
+   → Upload file langsung
+   → Progress bar work 100%
+   → GRATIS, tidak perlu setup
+   → Perfect untuk testing
+
+🔧 CARA SETUP R2 (STEP-BY-STEP)
+================================
+
+   1. BUAT AKUN CLOUDFLARE
+      https://dash.cloudflare.com/sign-up
+
+   2. AKTIFKAN R2
+      - Dashboard → R2 Object Storage
+      - Enable R2 (gratis)
+
+   3. BUAT BUCKET
+      - Create Bucket
+      - Name: animestream-videos
+      - Location: Automatic
+      - Create
+
+   4. BUAT API TOKEN
+      - R2 → Manage R2 API Tokens
+      - Create API Token
+      - Permissions: Object Read & Write
+      - Copy Access Key ID & Secret
+
+   5. DAPATKAN ACCOUNT ID
+      - Dashboard → R2
+      - Copy Account ID
+
+   6. TAMBAHKAN KE RAILWAY
+      - Railway Dashboard
+      - Project → Variables
+      - Add:
+        R2_ACCOUNT_ID=xxx
+        R2_ACCESS_KEY_ID=xxx
+        R2_SECRET_ACCESS_KEY=xxx
+        R2_BUCKET_NAME=animestream-videos
+
+   7. REDEPLOY
+      - Railway auto-redeploy
+      - Tunggu 2-5 menit
+
+   8. TEST
+      - Buka Railway URL
+      - Upload file
+      - Progress bar jalan!
+      - File ke R2
+      - SELESAI!
+
+🎉 KESIMPULAN
+=============
+
+   UNTUK UPLOAD FILE DI RAILWAY:
+   → HARUS setup Cloudflare R2
+   → Atau pakai upload dengan link
+
+   RAILWAY TIDAK SUPPORT:
+   ❌ Upload file ke server disk
+   ❌ Ephemeral storage
+   ❌ File akan hilang
+
+   SOLUSI TERBAIK:
+   1. Setup R2 (15 menit, work selamanya)
+   2. Atau pakai upload dengan link (instant, gratis)
+
+   UNTUK LOCALHOST:
+   ✅ Upload file sudah work
+   ✅ Progress bar jalan
+   ✅ Tidak perlu setup apapun
+
+=====================================
+STATUS: ⚠️ Railway butuh R2 atau Link
+SOLUSI: Setup R2 atau pakai Link
+LOCALHOST: ✅ Upload file work!
+=====================================
+
+💡 Pilih solusi yang sesuai kebutuhan:
+   - R2 = Upload file di Railway (perlu setup)
+   - Link = Instant, unlimited, gratis (no setup)
+   - Localhost = Upload file work (gratis, offline)
+
+📖 Baca: CLOUDFLARE_R2_SETUP.md untuk panduan R2
+📖 Baca: CARA_UPLOAD_VIDEO.txt untuk upload dengan link

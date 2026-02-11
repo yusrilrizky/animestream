@@ -243,19 +243,18 @@
 
         <!-- File Upload Section -->
         <div id="fileSection" class="upload-section">
-          <div class="info-box" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1)); border-left: 4px solid #ffc107;">
-            <h4>⚠️ Upload File Langsung (Localhost Only)</h4>
+          <div class="info-box">
+            <h4>📁 Upload File Langsung</h4>
             <p>Upload video dari galeri HP atau file PC kamu.</p>
-            <p><strong>📌 PENTING:</strong></p>
+            <p><strong>📌 Catatan:</strong></p>
             <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #666; font-size: 0.9rem;">
               <li><strong>Max 500MB</strong> - File lebih besar akan gagal</li>
-              <li><strong>Hanya work di localhost</strong> (http://localhost:3000)</li>
-              <li><strong>TIDAK work di Railway/hosting online</strong></li>
-              <li><strong>Koneksi lambat = timeout</strong></li>
+              <li><strong>Progress bar</strong> akan tampil saat upload</li>
+              <li><strong>Koneksi stabil</strong> diperlukan untuk file besar</li>
             </ul>
-            <p style="margin-top: 1rem; padding: 0.8rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px; border: 2px solid #a855f7;">
-              <strong>💡 Rekomendasi:</strong> Pakai tab <strong>"Upload dengan Link"</strong> untuk hasil terbaik!<br>
-              ✅ Instant, unlimited, work di mana saja!
+            <p style="margin-top: 1rem; padding: 0.8rem; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 4px solid #ffc107; color: #666;">
+              <strong>⚠️ Untuk Railway:</strong> Upload file butuh setup Cloudflare R2 untuk persistent storage. Tanpa R2, file akan hilang saat restart.<br>
+              <strong>💡 Alternatif:</strong> Pakai tab <strong>"Upload dengan Link"</strong> (instant, unlimited, gratis!)
             </p>
           </div>
 
@@ -484,7 +483,27 @@
       
       xhr.addEventListener('error', function(e) {
         console.error('XHR Error:', e);
-        alert('❌ Upload error!\n\nKemungkinan penyebab:\n1. Koneksi internet terputus\n2. Server tidak merespon\n3. File terlalu besar untuk koneksi kamu\n4. CORS atau firewall issue\n\n💡 Solusi: Pakai "Upload dengan Link" (tab sebelah) untuk hasil terbaik!');
+        
+        // Check if running on Railway (no R2 configured)
+        const isRailway = window.location.hostname.includes('railway.app') || window.location.hostname.includes('up.railway.app');
+        
+        if (isRailway) {
+          alert('❌ Upload file tidak work di Railway!\n\n' +
+                'Railway pakai ephemeral storage - file akan hilang saat restart.\n\n' +
+                '✅ SOLUSI:\n' +
+                '1. Setup Cloudflare R2 (persistent storage)\n' +
+                '2. Atau pakai "Upload dengan Link" (instant, unlimited!)\n\n' +
+                '💡 Recommended: Pakai "Upload dengan Link" - Cloudinary/Streamable gratis & tanpa iklan!');
+        } else {
+          alert('❌ Upload error!\n\n' +
+                'Kemungkinan penyebab:\n' +
+                '1. Koneksi internet terputus\n' +
+                '2. Server tidak merespon\n' +
+                '3. File terlalu besar untuk koneksi kamu\n' +
+                '4. CORS atau firewall issue\n\n' +
+                '💡 Solusi: Pakai "Upload dengan Link" (tab sebelah) untuk hasil terbaik!');
+        }
+        
         resetUploadForm();
       });
       
