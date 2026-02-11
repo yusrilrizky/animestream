@@ -926,41 +926,52 @@ app.post('/reset-password', async (req, res) => {
 });
 
 app.post('/register', asyncHandler(async (req, res) => {
-  const { username, email, password, confirmPassword, terms } = req.body;
-  
-  if (!terms) {
-    return res.render('register', { error: 'Anda harus menyetujui syarat & ketentuan' });
+  try {
+    const { username, email, password, confirmPassword, terms } = req.body;
+    
+    console.log('📝 Register attempt:', { username, email });
+    
+    if (!terms) {
+      return res.render('register', { error: 'Anda harus menyetujui syarat & ketentuan' });
+    }
+    
+    if (password !== confirmPassword) {
+      return res.render('register', { error: 'Password tidak cocok' });
+    }
+    
+    if (password.length < 6) {
+      return res.render('register', { error: 'Password minimal 6 karakter' });
+    }
+    
+    // Check existing user
+    const existingUser = await userDB.getByUsernameOrEmail(username);
+    if (existingUser) {
+      return res.render('register', { error: 'Username sudah digunakan' });
+    }
+    
+    const existingEmail = await userDB.getByEmail(email);
+    if (existingEmail) {
+      return res.render('register', { error: 'Email sudah terdaftar' });
+    }
+    
+    // Create user
+    const userId = await userDB.create({
+      username,
+      email,
+      displayName: username,
+      password: bcrypt.hashSync(password, 10),
+      role: 'user',
+      joinDate: new Date().toLocaleDateString('id-ID')
+    });
+    
+    console.log('✅ User registered:', username, 'ID:', userId);
+    
+    // Redirect ke login dengan pesan sukses
+    res.redirect('/login?success=registered');
+  } catch (error) {
+    console.error('❌ Register error:', error);
+    res.render('register', { error: 'Terjadi kesalahan. Silakan coba lagi.' });
   }
-  
-  if (password !== confirmPassword) {
-    return res.render('register', { error: 'Password tidak cocok' });
-  }
-  
-  if (password.length < 6) {
-    return res.render('register', { error: 'Password minimal 6 karakter' });
-  }
-  
-  if (await userDB.getByUsernameOrEmail(username)) {
-    return res.render('register', { error: 'Username sudah digunakan' });
-  }
-  
-  if (await userDB.getByEmail(email)) {
-    return res.render('register', { error: 'Email sudah terdaftar' });
-  }
-  
-  const userId = await userDB.create({
-    username,
-    email,
-    displayName: username,
-    password: bcrypt.hashSync(password, 10),
-    role: 'user',
-    joinDate: new Date().toLocaleDateString('id-ID')
-  });
-  
-  console.log('✅ User registered:', username);
-  
-  // Redirect ke login dengan pesan sukses (tidak auto-login)
-  res.redirect('/login?success=registered');
 }));
 
 app.get('/logout', (req, res) => {

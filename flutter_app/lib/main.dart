@@ -247,6 +247,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ],
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -265,7 +266,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
               onPressed: () => controller.loadRequest(Uri.parse(websiteUrl)),
               child: const Icon(Icons.home, size: 20),
             ),
-            const SizedBox(height: 80), // Space for WhatsApp button
           ],
         ),
       ),
