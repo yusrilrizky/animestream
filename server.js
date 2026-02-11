@@ -925,7 +925,7 @@ app.post('/reset-password', async (req, res) => {
   res.redirect('/login?success=password-reset');
 });
 
-app.post('/register', async (req, res, next) => {
+app.post('/register', asyncHandler(async (req, res) => {
   const { username, email, password, confirmPassword, terms } = req.body;
   
   if (!terms) {
@@ -957,9 +957,11 @@ app.post('/register', async (req, res, next) => {
     joinDate: new Date().toLocaleDateString('id-ID')
   });
   
+  console.log('✅ User registered:', username);
+  
   // Redirect ke login dengan pesan sukses (tidak auto-login)
   res.redirect('/login?success=registered');
-});
+}));
 
 app.get('/logout', (req, res) => {
   req.logout((err) => {

@@ -1,0 +1,206 @@
+═══════════════════════════════════════════════════════════════
+   🚀 DEPLOY UPDATE KE RAILWAY
+═══════════════════════════════════════════════════════════════
+
+✅ CODE SUDAH DI-PUSH KE GITHUB!
+
+Railway akan otomatis redeploy dalam beberapa menit.
+
+═══════════════════════════════════════════════════════════════
+   📋 YANG SUDAH DILAKUKAN
+═══════════════════════════════════════════════════════════════
+
+1. ✅ Git add semua perubahan
+2. ✅ Git commit dengan message
+3. ✅ Git push ke GitHub (origin/main)
+4. ⏳ Railway auto-deploy (tunggu 2-5 menit)
+
+Commit message:
+   "Add upload file feature, MySQL migration, mobile optimization, fix login error"
+
+Files changed: 28 files
+Insertions: 4617 lines
+Deletions: 203 lines
+
+═══════════════════════════════════════════════════════════════
+   ⏳ TUNGGU RAILWAY DEPLOY
+═══════════════════════════════════════════════════════════════
+
+Railway akan otomatis detect push ke GitHub dan redeploy.
+
+Proses:
+   1. ⏳ Detect push (1-2 menit)
+   2. ⏳ Build Docker image (2-3 menit)
+   3. ⏳ Deploy container (1-2 menit)
+   4. ✅ Live! (total 5-7 menit)
+
+Cek status deploy:
+   1. Buka Railway dashboard
+   2. Klik project "animestream"
+   3. Lihat tab "Deployments"
+   4. Tunggu status "Success"
+
+═══════════════════════════════════════════════════════════════
+   🔍 CEK HASIL DEPLOY
+═══════════════════════════════════════════════════════════════
+
+Setelah deploy selesai (5-7 menit):
+
+1. BUKA WEBSITE
+   https://animestream-production-95b2.up.railway.app
+
+2. CEK FITUR BARU
+   - Upload page: /upload
+   - Tab "📁 Upload File" ada
+   - WhatsApp button tidak tertutup
+   - Scroll smooth
+
+3. TEST UPLOAD
+   - Klik tab "📁 Upload File"
+   - Pilih video
+   - Upload
+   - ⚠️ Video akan hilang saat restart (ephemeral)
+
+4. TEST MOBILE
+   - Buka di HP
+   - Scroll halaman
+   - WhatsApp button tetap terlihat
+   - Scroll smooth
+
+═══════════════════════════════════════════════════════════════
+   ⚠️ CATATAN PENTING - RAILWAY
+═══════════════════════════════════════════════════════════════
+
+UPLOAD FILE DI RAILWAY:
+   ⚠️ Video akan HILANG saat server restart
+   ⚠️ Railway pakai ephemeral storage
+   ⚠️ Tidak ada persistent volume
+
+SOLUSI:
+   ✅ Pakai "Upload dengan Link" (recommended!)
+   ✅ Upload ke Streamable/Cloudinary/Vimeo
+   ✅ Gratis unlimited storage
+   ✅ Video tidak hilang
+
+UPLOAD FILE HANYA UNTUK:
+   ✅ Testing
+   ✅ Temporary upload
+   ✅ Localhost (permanen)
+
+═══════════════════════════════════════════════════════════════
+   📱 FITUR YANG SUDAH LIVE
+═══════════════════════════════════════════════════════════════
+
+Setelah deploy selesai, fitur ini akan live:
+
+1. ✅ Upload file dari galeri HP/PC
+   - Tab "📁 Upload File"
+   - Progress bar real-time
+   - Max 500MB
+
+2. ✅ Mobile optimization
+   - Scroll smooth
+   - WhatsApp button fixed
+   - GPU acceleration
+   - Touch optimization
+
+3. ✅ MySQL support (localhost)
+   - Data permanen di localhost
+   - phpMyAdmin integration
+
+4. ✅ Login fix
+   - Async/await fix
+   - No more errors
+
+═══════════════════════════════════════════════════════════════
+   🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Problem: Deploy gagal
+Solution:
+   1. Cek Railway dashboard
+   2. Lihat error logs
+   3. Cek Dockerfile
+   4. Redeploy manual
+
+Problem: Fitur belum muncul
+Solution:
+   1. Tunggu deploy selesai (5-7 menit)
+   2. Hard refresh browser (Ctrl+Shift+R)
+   3. Clear cache
+   4. Coba lagi
+
+Problem: Upload file tidak jalan
+Solution:
+   1. Cek Railway logs
+   2. Cek file size (max 500MB)
+   3. Pakai "Upload dengan Link" sebagai alternatif
+
+═══════════════════════════════════════════════════════════════
+   📊 DEPLOYMENT INFO
+═══════════════════════════════════════════════════════════════
+
+Repository: https://github.com/yusrilrizky/animestream
+Branch: main
+Commit: 0f362a7
+
+Railway:
+   Project: animestream
+   URL: https://animestream-production-95b2.up.railway.app
+   Auto-deploy: ✅ Enabled
+
+Files deployed:
+   ✅ views/upload-link.ejs (upload file feature)
+   ✅ public/css/style.css (mobile optimization)
+   ✅ server.js (async/await fix)
+   ✅ database.js (MySQL adapter)
+   ✅ package.json (mysql2 dependency)
+
+═══════════════════════════════════════════════════════════════
+   ⏰ TIMELINE
+═══════════════════════════════════════════════════════════════
+
+00:00 - Git push ke GitHub ✅
+00:01 - Railway detect push ⏳
+00:03 - Build Docker image ⏳
+00:05 - Deploy container ⏳
+00:07 - Live! ✅
+
+Current time: Tunggu 5-7 menit dari sekarang
+
+═══════════════════════════════════════════════════════════════
+   ✅ NEXT STEPS
+═══════════════════════════════════════════════════════════════
+
+1. TUNGGU 5-7 MENIT
+   Railway sedang deploy
+
+2. CEK RAILWAY DASHBOARD
+   https://railway.app/dashboard
+   Lihat status deployment
+
+3. TEST WEBSITE
+   https://animestream-production-95b2.up.railway.app
+   Cek fitur baru
+
+4. TEST UPLOAD
+   - Upload dengan link (recommended)
+   - Upload file (testing only)
+
+5. TEST MOBILE
+   - Buka di HP
+   - Cek scroll smooth
+   - Cek WhatsApp button
+
+═══════════════════════════════════════════════════════════════
+
+🎉 SELESAI!
+
+Code sudah di-push ke GitHub.
+Railway akan otomatis deploy dalam 5-7 menit.
+
+Tunggu sebentar, lalu cek website! 🚀
+
+URL: https://animestream-production-95b2.up.railway.app
+
+═══════════════════════════════════════════════════════════════

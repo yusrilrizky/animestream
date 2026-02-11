@@ -255,7 +255,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               mini: true,
               backgroundColor: const Color(0xFF8a2be2),
               onPressed: () => controller.reload(),
-              child: const Icon(Icons.refresh),
+              child: const Icon(Icons.refresh, size: 20),
             ),
             const SizedBox(height: 10),
             FloatingActionButton(
@@ -263,8 +263,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
               mini: true,
               backgroundColor: const Color(0xFFa855f7),
               onPressed: () => controller.loadRequest(Uri.parse(websiteUrl)),
-              child: const Icon(Icons.home),
+              child: const Icon(Icons.home, size: 20),
             ),
+            const SizedBox(height: 80), // Space for WhatsApp button
           ],
         ),
       ),

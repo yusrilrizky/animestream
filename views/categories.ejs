@@ -269,8 +269,31 @@
   </script>
 
   <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px; 12px rgba(37, 211, 102, 0.5); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <!-- WhatsApp Floating Button (Fixed) -->
+  <a href="https://wa.me/6282297706541?text=Hai" target="_blank" class="wa-float" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #25D366, #128C7E); color: white; display: flex; align-items: center; justify-content: center; font-size: 26px; text-decoration: none; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.6); transition: all 0.3s; will-change: transform; pointer-events: auto;">
     💬
   </a>
+
+  <style>
+    .wa-float {
+      pointer-events: auto !important;
+    }
+    .wa-float:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.8) !important;
+    }
+    .wa-float:active {
+      transform: scale(0.95) !important;
+    }
+    @media (max-width: 768px) {
+      .wa-float {
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 22px !important;
+      }
+    }
+  </style>
 </body>
 </html>
