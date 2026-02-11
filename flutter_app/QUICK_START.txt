@@ -1,0 +1,88 @@
+🚀 QUICK START - BUILD APK ANIMESTREAM
+=======================================
+
+📋 YANG PERLU DIINSTALL:
+1. Flutter SDK - https://flutter.dev
+2. Android Studio - https://developer.android.com/studio
+3. Java JDK (otomatis dari Android Studio)
+
+⚡ LANGKAH CEPAT:
+
+1. INSTALL FLUTTER
+   Windows: Download dari https://flutter.dev/docs/get-started/install/windows
+   Extract ke C:\flutter
+   Tambahkan C:\flutter\bin ke PATH
+
+2. INSTALL ANDROID STUDIO
+   Download dan install dari https://developer.android.com/studio
+   Install Flutter plugin di Android Studio
+
+3. SETUP ANDROID SDK
+   Buka Android Studio → Settings → Android SDK
+   Install Android SDK Platform 34
+
+4. ACCEPT LICENSES
+   Buka CMD:
+   flutter doctor --android-licenses
+   Tekan 'y' untuk semua
+
+5. UPDATE URL WEBSITE
+   Edit flutter_app/lib/main.dart baris 149:
+   final String websiteUrl = 'https://your-railway-url.railway.app';
+   
+   Ganti dengan URL Railway kamu!
+
+6. BUILD APK
+   Buka CMD di folder flutter_app:
+   
+   cd flutter_app
+   flutter pub get
+   flutter build apk --release
+   
+   ATAU jalankan script otomatis:
+   build_apk.bat
+
+7. APK SIAP!
+   Location: flutter_app/build/app/outputs/flutter-apk/app-release.apk
+   Atau: flutter_app/output/AnimeStream.apk (kalau pakai script)
+
+8. INSTALL DI HP
+   Copy APK ke HP
+   Buka file APK
+   Enable "Install from Unknown Sources" kalau diminta
+   Install!
+
+🎉 SELESAI!
+
+📱 FITUR APP:
+✅ Full website AnimeStream dalam app
+✅ Splash screen keren
+✅ Check internet connection
+✅ Back button navigation
+✅ Refresh & Home button
+✅ Support landscape untuk nonton video
+✅ Handle WhatsApp & external links
+✅ Loading progress bar
+✅ Error handling
+
+⚠️ TROUBLESHOOTING:
+
+Error: Flutter not found
+→ Install Flutter dan tambahkan ke PATH
+
+Error: Android SDK not found
+→ Install Android Studio
+
+Error: License not accepted
+→ Jalankan: flutter doctor --android-licenses
+
+Build gagal
+→ Hapus folder build, jalankan: flutter clean, build lagi
+
+APK tidak bisa install
+→ Enable "Install from Unknown Sources" di HP
+
+📞 BUTUH BANTUAN?
+WhatsApp: https://wa.me/6282297706541
+
+© 2026 AnimeStream
