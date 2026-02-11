@@ -138,7 +138,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController controller;
   double progress = 0;
   
-  final String websiteUrl = 'https://animestream-production-95b2.up.railway.app';
+  final String websiteUrl = 'https://animestream-production-95b2.up.railway.app/login';
 
   @override
   void initState() {
