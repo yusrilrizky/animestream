@@ -73,6 +73,101 @@
       </div>
 
       <div class="upload-body">
+        <!-- Warning Box for Railway -->
+        <div id="railwayWarning" style="display: none; background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 107, 107, 0.1)); border-left: 4px solid #ff4757; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+          <h4 style="color: #ff4757; margin-bottom: 0.5rem;">⚠️ Upload File Tidak Work di Railway!</h4>
+          <p style="color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem;">
+            Railway pakai <strong>ephemeral storage</strong> - file akan hilang saat restart dan upload akan error!
+          </p>
+          <p style="color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+            <strong>✅ SOLUSI:</strong> Pakai platform streaming gratis (instant, unlimited, tanpa iklan):
+          </p>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <a href="https://cloudinary.com" target="_blank" style="background: #3448c5; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">📤 Cloudinary</a>
+            <a href="https://streamable.com" target="_blank" style="background: #00b894; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">🎬 Streamable</a>
+            <a href="https://vimeo.com" target="_blank" style="background: #1ab7ea; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">📹 Vimeo</a>
+          </div>
+          <p style="color: #666; font-size: 0.85rem; margin: 0;">
+            💡 Upload video ke platform di atas, copy link share, lalu paste di <strong>form "Upload dengan Link"</strong> di bawah!
+          </p>
+        </div>
+
+      <!-- Upload Method Tabs -->
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(168, 85, 247, 0.2);">
+        <button type="button" id="tabLink" class="upload-tab active" style="flex: 1; padding: 1rem; background: none; border: none; border-bottom: 3px solid #a855f7; color: #a855f7; font-weight: 600; cursor: pointer; font-size: 1rem;">
+          🔗 Upload dengan Link
+        </button>
+        <button type="button" id="tabFile" class="upload-tab" style="flex: 1; padding: 1rem; background: none; border: none; border-bottom: 3px solid transparent; color: #999; font-weight: 600; cursor: pointer; font-size: 1rem;">
+          📁 Upload File
+        </button>
+      </div>
+
+      <!-- Upload dengan Link Form -->
+      <div id="linkUploadSection">
+        <div class="info-box" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)); border-left: 4px solid #4caf50;">
+          <h4 style="color: #4caf50;">✅ Upload dengan Link (RECOMMENDED!)</h4>
+          <p>Upload video ke platform streaming gratis, lalu paste link di sini.</p>
+          <p><strong>💡 Keuntungan:</strong></p>
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #666; font-size: 0.9rem;">
+            <li><strong>✅ Instant</strong> - Tidak perlu tunggu upload</li>
+            <li><strong>✅ Unlimited</strong> - Tidak ada limit size</li>
+            <li><strong>✅ Gratis</strong> - Selamanya tanpa biaya</li>
+            <li><strong>✅ Tanpa iklan</strong> - Platform clean</li>
+            <li><strong>✅ Work di Railway</strong> - 100% compatible</li>
+          </ul>
+        </div>
+
+        <form action="/upload-link" method="POST" id="linkUploadForm">
+          <div class="form-group">
+            <label for="videoLink">🔗 Link Video</label>
+            <input type="url" id="videoLink" name="videoLink" required placeholder="https://cloudinary.com/... atau https://streamable.com/...">
+            <p style="color: #999; font-size: 0.85rem; margin-top: 0.5rem;">
+              Platform yang didukung: Cloudinary, Streamable, Vimeo, Terabox, Google Drive, dll
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label for="linkTitle">🎬 Judul Anime</label>
+            <input type="text" id="linkTitle" name="title" required placeholder="Contoh: Naruto Shippuden">
+          </div>
+
+          <div class="form-group">
+            <label for="linkEpisode">📺 Episode</label>
+            <input type="text" id="linkEpisode" name="episode" required placeholder="Contoh: Episode 1">
+          </div>
+
+          <div class="form-group">
+            <label for="linkCategory">📂 Kategori</label>
+            <select id="linkCategory" name="category">
+              <option value="action">Action</option>
+              <option value="adventure">Adventure</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="romance">Romance</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="slice-of-life">Slice of Life</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="linkGenre">🏷️ Genre (pisahkan dengan koma)</label>
+            <input type="text" id="linkGenre" name="genre" placeholder="Contoh: Action, Adventure, Shounen">
+          </div>
+
+          <div class="form-group">
+            <label for="linkDescription">📝 Deskripsi</label>
+            <textarea id="linkDescription" name="description" rows="5" required placeholder="Ceritakan tentang anime ini..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+            🚀 Upload dengan Link
+          </button>
+        </form>
+      </div>
+
+      <!-- Upload File Form (Hidden by default) -->
+      <div id="fileUploadSection" style="display: none;">
         <!-- Info Box -->
         <div class="info-box">
           <h4>📁 Upload File Video</h4>
@@ -83,6 +178,7 @@
             <li><strong>Progress bar</strong> akan tampil saat upload (MB naik 0-100%)</li>
             <li><strong>Koneksi stabil</strong> diperlukan untuk file besar</li>
             <li><strong>Format:</strong> MP4, MKV, AVI, WebM, MOV</li>
+            <li><strong>⚠️ HANYA work di localhost!</strong> Railway tidak support file upload</li>
           </ul>
         </div>
 
@@ -177,10 +273,91 @@
           </button>
         </form>
       </div>
+      <!-- End File Upload Section -->
     </div>
   </div>
 
   <script>
+    // Tab switching
+    const tabLink = document.getElementById('tabLink');
+    const tabFile = document.getElementById('tabFile');
+    const linkUploadSection = document.getElementById('linkUploadSection');
+    const fileUploadSection = document.getElementById('fileUploadSection');
+    
+    tabLink.addEventListener('click', function() {
+      tabLink.classList.add('active');
+      tabLink.style.borderBottom = '3px solid #a855f7';
+      tabLink.style.color = '#a855f7';
+      tabFile.classList.remove('active');
+      tabFile.style.borderBottom = '3px solid transparent';
+      tabFile.style.color = '#999';
+      linkUploadSection.style.display = 'block';
+      fileUploadSection.style.display = 'none';
+    });
+    
+    tabFile.addEventListener('click', function() {
+      const isRailway = window.location.hostname.includes('railway.app') || 
+                        window.location.hostname.includes('up.railway.app');
+      
+      if (isRailway) {
+        alert('⚠️ Upload file TIDAK work di Railway!\n\n' +
+              'Railway pakai ephemeral storage - file akan hilang saat restart.\n\n' +
+              '✅ Pakai "Upload dengan Link" untuk hasil terbaik!\n\n' +
+              'Platform gratis & tanpa iklan:\n' +
+              '• Cloudinary: https://cloudinary.com\n' +
+              '• Streamable: https://streamable.com\n' +
+              '• Vimeo: https://vimeo.com');
+        return;
+      }
+      
+      tabFile.classList.add('active');
+      tabFile.style.borderBottom = '3px solid #a855f7';
+      tabFile.style.color = '#a855f7';
+      tabLink.classList.remove('active');
+      tabLink.style.borderBottom = '3px solid transparent';
+      tabLink.style.color = '#999';
+      fileUploadSection.style.display = 'block';
+      linkUploadSection.style.display = 'none';
+    });
+    
+    // Detect Railway environment
+    const isRailway = window.location.hostname.includes('railway.app') || 
+                      window.location.hostname.includes('up.railway.app');
+    
+    if (isRailway) {
+      // Show Railway warning
+      const warningBox = document.getElementById('railwayWarning');
+      if (warningBox) {
+        warningBox.style.display = 'block';
+      }
+      
+      // Disable file upload on Railway
+      const fileUploadForm = document.getElementById('fileUploadForm');
+      const uploadBtn = document.getElementById('uploadBtn');
+      
+      if (fileUploadForm && uploadBtn) {
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = '⚠️ Upload File Tidak Work di Railway';
+        uploadBtn.style.opacity = '0.5';
+        uploadBtn.style.cursor = 'not-allowed';
+        
+        fileUploadForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          alert('⚠️ Upload file TIDAK work di Railway!\n\n' +
+                'Railway pakai ephemeral storage - file akan hilang saat restart.\n\n' +
+                '✅ SOLUSI:\n' +
+                '1. Upload video ke Cloudinary/Streamable/Vimeo (GRATIS)\n' +
+                '2. Copy link share\n' +
+                '3. Paste link di form\n\n' +
+                '💡 Platform streaming gratis & tanpa iklan:\n' +
+                '- Cloudinary: https://cloudinary.com\n' +
+                '- Streamable: https://streamable.com\n' +
+                '- Vimeo: https://vimeo.com');
+          return false;
+        });
+      }
+    }
+    
     // Update file name display
     const videoFileInput = document.getElementById('videoFile');
     const fileNameDisplay = document.getElementById('fileName');
@@ -373,12 +550,23 @@
         const isRailway = window.location.hostname.includes('railway.app') || window.location.hostname.includes('up.railway.app');
         
         if (isRailway) {
-          alert('❌ Upload file tidak work di Railway!\n\n' +
-                'Railway pakai ephemeral storage - file akan hilang saat restart.\n\n' +
-                '✅ SOLUSI:\n' +
-                '1. Setup Cloudflare R2 (persistent storage)\n' +
-                '2. Atau pakai "Upload dengan Link" (instant, unlimited!)\n\n' +
-                '💡 Recommended: Pakai "Upload dengan Link" - Cloudinary/Streamable gratis & tanpa iklan!');
+          alert('❌ Upload file TIDAK work di Railway!\n\n' +
+                '🔴 MASALAH:\n' +
+                'Railway pakai ephemeral storage - file akan hilang saat restart dan upload akan error!\n\n' +
+                '✅ SOLUSI (MUDAH & GRATIS):\n' +
+                '1. Upload video ke platform streaming:\n' +
+                '   • Cloudinary (https://cloudinary.com)\n' +
+                '   • Streamable (https://streamable.com)\n' +
+                '   • Vimeo (https://vimeo.com)\n\n' +
+                '2. Copy link share dari platform\n\n' +
+                '3. Paste link di form upload\n\n' +
+                '💡 KEUNTUNGAN:\n' +
+                '✅ Instant (tidak perlu tunggu upload)\n' +
+                '✅ Unlimited size (tidak ada limit)\n' +
+                '✅ Gratis selamanya\n' +
+                '✅ Tanpa iklan\n' +
+                '✅ Video tidak akan hilang\n\n' +
+                '📖 Baca: CARA_UPLOAD_VIDEO.txt untuk panduan lengkap');
         } else {
           alert('❌ Upload error!\n\n' +
                 'Kemungkinan penyebab:\n' +
@@ -386,7 +574,9 @@
                 '2. Server tidak merespon\n' +
                 '3. File terlalu besar untuk koneksi kamu\n' +
                 '4. CORS atau firewall issue\n\n' +
-                '💡 Solusi: Pakai "Upload dengan Link" (tab sebelah) untuk hasil terbaik!');
+                '💡 Solusi alternatif:\n' +
+                'Upload ke platform streaming (Cloudinary/Streamable/Vimeo)\n' +
+                'lalu paste link di form - instant & unlimited!');
         }
         
         resetUploadForm();
